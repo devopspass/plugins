@@ -1,6 +1,3 @@
-codex.index:
-  default: {}
-
 user.email:
   title: User's E-Mail address
   default: ''
@@ -12,5 +9,18 @@ user.name:
   default: ''
   type: string
 
+# Codex options
+codex.plugins.source:
+  title: DevOps Pass AI plugins source
+  description: |
+    DOP AI Plugins Git repo URL.
+    !!! **After changing of that setting you have to restart DevOps Pass AI.**
+  type: string
+  default: 'https://github.com/devopspass/plugins.git'
+  section: DevOps Pass AI
+
 codex.index.do_indexing:
   default: 1
+
+codex.index:
+  default: {}

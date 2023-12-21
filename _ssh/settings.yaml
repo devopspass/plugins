@@ -38,6 +38,3 @@ ssh.command.jumphost_options:
   title: SSH Jumphost options
   type: string
   default: -j %JUMPHOST%
-
-ssh.server.options:
-  default: {}
