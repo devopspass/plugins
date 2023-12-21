@@ -1,0 +1,8 @@
+python_pip_index:
+  section: Python
+  title: Python (pip) index URL
+  description: |
+    URL used in your organization as pip index (pip packages source)
+  type: string
+  default: https://pypi.org/simple
+  required_app: Python

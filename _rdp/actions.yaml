@@ -1,0 +1,22 @@
+rdp_host:
+  title: RDP
+  icon: fas fa-desktop
+  object_types: windows_host
+  command: |
+    plugins/_rdp/actions/rdp_host.py
+  required_settings:
+    - rdp.command
+    - actions.rdp_host
+  required_options:
+    rdp_user:
+      type: string
+      default: Administrator
+      title: RDP User Name
+      remember: true
+      remember_key: ip
+    rdp_port:
+      type: string
+      default: 3389
+      title: RDP Port
+      remember: true
+      remember_key: ip

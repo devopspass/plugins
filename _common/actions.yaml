@@ -1,0 +1,20 @@
+copy_to_clipboard:
+  title: Copy to Clipboard
+  icon: fas fa-copy
+  object_types: any
+  command: |
+    plugins/_common/actions/copy_to_clipboard.py
+
+open_url:
+  title: Open URL
+  icon: fas fa-url
+  object_types: any
+  command: |
+    plugins/_common/actions/open_url.py
+
+run_playbook:
+  title: Run Playbook
+  icon: fas fa-paper-plane
+  object_types: any
+  command: |
+    plugins/_common/actions/run_playbook.py

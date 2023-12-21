@@ -1,0 +1,43 @@
+sftp.command:
+  title: SFTP Command
+  section: SSH
+  description: |
+    Command DevOps Pass AI have to use to open SSH console for server.
+
+    **Examples:**
+      * TODO
+  type: string
+  default_windows: '"C:/Program Files (x86)/WinSCP/WinSCP.exe" %USER%@%SERVER_IP%'
+  default_linux: "mc sh://%USER%@%SERVER_IP%:%PORT%"
+
+sftp.command.jumphost_options:
+  section: SSH
+  description: |
+    Jumphost options, will be used if 'jumphost' will be specified for server
+  title: SFTP Jumphost options
+  type: string
+  default: -j %JUMPHOST%
+
+ssh.command:
+  section: SSH
+  description: |
+    Command DevOps Pass AI have to use to open SSH console for server.
+    **Examples:**
+      * WSL - `wsl -- ssh -p %PORT% %USER%@%SERVER_IP%`
+      * Putty - `putty.exe %USER%@%SERVER_IP% -pw "%PASSWORD%"`
+      * git-bash - `git-bash.exe -c "ssh -p %PORT% %USER%@%SERVER_IP%"`
+  title: SSH Command
+  type: string
+  default_linux: gnome-terminal -e "ssh -t -p %PORT%  %JUMPHOST_OPTIONS% %USER%@%SERVER_IP% %COMMAND%; sleep 4"
+  default_windows: "\"C:/Program Files/PuTTY/putty.exe\" %USER%@%SERVER_IP%"
+
+ssh.command.jumphost_options:
+  section: SSH
+  description: |
+    Jumphost options, will be used if 'jumphost' will be specified for server
+  title: SSH Jumphost options
+  type: string
+  default: -j %JUMPHOST%
+
+ssh.server.options:
+  default: {}

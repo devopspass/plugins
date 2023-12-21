@@ -1,0 +1,17 @@
+aws_open_console:
+  title: Open AWS Console
+  icon: fab fa-solid fa-brands fa-aws
+  object_types: aws_profile
+  command: |
+    plugins/aws/actions/open_console.py
+  required_settings:
+    - aws.profiles.regions
+
+aws_set_default_profile_region:
+  title: Set default region for profile
+  icon: fas fa-heart
+  object_types: aws_profile
+  command: |
+    plugins/aws/actions/open_console.py
+  required_settings:
+    - aws.profiles.regions

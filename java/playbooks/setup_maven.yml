@@ -1,0 +1,34 @@
+---
+- name: Configure npm registry
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Set home dir for MacOS/*nix
+      ansible.builtin.set_fact:
+        home_dir: "{{ ansible_env.HOME }}/.m2/"
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
+
+    - name: Set home dir for Windows
+      ansible.builtin.set_fact:
+        home_dir: "{{ ansible_env.USERPROFILE }}\\.m2\\"
+      when: "'Windows' in ansible_system"
+
+    - name: Maven config file
+      ansible.builtin.set_fact:
+        maven_config: "{{ (home_dir, 'settings.xml') | path_join }}"
+
+    - name: Ensure the .m2 directory
+      ansible.builtin.file:
+        path: "{{ home_dir  }}"
+        state: directory
+
+    - name: Check if settings.xml exists
+      ansible.builtin.stat:
+        path: "{{ maven_config  }}"
+      register: settings_stat
+
+    - name: Create settings.xml if doesnt exist
+      ansible.builtin.template:
+        src: settings.xml.j2
+        dest: "{{ maven_config }}"

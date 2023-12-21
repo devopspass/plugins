@@ -1,0 +1,9 @@
+---
+- name: Configure npm registry
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Set npm registry
+      ansible.builtin.shell: |
+        npm config set registry "{{ nodejs_npm_registry }}"

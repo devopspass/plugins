@@ -1,0 +1,10 @@
+rdp.command:
+  section: Windows Remote Desktop
+  description: |
+    Command DevOps Pass AI have to use to open RDP connection.
+
+    **Examples:**
+  title: RDP Command
+  type: string
+  default_windows: cmdkey /generic:"%SERVER_IP%" /user:"%USER%" && mstsc /v %SERVER_IP%:%PORT%
+  default_linux: remmina -c rdp://%USER%@%SERVER_IP%:%PORT%

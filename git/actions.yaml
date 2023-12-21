@@ -1,0 +1,12 @@
+git_generate_config:
+  title: Configure git
+  description: |
+    You can configure git client user name, email and merge options...
+  icon: fab fa-git
+  object_types: application
+  application_name: Git
+  playbook: plugins/git/playbooks/setup_git.yml
+  required_settings:
+    - user.name
+    - user.email
+  show_settings: true

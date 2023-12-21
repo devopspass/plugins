@@ -1,0 +1,68 @@
+ssh_host:
+  title: SSH
+  icon: fas fa-terminal
+  object_types: unix_host
+  command: |
+    plugins/_ssh/actions/ssh_host.py
+  required_settings:
+    - ssh.command
+    - ssh.command.jumphost_options
+    - actions.ssh_host
+  required_options:
+    ssh_user:
+      type: string
+      default: root
+      title: SSH User Name
+      remember: true
+      remember_key: ip
+    ssh_port:
+      type: string
+      default: 22
+      title: SSH Port
+      remember: true
+      remember_key: ip
+    ssh_jumphost:
+      type: string
+      title: SSH Jump Host
+      remember: true
+      remember_key: ip
+    ssh_command:
+      type: string
+      title: Command to run
+      remember: true
+      remember_key: ip
+
+sftp_host:
+  title: SFTP
+  icon: fas fa-download
+  object_types: unix_host
+  command: |
+    plugins/_ssh/actions/sftp_host.py
+  required_settings:
+    - sftp.command
+    - sfp.command.jumphost_options
+    - actions.sftp_host
+  required_options:
+    ssh_user:
+      type: string
+      default: root
+      title: SSH User Name
+      remember: true
+      remember_key: ip
+    ssh_port:
+      type: string
+      default: 22
+      title: SSH Port
+      remember: true
+      remember_key: ip
+    ssh_jumphost:
+      type: string
+      title: SSH Jump Host
+      remember: true
+      remember_key: ip
+    sftp_command:
+      type: string
+      title: SFTP command (script)
+      default: /bin/sftp-server
+      remember: true
+      remember_key: ip

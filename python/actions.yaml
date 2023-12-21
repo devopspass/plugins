@@ -1,0 +1,9 @@
+python_setup_pip:
+  title: Setup pip
+  icon: fab fa-python
+  object_types: application
+  application_name: Python
+  playbook: plugins/python/playbooks/setup_pip.yml
+  required_settings:
+    - python_pip_index
+  show_settings: true

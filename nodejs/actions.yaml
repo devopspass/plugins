@@ -1,0 +1,9 @@
+node_setup_npm:
+  title: Setup NPM
+  icon: fab fa-node
+  object_types: application
+  application_name: Node.JS
+  playbook: plugins/nodejs/playbooks/setup_npm.yml
+  required_settings:
+    - nodejs_npm_registry
+  show_settings: true

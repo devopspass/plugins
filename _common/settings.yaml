@@ -1,0 +1,16 @@
+codex.index:
+  default: {}
+
+user.email:
+  title: User's E-Mail address
+  default: ''
+  type: string
+
+user.name:
+  title: User's Name
+  description: For example - `John Doe`
+  default: ''
+  type: string
+
+codex.index.do_indexing:
+  default: 1

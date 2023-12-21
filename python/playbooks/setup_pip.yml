@@ -1,0 +1,32 @@
+---
+- name: Set up pip index-url
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Set pip config dir for MacOS/*nix
+      ansible.builtin.set_fact:
+        pip_home_dir: "{{ ansible_env.HOME }}/.pip/"
+        pip_config_name: pip.conf
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
+
+    - name: Set pip config dir for Windows
+      ansible.builtin.set_fact:
+        pip_home_dir: "{{ ansible_env.USERPROFILE }}\\pip\\"
+        pip_config_name: pip.ini
+      when: "'Windows' in ansible_os_family"
+
+    - name: Ensure the pip directory exists
+      ansible.builtin.file:
+        path: "{{ pip_home_dir }}"
+        state: directory
+
+    - name: Set index-url and trusted-host in pip.conf/ini
+      ansible.builtin.ini_file:
+        path: "{{ (pip_home_dir, pip_config_name) | path_join }}"
+        section: global
+        option: "{{ item.key }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { key: 'index-url', value: "{{ python_pip_index }}" }
+        - { key: 'trusted-host', value: "{{ python_pip_index.split('://')[1] }}" }

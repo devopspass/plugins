@@ -1,0 +1,19 @@
+java_setup_maven:
+  title: Configure Maven
+  icon: fas fa-feather
+  object_types: application
+  application_name: Java
+  playbook: plugins/java/playbooks/setup_maven.yml
+  required_settings:
+    - java_maven_central_url
+  show_settings: true
+
+# java_setup_gradle:
+#   title: Configure Gradle
+#   icon: fab fa-java
+#   object_types: application
+#   application_name: Java
+#   playbook: plugins/java/playbooks/setup_gradle.yml
+#   required_settings:
+#     - java_maven_central_url
+

@@ -1,0 +1,8 @@
+java_maven_central_url:
+  section: Java
+  title: Maven Central URL
+  default: https://repo1.maven.org/maven2/
+  description: |
+    URL used in your organization as Maven Central packages source
+  type: string
+  required_app: Java

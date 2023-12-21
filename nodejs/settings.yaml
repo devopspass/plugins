@@ -1,0 +1,8 @@
+nodejs_npm_registry:
+  section: NodeJS
+  title: NodeJS npm registry URL
+  description: |
+    URL used in your organization as npm registry (packages source)
+  type: string
+  default: https://registry.npmjs.org/
+  required_app: Node.JS
