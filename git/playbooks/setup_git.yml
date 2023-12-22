@@ -3,14 +3,22 @@
   hosts: localhost  # You can change this to the appropriate host or group
 
   tasks:
-    - name: Set Git user name
-      ansible.builtin.git_config:
-        scope: global
-        name: user.name
-        value: "{{ user_name }}"
+    - name: Set git config for MacOS/*nix
+      ansible.builtin.set_fact:
+        git_config_path: "{{ ansible_env.HOME }}/.gitconfig"
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
 
-    - name: Set Git user email
-      ansible.builtin.git_config:
-        scope: global
-        name: user.email
-        value: "{{ user_email }}"
+    - name: Set git config for Windows
+      ansible.builtin.set_fact:
+        git_config_path: "{{ ansible_env.USERPROFILE }}\\.gitconfig"
+      when: "'Windows' in ansible_os_family"
+
+    - name: Git configure User name and E-Mail
+      ansible.builtin.ini_file:
+        path: "{{ git_config_path }}"
+        section: user
+        option: "{{ item.key }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { key: 'name', value: "{{ user_name }}" }
+        - { key: 'email', value: "{{ user_email }}" }
