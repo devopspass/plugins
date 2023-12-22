@@ -1,6 +1,7 @@
 ---
 - name: Configure Git global user name and email
-  hosts: localhost  # You can change this to the appropriate host or group
+  hosts: localhost
+  connection: local
 
   tasks:
     - name: Set git config for MacOS/*nix
