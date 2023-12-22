@@ -18,10 +18,7 @@ with open(fname_settings, 'r') as file:
 with open(fname_doc, 'r') as file:
     ret = json.load(file)
     profile = ret['metadata']['name']
-    if settings.get('aws.profiles.regions'):
-        region = settings.get('aws.profiles.regions', {}).get(profile, ret.get('metadata', {}).get('region', 'eu-central-1'))
-    else:
-        region = 'eu-central-1'
+    region = settings.get('actions.aws_open_console', {}).get(f"{profile}_aws_region", 'eu-central-1')
 
 print(f"Trying to open console for '{profile}/{region}'...\n")
 
