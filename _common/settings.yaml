@@ -13,10 +13,27 @@ user.name:
 codex.plugins.source:
   title: DevOps Pass AI plugins source
   description: |
-    DOP AI Plugins Git repo URL.
+    Plugins Git repo URL.
     !!! **After changing of that setting you have to restart DevOps Pass AI.**
   type: string
   default: 'https://github.com/devopspass/plugins.git'
+  section: DevOps Pass AI
+
+codex.plugins.source_branch:
+  title: DevOps Pass AI plugins branch
+  description: |
+    Plugins Git repo branch
+    !!! **After changing of that setting you have to restart DevOps Pass AI.**
+  type: string
+  default: main
+  section: DevOps Pass AI
+
+codex.plugins.source_hard_reset:
+  title: Reset Plugins local changes
+  description: |
+    !!! **After changing of that setting you have to restart DevOps Pass AI.**
+  type: checkbox
+  default: main
   section: DevOps Pass AI
 
 codex.index.do_indexing:
