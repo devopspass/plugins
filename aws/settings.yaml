@@ -1,5 +1,6 @@
 aws.regions:
   section: AWS
+  required_app: AWS
   description: |
     AWS regions you're using
   title: AWS Regions
@@ -35,6 +36,7 @@ aws.regions:
     sa-east-1
 aws.profiles.regions:
   section: AWS
+  required_app: AWS
   description: |
     Setting to keep default regions for AWS aws.profiles
   title: AWS Profiles default regions
