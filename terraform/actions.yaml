@@ -1,0 +1,15 @@
+terraform_install:
+  object_types: application
+  application_name: Terraform
+  title: Install Terraform
+  description: |
+    Install Terraform on your local. Versions list can be found here - https://releases.hashicorp.com/terraform/, **latest** version will install latest stable version of Terraform
+  icon: fas fa-check-circle
+  playbook: plugins/terraform/playbooks/install.yml
+  required_options:
+    req_terraform_version:
+      title: Terraform version to Install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest

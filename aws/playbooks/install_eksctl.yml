@@ -1,0 +1,99 @@
+---
+- name: Install eksctl
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+    - name: Fetch latest eksctl version from GitHub releases
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/weaveworks/eksctl/releases/latest"
+        return_content: yes
+        headers:
+          Accept: "application/vnd.github.v3+json"
+      register: eksctl_version_response
+
+    - name: Parse latest eksctl version
+      ansible.builtin.set_fact:
+        latest_eksctl_version: "{{ eksctl_version_response.json.tag_name | regex_replace('^v', '') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        eksctl_version: "{{ (req_eksctl_version == 'latest') | ternary(latest_eksctl_version, req_eksctl_version)}}"
+
+    - name: Set facts based on operating system
+      ansible.builtin.set_fact:
+        eksctl_download_url: "https://github.com/eksctl-io/eksctl/releases/download/v{{ eksctl_version }}/eksctl_{{ ansible_system }}_{{ arch_mapping[ansible_architecture] }}.{{ (ansible_system == 'Windows') | ternary('zip', 'tar.gz') }}"
+
+#####################################################################
+#
+#           Linux/MacOS
+#
+#####################################################################
+    - name: Install eksctl on macOS/Linux
+      block:
+        - name: Download eksctl binary
+          ansible.builtin.get_url:
+            url: "{{ eksctl_download_url }}"
+            dest: "/tmp/eksctl.tar.gz"
+            mode: '0644'
+
+        - name: Extract eksctl binary
+          ansible.builtin.unarchive:
+            src: "/tmp/eksctl.tar.gz"
+            dest: "{{ ansible_env.HOME }}/bin/"
+            remote_src: yes
+
+        - name: Set execute permissions
+          ansible.builtin.file:
+            path: "{{ ansible_env.HOME }}/bin/eksctl"
+            mode: 'a+x'
+
+        - name: Add user's bin directory to PATH
+          ansible.builtin.lineinfile:
+            dest: "{{ ansible_env.HOME }}/.bashrc"
+            line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+
+        - name: Clean up temporary files
+          ansible.builtin.file:
+            path: "/tmp/eksctl.tar.gz"
+            state: absent
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
+
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install eksctl on Windows
+      block:
+        - name: Set home
+          ansible.builtin.set_fact:
+            eksctl_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\eksctl"
+
+        - name: Home
+          ansible.builtin.file:
+            path: "{{ eksctl_home }}"
+            state: directory
+
+        - name: Download eksctl binary
+          ansible.builtin.get_url:
+            url: "{{ eksctl_download_url }}"
+            dest: "{{ eksctl_home }}\\\\eksctl.zip"
+
+        - name: Extract eksctl binary
+          ansible.builtin.command:
+            cmd: "tar -xf eksctl.zip"
+            chdir: "{{ eksctl_home }}"
+
+        - name: Add to PATH
+          ansible.builtin.command: 
+            cmd: 'setx PATH "%PATH%;%USERPROFILE%\\eksctl\\"'
+
+      when: "'Windows' in ansible_system"
+
+    - name: Installed
+      ansible.builtin.debug:
+        msg: "Installed eksctl version '{{ eksctl_version }}'"

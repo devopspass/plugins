@@ -1,0 +1,69 @@
+---
+- name: Install kubectl
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+    - name: Fetch latest kubectl version from Kubernetes GitHub releases
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/kubernetes/kubernetes/releases/latest"
+        return_content: yes
+        headers:
+          Accept: "application/vnd.github.v3+json"
+      register: kubectl_version_response
+
+    - name: Parse latest kubectl version
+      ansible.builtin.set_fact:
+        latest_kubectl_version: "{{ kubectl_version_response.json.tag_name | regex_replace('^v', '') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        kubectl_version: "{{ (req_kubectl_version == 'latest') | ternary(latest_kubectl_version, req_kubectl_version)}}"
+
+    - name: Set facts based on operating system
+      ansible.builtin.set_fact:
+        kubectl_download_url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/{{ ansible_system | lower }}/{{ arch_mapping[ansible_architecture] }}/kubectl"
+
+#####################################################################
+#
+#           Linux/MacOS
+#
+#####################################################################
+    - name: Install kubectl on macOS/Linux
+      block:
+        - name: Download kubectl binary
+          ansible.builtin.get_url:
+            url: "{{ kubectl_download_url }}"
+            dest: "{{ ansible_env.HOME }}/bin/kubectl"
+            mode: '0755'
+
+        - name: Add user's bin directory to PATH
+          ansible.builtin.lineinfile:
+            dest: "{{ ansible_env.HOME }}/.bashrc"
+            line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
+
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install kubectl on Windows
+      block:
+        - name: Download kubectl binary
+          ansible.builtin.get_url:
+            url: "{{ kubectl_download_url }}.exe"
+            dest: "C:\\Program Files\\kubectl.exe"
+            validate_certs: false
+
+        - name: Add kubectl to the system PATH
+          ansible.builtin.win_path:
+            elements:
+              - "C:\\Program Files"
+            state: 'present'
+            recurse: yes
+      when: "'Windows' in ansible_system"

@@ -1,0 +1,135 @@
+---
+# Space is a trick to be first, always ;)
+- name: " Install AWS CLI on Linux"
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+#####################################################################
+#
+#           Linux
+#
+#####################################################################
+    - name: Install kubectl on Linux
+      block:
+        - name: Set facts based on operating system
+          ansible.builtin.set_fact:
+            awscli_download_url: "https://awscli.amazonaws.com/awscli-exe-{{ ansible_system | lower }}-{{ ansible_architecture }}.zip"
+
+        - name: Download AWS CLI binary
+          ansible.builtin.get_url:
+            url: "{{ awscli_download_url }}"
+            dest: "/tmp/awscli.zip"
+            mode: '0644'
+
+        - name: Create folder recursively for AWS CLI
+          ansible.builtin.file:
+            path: "{{ ansible_env.HOME }}/.local/share/aws/"
+            state: directory
+            recurse: yes
+
+        - name: Unzip AWS CLI binary
+          ansible.builtin.unarchive:
+            src: "/tmp/awscli.zip"
+            dest: "{{ ansible_env.HOME }}/.local/share/aws/"
+            remote_src: yes
+
+        - name: Run AWS CLI installation script
+          ansible.builtin.command:
+            cmd: "./install -u -i {{ ansible_env.HOME }}/.local/share/aws/ -b {{ ansible_env.HOME }}/bin/"
+            chdir: "{{ ansible_env.HOME }}/.local/share/aws/aws"
+            creates: "{{ ansible_env.HOME }}/.local/share/aws/aws/aws"
+
+        - name: Add user's bin directory to PATH
+          ansible.builtin.lineinfile:
+            dest: "{{ ansible_env.HOME }}/.bashrc"
+            line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+
+        - name: Clean up temporary files
+          ansible.builtin.file:
+            path: "/tmp/awscli.zip"
+            state: absent
+      when: "'Linux' in ansible_system"
+#####################################################################
+#
+#           MacOS
+#
+#####################################################################
+    - name: Install kubectl on MacOS
+      block:
+      - name: Download AWS CLI package
+        ansible.builtin.get_url:
+          url: "https://awscli.amazonaws.com/AWSCLIV2.pkg"
+          dest: "{{ ansible_env.HOME }}/AWSCLIV2.pkg"
+
+      - name: Create choices.xml file
+        ansible.builtin.copy:
+          content: |
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+              <array>
+                <dict>
+                  <key>choiceAttribute</key>
+                  <string>customLocation</string>
+                  <key>attributeSetting</key>
+                  <string>{{ ansible_env.HOME }}</string>
+                  <key>choiceIdentifier</key>
+                  <string>default</string>
+                </dict>
+              </array>
+            </plist>
+          dest: "{{ ansible_env.HOME }}/choices.xml"
+
+      - name: Install AWS CLI package with custom location
+        ansible.builtin.command:
+          cmd: "installer -pkg {{ ansible_env.HOME }}/AWSCLIV2.pkg -target CurrentUserHomeDirectory -applyChoiceChangesXML {{ ansible_env.HOME }}/choices.xml"
+
+      - name: Remove choices.xml file
+        ansible.builtin.file:
+          path: "{{ ansible_env.HOME }}/choices.xml"
+          state: absent
+
+      - name: Add AWS CLI and completter to user's PATH
+        ansible.builtin.lineinfile:
+          path: "{{ ansible_env.HOME }}/.bashrc"
+          line: |
+            export PATH="$PATH:{{ ansible_env.HOME }}/aws-cli"
+            alias aws='{{ ansible_env.HOME }}/aws-cli/aws'
+            complete -C '{{ ansible_env.HOME }}/aws-cli/aws_completer' aws
+
+
+      - name: Print AWS CLI version
+        ansible.builtin.command: "{{ ansible_env.HOME }}/aws-cli/aws --version"
+        register: aws_version_output
+
+      - ansible.builtin.debug:
+          var: aws_version_output.stdout_lines
+      when: "'Darwin' in ansible_system"
+
+
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install AWS CLI v2 on Windows
+      block:
+      - name: Download AWS CLI MSI installer
+        ansible.builtin.get_url:
+          url: "https://awscli.amazonaws.com/AWSCLIV2.msi"
+          dest: "{{ ansible_env.USERPROFILE }}/AWSCLIV2.msi"
+
+      - name: Install AWS CLI
+        ansible.builtin.command: 
+          cmd: 'msiexec.exe /package "{{ ansible_env.USERPROFILE | regex_escape }}\\AWSCLIV2.msi"'
+
+      - name: Add AWS CLI to PATH
+        ansible.builtin.command: 'setx PATH "%PATH%;%ProgramFiles%\\Amazon\\AWSCLIV2"'
+
+      - ansible.builtin.debug:
+          msg: "Latest version of AWS CLI v2 is installed on your PC"
+      when: "'Windows' in ansible_system"

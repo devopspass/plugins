@@ -1,0 +1,97 @@
+---
+- name: Install Terraform
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+    - name: Fetch latest Terraform version from HashiCorp releases API
+      ansible.builtin.uri:
+        url: "https://checkpoint-api.hashicorp.com/v1/check/terraform"
+        return_content: yes
+      register: terraform_version_response
+
+    - name: Parse latest Terraform version
+      ansible.builtin.set_fact:
+        latest_terraform_version: "{{ terraform_version_response.content | from_json | json_query('current_version') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        terraform_version: "{{ (req_terraform_version == 'latest') | ternary(latest_terraform_version, req_terraform_version)}}"
+
+    - name: Set facts based on operating system
+      ansible.builtin.set_fact:
+        terraform_download_url: "https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_{{ ansible_system | lower }}_{{ arch_mapping[ansible_architecture] }}.zip"
+
+#####################################################################
+#
+#           Linux/MacOS
+#
+#####################################################################
+    - name: Install Terraform on macOS/Linux
+      block:
+        - name: Download Terraform binary
+          get_url:
+            url: "{{ terraform_download_url }}"
+            dest: "/tmp/terraform.zip"
+            mode: '0644'
+
+        - name: Unzip Terraform binary
+          ansible.builtin.unarchive:
+            src: "/tmp/terraform.zip"
+            dest: "{{ ansible_env.HOME }}/bin/"
+            remote_src: yes
+
+        - name: Set execute permissions
+          ansible.builtin.file:
+            path: "{{ ansible_env.HOME }}/bin/terraform"
+            mode: 'a+x'
+
+        - name: Add user's bin directory to PATH
+          lineinfile:
+            dest: "{{ ansible_env.HOME }}/.bashrc"
+            line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+
+        - name: Clean up temporary files
+          ansible.builtin.file:
+            path: "/tmp/terraform.zip"
+            state: absent
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
+
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install Terraform on Windows
+      block:
+        - name: Set home
+          ansible.builtin.set_fact:
+            terraform_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\terraform"
+
+        - name: Home
+          ansible.builtin.file:
+            path: "{{ terraform_home }}"
+            state: directory
+
+        - name: Download Terraform binary
+          get_url:
+            url: "{{ terraform_download_url }}"
+            dest: "{{ terraform_home }}\\\\terraform.zip"
+
+        - name: Unzip Terraform binary
+          ansible.builtin.command:
+            cmd: "tar -xf terraform.zip"
+            chdir: "{{ terraform_home }}"
+
+        - name: Add to PATH
+          ansible.builtin.command: 
+            cmd: 'setx PATH "%PATH%;%USERPROFILE%\\terraform\\"'
+
+      when: "'Windows' in ansible_system"
+
+    - name: Installed
+      ansible.builtin.debug:
+        msg: "Installed Terraform version '{{ terraform_version }}'"

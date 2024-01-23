@@ -41,3 +41,28 @@ aws_open_console:
       title: AWS Region
       remember: true
       remember_key: name
+
+eksctl_install:
+  object_types: application
+  application_name: AWS
+  title: Install eksctl
+  description: |
+    Install `eksctl` on your local. Versions list can be found here - https://github.com/eksctl-io/eksctl/releases, **latest** version will install latest stable version of `eksctl`
+  icon: fas fa-check-circle
+  playbook: plugins/aws/playbooks/install_eksctl.yml
+  required_options:
+    req_eksctl_version:
+      title: eksctl version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
+
+aws_cli_install:
+  object_types: application
+  application_name: AWS
+  title: Install AWS CLI
+  description: |
+    Install `aws-cli` on your local
+  icon: fab fa-aws
+  playbook: plugins/aws/playbooks/install_aws_cli.yml

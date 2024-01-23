@@ -5,3 +5,18 @@ k8s_set_default_context:
   command: |
     plugins/k8s/actions/set_default_context.py
 
+kubectl_install:
+  object_types: application
+  application_name: Kubernetes
+  title: Install kubectl
+  description: |
+    Install `kubectl` on your local. Versions list can be found here - https://github.com/kubernetes/kubernetes/releases/, **latest** version will install latest stable version of `kubectl`
+  icon: fas fa-check-circle
+  playbook: plugins/k8s/playbooks/install_kubectl.yml
+  required_options:
+    req_kubectl_version:
+      title: kubectl version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
