@@ -47,6 +47,8 @@
           ansible.builtin.lineinfile:
             dest: "{{ ansible_env.HOME }}/.bashrc"
             line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+            create: true
+            state: present
 
         - name: Clean up temporary files
           ansible.builtin.file:
@@ -100,6 +102,8 @@
             export PATH="$PATH:{{ ansible_env.HOME }}/aws-cli"
             alias aws='{{ ansible_env.HOME }}/aws-cli/aws'
             complete -C '{{ ansible_env.HOME }}/aws-cli/aws_completer' aws
+          create: true
+          state: present
 
 
       - name: Print AWS CLI version
@@ -124,7 +128,7 @@
           dest: "{{ ansible_env.USERPROFILE }}/AWSCLIV2.msi"
 
       - name: Install AWS CLI
-        ansible.builtin.command: 
+        ansible.builtin.command:
           cmd: 'msiexec.exe /package "{{ ansible_env.USERPROFILE | regex_escape }}\\AWSCLIV2.msi"'
 
       - name: Add AWS CLI to PATH

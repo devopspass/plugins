@@ -38,11 +38,16 @@
             dest: "/tmp/terraform.zip"
             mode: '0644'
 
+        - name: Create ~/bin/
+          ansible.builtin.file:
+            path: "{{ ansible_env.HOME }}/bin/"
+            state: directory
+
         - name: Unzip Terraform binary
           ansible.builtin.unarchive:
             src: "/tmp/terraform.zip"
             dest: "{{ ansible_env.HOME }}/bin/"
-            remote_src: yes
+            remote_src: true
 
         - name: Set execute permissions
           ansible.builtin.file:
@@ -53,6 +58,8 @@
           lineinfile:
             dest: "{{ ansible_env.HOME }}/.bashrc"
             line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+            create: true
+            state: present
 
         - name: Clean up temporary files
           ansible.builtin.file:
@@ -87,7 +94,7 @@
             chdir: "{{ terraform_home }}"
 
         - name: Add to PATH
-          ansible.builtin.command: 
+          ansible.builtin.command:
             cmd: 'setx PATH "%PATH%;%USERPROFILE%\\terraform\\"'
 
       when: "'Windows' in ansible_system"
