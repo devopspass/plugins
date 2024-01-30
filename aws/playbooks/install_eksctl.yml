@@ -46,10 +46,8 @@
             state: directory
 
         - name: Extract eksctl binary
-          ansible.builtin.command:
+          ansible.builtin.command: # unarchive doesnt work correct on MacOS for some reason
             cmd: "tar -xzf /tmp/eksctl.tar.gz -C '{{ ansible_env.HOME }}/bin/'"
-            dest: "{{ ansible_env.HOME }}/bin/"
-            remote_src: yes
 
         - name: Set execute permissions
           ansible.builtin.file:
