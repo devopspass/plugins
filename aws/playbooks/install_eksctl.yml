@@ -56,7 +56,7 @@
 
         - name: Add user's bin directory to PATH
           ansible.builtin.lineinfile:
-            dest: "{{ ansible_env.HOME }}/.bashrc"
+            dest: "{{ ansible_env.HOME }}/.bash_profile"
             line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
             create: true
             state: present

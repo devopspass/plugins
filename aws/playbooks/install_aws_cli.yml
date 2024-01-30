@@ -45,7 +45,7 @@
 
         - name: Add user's bin directory to PATH
           ansible.builtin.lineinfile:
-            dest: "{{ ansible_env.HOME }}/.bashrc"
+            dest: "{{ ansible_env.HOME }}/.bash_profile"
             line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
             create: true
             state: present
@@ -97,7 +97,7 @@
 
       - name: Add AWS CLI and completter to user's PATH
         ansible.builtin.lineinfile:
-          path: "{{ ansible_env.HOME }}/.bashrc"
+          dest: "{{ ansible_env.HOME }}/.bash_profile"
           line: |
             export PATH="$PATH:{{ ansible_env.HOME }}/aws-cli"
             alias aws='{{ ansible_env.HOME }}/aws-cli/aws'

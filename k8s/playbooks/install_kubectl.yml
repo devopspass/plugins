@@ -40,10 +40,17 @@
             dest: "{{ ansible_env.HOME }}/bin/kubectl"
             mode: '0755'
 
+        - name: Create ~/bin/
+          ansible.builtin.file:
+            path: "{{ ansible_env.HOME }}/bin/"
+            state: directory
+
         - name: Add user's bin directory to PATH
           ansible.builtin.lineinfile:
-            dest: "{{ ansible_env.HOME }}/.bashrc"
+            dest: "{{ ansible_env.HOME }}/.bash_profile"
             line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+            create: true
+            state: present
 
       when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
 
