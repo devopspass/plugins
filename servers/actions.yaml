@@ -1,0 +1,14 @@
+import_servers_from_file:
+  title: Import servers from CSV/JSON/YAML
+  icon: fas fa-file-import
+  object_types: application
+  application_name: Servers
+  command: |
+    plugins/servers/actions/import_from_csv_json_yaml.py
+  show_console: true
+  required_options:
+    file_name:
+      type: file
+      title: CSV/JSON/YAML file to import
+      remember: true
+      remember_key: name
