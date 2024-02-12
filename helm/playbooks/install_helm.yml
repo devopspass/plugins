@@ -86,7 +86,7 @@
 
         - name: Set home
           ansible.builtin.set_fact:
-            helm_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\helm"
+            helm_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\helm"
 
         - name: Home
           ansible.builtin.file:
