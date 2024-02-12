@@ -119,7 +119,7 @@
 
         - name: Add to PATH
           ansible.builtin.command:
-            cmd: 'setx PATH "%PATH%;%USERPROFILE%\\helm\\"'
+            cmd: 'setx PATH "%USERPROFILE%\\\\helm;%PATH%"'
 
       when: "'Windows' in ansible_system"
 

@@ -95,7 +95,7 @@
 
         - name: Add to PATH
           ansible.builtin.command:
-            cmd: 'setx PATH "%PATH%;%USERPROFILE%\\terraform\\"'
+            cmd: 'setx PATH "%USERPROFILE%\\terraform;%PATH%"'
 
       when: "'Windows' in ansible_system"
 

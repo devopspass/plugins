@@ -132,7 +132,7 @@
           cmd: 'msiexec.exe /package "{{ ansible_env.USERPROFILE | regex_escape }}\\AWSCLIV2.msi"'
 
       - name: Add AWS CLI to PATH
-        ansible.builtin.command: 'setx PATH "%PATH%;%ProgramFiles%\\Amazon\\AWSCLIV2"'
+        ansible.builtin.command: 'setx PATH "%ProgramFiles%\\Amazon\\AWSCLIV2;%PATH%"'
 
       - ansible.builtin.debug:
           msg: "Latest version of AWS CLI v2 is installed on your PC"

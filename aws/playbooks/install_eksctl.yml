@@ -95,7 +95,7 @@
 
         - name: Add to PATH
           ansible.builtin.command:
-            cmd: 'setx PATH "%PATH%;%USERPROFILE%\\eksctl\\"'
+            cmd: 'setx PATH "%USERPROFILE%\\eksctl;%PATH%"'
 
       when: "'Windows' in ansible_system"
 
