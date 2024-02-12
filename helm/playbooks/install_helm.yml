@@ -117,12 +117,10 @@
           vars:
             helm_path: "{{ helm_home }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\"
 
-        - name: Add helm to the system PATH
-          ansible.builtin.win_path:
-            elements:
-              - "{{ helm_home }}"
-            state: 'present'
-            recurse: yes
+        - name: Add to PATH
+          ansible.builtin.command:
+            cmd: 'setx PATH "%PATH%;%USERPROFILE%\\helm\\"'
+
       when: "'Windows' in ansible_system"
 
     - name: version
