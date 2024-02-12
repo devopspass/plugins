@@ -1,0 +1,15 @@
+helm_install:
+  object_types: application
+  application_name: Helm
+  title: Install Helm
+  description: |
+    Install **Helm** on your local. Versions list can be found here - https://github.com/helm/helm/releases, **latest** version will install latest stable version of `Helm`
+  icon: fas fa-hard-hat
+  playbook: plugins/helm/playbooks/install_helm.yml
+  required_options:
+    req_helm_version:
+      title: Helm3 version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
