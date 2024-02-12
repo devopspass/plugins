@@ -11,7 +11,7 @@ kubectl_install:
   title: Install kubectl
   description: |
     Install `kubectl` on your local. Versions list can be found here - https://github.com/kubernetes/kubernetes/releases/, **latest** version will install latest stable version of `kubectl`
-  icon: fas fa-check-circle
+  icon: fas fa-dharmachakra
   playbook: plugins/k8s/playbooks/install_kubectl.yml
   required_options:
     req_kubectl_version:
