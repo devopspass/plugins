@@ -108,14 +108,14 @@
             cmd: "move {{ helm_path }} {{ helm_home }}"
             removes: "{{ helm_path }}"
           vars:
-            helm_path: "{{ helm_home }}/{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}/helm.exe"
+            helm_path: "{{ helm_home }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\helm.exe"
 
         - name: Remove Helm temporary folder
           ansible.builtin.file:
             path: "{{ helm_path }}"
             state: absent
           vars:
-            helm_path: "{{ helm_home }}/{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}/"
+            helm_path: "{{ helm_home }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\"
 
         - name: Add helm to the system PATH
           ansible.builtin.win_path:
