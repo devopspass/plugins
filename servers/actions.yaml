@@ -12,3 +12,21 @@ import_servers_from_file:
       title: CSV/JSON/YAML file to import
       remember: true
       remember_key: name
+
+putty_install:
+  object_types: application
+  application_name: Servers
+  title: Install Putty/Kitty/WinSCP
+  description: |
+    Install **Putty/Kitty and WinSCP** on your local. Kitty, is mostly the same as Putty but with tabs.
+  icon: fas fa-terminal
+  playbook: plugins/servers/playbooks/install_putty.yml
+  required_options:
+    ssh_tool:
+      type: dropdown
+      default: |
+        Putty
+        Kitty
+      title: You want to install Kitty or Putty
+      remember: true
+      remember_key: name

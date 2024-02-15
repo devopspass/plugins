@@ -1,0 +1,90 @@
+---
+- name: Install Putty/Kitty/WinSCP
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install Putty on Windows
+      block:
+        - debug:
+            msg: "-{{ ssh_tool }}-"
+
+        - name: Set facts based on operating system
+          ansible.builtin.set_fact:
+            download_url: "https://www.9bis.net/kitty/files/kitty_portable.exe"
+            fname: kitty
+          when: ssh_tool == "Kitty"
+
+        - name: Set facts based on operating system
+          ansible.builtin.set_fact:
+            download_url: "https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe"
+            fname: putty
+          when: ssh_tool == "Putty"
+
+        - name: Set home
+          ansible.builtin.set_fact:
+            putty_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\{{ fname }}"
+
+        - name: Home
+          ansible.builtin.file:
+            path: "{{ putty_home }}"
+            state: directory
+
+        - name: Download Putty binary
+          ansible.builtin.get_url:
+            url: "{{ download_url }}"
+            dest: "{{ putty_home }}\\\\{{ fname }}.exe"
+
+        - name: Add to PATH
+          ansible.builtin.command:
+            cmd: 'setx PATH "%USERPROFILE%\\{{ fname }}\\;%PATH%"'
+      when: "'Windows' in ansible_system"
+
+    - name: Install WinSCP on Windows
+      block:
+        - name: Fetch latest WinSCP version from website
+          ansible.builtin.uri:
+            url: https://winscp.net/eng/downloads.php
+            return_content: true
+          register: winscp_version_page
+
+        - name: Set fact with the latest WinSCP version
+          ansible.builtin.set_fact:
+            winscp_version: "{{ winscp_version_page.content | regex_search('WinSCP-[0-9]+.[0-9]+.[0-9]+-Portable.zip') }}"
+            winscp_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\WinSCP"
+        
+        - name: Home
+          ansible.builtin.file:
+            path: "{{ winscp_home }}"
+            state: directory
+
+        - name: Download WinSCP binary
+          ansible.builtin.get_url:
+            url: "https://winscp.net/download/{{ winscp_version }}"
+            dest: "{{ winscp_home }}\\\\WinSCP.zip"
+
+        - name: Extract binary
+          ansible.builtin.command:
+            cmd: "tar -xf WinSCP.zip"
+            chdir: "{{ winscp_home }}"
+
+        - name: Add to PATH
+          ansible.builtin.command:
+            cmd: 'setx PATH "%USERPROFILE%\\WinSCP\\;%PATH%"'
+      when: "'Windows' in ansible_system"
+
+    - name: version
+      ansible.builtin.debug:
+        msg: "WinSCP - {{ winscp_version }}"
+
+    - name: version
+      ansible.builtin.debug:
+        msg: "Putty/Kitty - {{ fname }}"
