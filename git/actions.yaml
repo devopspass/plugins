@@ -10,3 +10,12 @@ git_generate_config:
     - user.name
     - user.email
   show_settings: true
+
+install_git:
+  object_types: application
+  application_name: Git
+  title: Install Git for Windows
+  description: |
+    Install **Git and git-bash** on your local.
+  icon: fab fa-git-alt
+  playbook: plugins/git/playbooks/install_git.yml

@@ -1,0 +1,37 @@
+---
+- name: Install Git
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install Git on Windows
+      block:
+        - name: Fetch latest Git version from website
+          ansible.builtin.uri:
+            url: https://git-scm.com/download/win
+            return_content: true
+          register: git_url_page
+
+        - name: Set fact with the latest WinSCP version
+          ansible.builtin.set_fact:
+            git_url: "{{ git_url_page.content | regex_search('https://github.com/git-for-windows/git/releases/download/v.*.windows.1/Git-.*-64-bit.exe') }}"
+            git_bin: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\git-setup.exe"
+            
+
+        - name: Download Putty binary
+          ansible.builtin.get_url:
+            url: "{{ git_url }}"
+            dest: "{{ git_bin }}"
+
+        - name: Run git installation
+          ansible.builtin.command:
+            cmd: "{{ git_bin }} /silent"
+            chdir: "{{ ansible_env.USERPROFILE }}"
