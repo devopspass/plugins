@@ -19,3 +19,12 @@ install_git:
     Install **Git and git-bash** on your local.
   icon: fab fa-git-alt
   playbook: plugins/git/playbooks/install_git.yml
+
+install_vscode:
+  object_types: application
+  application_name: Git
+  title: Install Visual Studio Code
+  description: |
+    Install **VSCode** on your local.
+  icon: fas fa-code
+  playbook: plugins/git/playbooks/install_vscode.yml

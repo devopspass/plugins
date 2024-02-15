@@ -35,3 +35,8 @@
           ansible.builtin.command:
             cmd: "{{ git_bin }} /silent"
             chdir: "{{ ansible_env.USERPROFILE }}"
+
+        - name: Remove binary
+          ansible.builtin.file:
+            path: "{{ git_bin }}"
+            state: absent
