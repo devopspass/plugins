@@ -1,5 +1,5 @@
 python_setup_pip:
-  title: Setup pip
+  title: Configure pip
   icon: fab fa-python
   object_types: application
   application_name: Python
@@ -7,3 +7,26 @@ python_setup_pip:
   required_settings:
     - python_pip_index
   show_settings: true
+
+python_install_conda:
+  title: Install Python via Conda
+  icon: fab fa-python
+  object_types: application
+  application_name: Python
+  playbook: plugins/python/playbooks/install_conda.yml
+  required_options:
+    conda_env_name:
+      type: string
+      default: python
+      title: Conda environment name
+    python_version:
+      type: dropdown
+      default: |
+        3.8
+        3.9
+        3.10
+        3.11
+        3.12
+      title: Python version to install
+      remember: true
+      remember_key: name

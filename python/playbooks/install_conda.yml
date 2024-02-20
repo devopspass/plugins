@@ -1,0 +1,31 @@
+---
+- name: Set up pip index-url
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Mamba path
+      ansible.builtin.set_fact:
+        micromamba_bin: "{{ ansible_env.HOME }}/.devopspass-ai/micromamba"
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
+
+    - name: Set pip config dir for Windows
+      ansible.builtin.set_fact:
+        micromamba_bin: "{{ ansible_env.USERPROFILE }}\\.devopspass-ai\\micromamba.exe"
+      when: "'Windows' in ansible_os_family"
+
+    - name: Create env and install Python
+      ansible.builtin.command:
+        cmd: "{{ micromamba_bin }} create -n '{{ conda_env_name }}' -y -c conda-forge python={{ python_version }}"
+      register: install_log
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ install_log }}"
+
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: |
+          Run '{{ micromamba_bin }} shell init' to add init scripts in to shell
+          Run '{{ micromamba_bin }} shell activate {{ conda_env_name }}' to activate newly created env '{{ conda_env_name }}'
