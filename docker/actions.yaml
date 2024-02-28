@@ -1,0 +1,58 @@
+generate_dockerfile:
+  object_types: application
+  application_name: Docker
+  title: Generate Dockerfile
+  description: |
+    Generate Dockerfile for your application. Featured by Quân Huỳnh - https://github.com/hoalongnatsu/Dockerfile
+  icon: fab fa-docker
+  playbook: plugins/docker/playbooks/generate_dockerfile.yml
+  required_options:
+    folder_name:
+      type: folder
+      title: Your project home folder
+      remember: true
+      remember_key: name
+    app_type:
+      type: dropdown
+        # [x] Python
+        # [x] Python Django
+        # [x] Python Flask
+        # [x] Golang
+        # [x] Java Spring Boot
+        # [x] Java Quarkus
+        # [x] NodeJS
+        # [x] NodeJS ExpressJS
+        # [x] NodeJS NestJS
+        # [x] React
+        # [x] React pnpm
+        # [x] ASP.NET Core
+        # [x] ASP.NET Core Alpine
+        # [ ] Ruby RoR
+        # [ ] Rust
+        # [ ] PHP Laravel
+        # [ ] Dart
+        # [ ] R Studio
+      default: |
+        Python
+        Python Django
+        Python Flask
+        Golang
+        Java Spring Boot
+        Java Quarkus
+        NodeJS
+        NodeJS node-gyp
+        NodeJS NestJS
+        React
+        React pnpm
+        ASP.NET Core
+        ASP.NET Core Alpine
+        Ruby RoR
+        Ruby RoR with assets
+        Rust root
+        Rust non-priviledged
+        Dart
+        R Studio MSSQL
+        R Studio MySQL
+      title: For which language you want to generate Dockerfile
+      remember: true
+      remember_key: name
