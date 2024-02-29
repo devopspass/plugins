@@ -261,6 +261,7 @@
   description_long: "Confluence is a collaborative platform for documentation, knowledge management, and project collaboration, developed by Atlassian."
   icon: "assets/icons/apps/confluence.png"
   name: "Confluence"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -454,10 +455,11 @@
         url: "https://discuss.fluentd.org/"
 
 
-- description: "!!!!!!!!!!!!! Automate workflows and integrate your tools with GitHub."
+- description: "Automate workflows and integrate your tools with GitHub."
   description_long: "GitHub Actions allows you to automate workflows and integrate your tools directly with your GitHub repositories, streamlining your development process."
   icon: "assets/icons/apps/github.png"
   name: "GitHub"
+  recommended: true
   sections:
   - name: "GitHub Documentation"
     icon: "assets/icons/general/docs.png"
@@ -493,6 +495,7 @@
   description_long: "GitLab CI/CD is a built-in CI/CD feature of GitLab, a web-based Git repository manager that provides source code management (SCM)."
   icon: "assets/icons/apps/gitlab.png"
   name: "GitLab"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -651,6 +654,7 @@
   description_long: "Helm is a package manager for Kubernetes applications, making it easier to define, install, and upgrade even the most complex Kubernetes applications."
   icon: "assets/icons/apps/helm.png"
   name: "Helm"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -687,6 +691,7 @@
   description_long: "Jenkins is an open-source automation server that supports building, testing, and deploying projects. It provides hundreds of plugins to support building, deploying, and automating any project."
   icon: "assets/icons/apps/jenkins.png"
   name: "Jenkins"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -723,6 +728,7 @@
   description_long: "JIRA is a project and issue tracking software that allows agile teams to plan, track, and manage their work."
   icon: "assets/icons/apps/jira.png"
   name: "JIRA"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -2195,10 +2201,12 @@
   description_long: "Node.js is a server-side runtime environment that enables the execution of JavaScript outside the browser. It's widely adopted for building scalable and efficient network applications, making it a popular choice for server-side development. Node.js leverages the event-driven, non-blocking I/O model, allowing developers to build fast and lightweight applications. Its extensive package ecosystem, facilitated by npm (Node Package Manager), further enhances development productivity. Whether you're creating APIs, microservices, or full-stack applications, Node.js provides a robust foundation for server-side JavaScript development."
   recommended: true
   sections:
-    - name: "npmJS"
+    - name: "Links"
       urls:
         - name: "npmJS"
           url: "https://www.npmjs.com/"
+        - name: Download Node.js
+          url: https://nodejs.org/en/download
 
 - name: "Java"
   icon: "assets/icons/apps/java.png"

@@ -1,5 +1,5 @@
 node_setup_npm:
-  title: Setup NPM
+  title: Configure NPM
   icon: fab fa-node
   object_types: application
   application_name: Node.JS
