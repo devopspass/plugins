@@ -17,6 +17,7 @@
   description_long: "Servers list"
   icon: "assets/icons/apps/servers.png"
   name: "Servers"
+  recommended: true
   sections: []
 
 - description: "Automation tool for configuration management, application deployment, and task automation."
@@ -322,6 +323,7 @@
   description_long: "Docker is a platform for developing, shipping, and running applications in containers, enabling consistent and scalable software delivery."
   icon: "assets/icons/apps/docker.png"
   name: "Docker"
+  recommended: true
   sections:
     - name: Documentation
       icon: assets/icons/general/docs.png
@@ -742,6 +744,7 @@
   description_long: "Kubernetes is an open-source container orchestration platform for automating the deployment, scaling, and management of containerized applications."
   icon: "assets/icons/apps/k8s.png"
   name: "Kubernetes"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -1140,6 +1143,7 @@
   icon: "assets/icons/apps/aws.png"
   description: "Cloud platform providing a wide range of on-demand computing services."
   description_long: "Amazon Web Services (AWS) is a comprehensive and broadly adopted cloud platform, offering over 200 fully-featured services."
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
@@ -1224,6 +1228,7 @@
   icon: "assets/icons/apps/terraform.png"
   description: "Open-source Infrastructure as Code (IaC) software for building, changing, and versioning infrastructure efficiently."
   description_long: "Terraform by HashiCorp is a widely-used open-source tool that enables users to define and provision infrastructure as code. It allows for the creation, modification, and versioning of infrastructure efficiently, making it easy to manage and deploy cloud resources across various providers."
+  recommended: true
   sections:
     - name: "Documentation"
       icon: "assets/icons/general/docs.png"
@@ -2177,6 +2182,7 @@
   icon: "assets/icons/apps/python.png"
   description: "Python is a versatile and high-level programming language known for its readability and ease of use. It supports multiple programming paradigms, making it suitable for a wide range of applications, from web development to data science and artificial intelligence."
   description_long: "Python is a dynamic, high-level programming language renowned for its simplicity and readability. It supports multiple programming paradigms, making it versatile for various applications. Python is widely used in web development, data science, machine learning, and automation. Its extensive standard library and vibrant community contribute to its popularity. Whether you're a beginner or an experienced developer, Python offers a powerful and expressive environment for building diverse software projects."
+  recommended: true
   sections:
     - name: "Pypi"
       urls:
@@ -2187,6 +2193,7 @@
   icon: "assets/icons/apps/nodejs.png"
   description: "Node.js is a runtime environment that allows JavaScript to be executed server-side. It enables developers to build scalable and efficient network applications, making it a popular choice for building server-side applications, APIs, and microservices."
   description_long: "Node.js is a server-side runtime environment that enables the execution of JavaScript outside the browser. It's widely adopted for building scalable and efficient network applications, making it a popular choice for server-side development. Node.js leverages the event-driven, non-blocking I/O model, allowing developers to build fast and lightweight applications. Its extensive package ecosystem, facilitated by npm (Node Package Manager), further enhances development productivity. Whether you're creating APIs, microservices, or full-stack applications, Node.js provides a robust foundation for server-side JavaScript development."
+  recommended: true
   sections:
     - name: "npmJS"
       urls:
@@ -2197,6 +2204,7 @@
   icon: "assets/icons/apps/java.png"
   description: "Java is a versatile, object-oriented programming language known for its portability, reliability, and wide range of applications. It's used in building diverse software, from enterprise-level applications to mobile and web development, and is known for its platform independence through the Java Virtual Machine (JVM)."
   description_long: "Java is a robust and versatile programming language celebrated for its portability, reliability, and extensive ecosystem. It follows an object-oriented paradigm and is employed in various domains, including enterprise-level applications, mobile development (Android), and web applications. Java's strength lies in its platform independence, achieved through the Java Virtual Machine (JVM), allowing Java programs to run on different platforms without modification. With a rich standard library, strong community support, and a history of powering critical applications, Java remains a cornerstone in the software development landscape."
+  recommended: true
   sections:
     - name: "Java"
       urls:
@@ -2207,6 +2215,7 @@
   icon: "assets/icons/apps/git.png"
   description: "Git is a distributed version control system designed for tracking changes in source code during software development. It enables collaboration among multiple developers, allowing them to work on projects concurrently, manage versions, and merge changes seamlessly."
   description_long: "Git is a powerful distributed version control system widely used in software development. It facilitates collaboration by allowing multiple developers to work on the same project simultaneously, track changes in source code, and manage different versions of a project. Git's branching and merging capabilities make it easy to experiment with new features while maintaining a stable codebase. With its decentralized architecture, Git ensures data integrity and provides a robust framework for managing code throughout the development lifecycle. Whether you're a solo developer or part of a large team, Git is an essential tool for efficient and organized version control."
+  recommended: true
   sections:
     - name: Git
       urls:
