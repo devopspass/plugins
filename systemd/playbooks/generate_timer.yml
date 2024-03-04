@@ -7,3 +7,9 @@
       ansible.builtin.template:
         src: "templates/app_systemd.timer.j2"
         dest: "{{ (folder_name, timer_name) | path_join }}.timer"
+    - debug:
+        msg: |
+          - copy your timer to "cp {{timer_name}}.timer /etc/systemd/system/"
+          - reload systemd "systemctl daemon-reload"
+          - enable service "systemctl enable {{timer_name}}.timer"
+          - check your app status "systemctl status {{timer_name}}.timer"

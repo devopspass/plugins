@@ -6,4 +6,11 @@
     - name: Generate Systemd Unit
       ansible.builtin.template:
         src: "templates/app_systemd.unit.j2"
-        dest: "{{ (folder_name, app_name) | path_join }}.unit"
+        dest: "{{ (folder_name, app_name) | path_join }}.service"
+    - debug:
+        msg: |
+          - copy your service to "cp {{app_name}}.service /etc/systemd/system/"
+          - reload systemd "systemctl daemon-reload"
+          - enable service "systemctl enable {{app_name}}.service"
+          - start your app "systemctl start {{app_name}}.service"
+          - check your app status "systemctl status {{app_name}}.service"
