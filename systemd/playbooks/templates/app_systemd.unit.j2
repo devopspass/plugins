@@ -1,0 +1,38 @@
+[Unit]
+Description={{ app_description }}
+DefaultDependencies=no
+After=network.target
+
+[Service]
+Type={{ service_type }}
+User={{ app_user }}
+Group={{ app_group }}
+
+Environment=PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+WorkingDirectory={{ app_dir }}
+
+ExecStart={{ app_start_command }}
+
+# Command to run before and after start, add "-" if command failures should be ignored, like "ExecStartPre=-docker pull nginx:latest"
+# More details - https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+# ExecStartPre=
+# ExecStartPost=
+
+ExecStop={{ app_stop_command }}
+
+# Command to run before and after stop, add "-" if command failures should be ignored, like "ExecStopPost=-rm -Rf /var/log/app_logs/*"
+# More details - https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+# ExecStopPre=
+# ExecStopPost=
+
+# Reload command
+# More details - https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+# ExecReload=kill -HUP $MAINPID
+
+TimeoutStartSec=0
+RemainAfterExit=yes
+Restart=always
+
+[Install]
+WantedBy=default.target

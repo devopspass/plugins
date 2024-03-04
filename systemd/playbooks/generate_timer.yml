@@ -1,0 +1,9 @@
+---
+- name: Generate Systemd Timer
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate Systemd Timer
+      ansible.builtin.template:
+        src: "templates/app_systemd.timer.j2"
+        dest: "{{ (folder_name, timer_name) | path_join }}.timer"

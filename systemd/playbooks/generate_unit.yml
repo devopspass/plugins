@@ -1,0 +1,9 @@
+---
+- name: Generate Systemd Unit
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate Systemd Unit
+      ansible.builtin.template:
+        src: "templates/app_systemd.unit.j2"
+        dest: "{{ (folder_name, app_name) | path_join }}.unit"

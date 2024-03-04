@@ -1,0 +1,10 @@
+[Unit]
+Description={{ timer_description }}
+Requires={{ app_service }}.service
+
+[Timer]
+Unit={{ app_service }}.service
+OnCalendar={{ timer_calendar }}
+
+[Install]
+WantedBy=timers.target

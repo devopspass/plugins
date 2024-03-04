@@ -1,0 +1,133 @@
+systemd_generate_unit:
+  object_types: application
+  application_name: systemd
+  title: Generate unit
+  description: |
+    Generate SystemD unit file, to constantly running application, like web app. For jobs or single-shot apps, please check another action.
+  icon: fas fa-less-than
+  playbook: plugins/systemd/playbooks/generate_unit.yml
+  required_options:
+    folder_name:
+      type: folder
+      title: Where to put Unit file
+      remember: true
+      remember_key: name
+
+    service_type:
+      type: dropdown
+      default: |
+        Simple|simple
+        One Shot (jobs, timers)|oneshot
+        Forking app|forking
+      title: Service type
+      description: SystemD unit type - more details in [doc](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#Type=)
+      remember: true
+      remember_key: name
+
+
+    app_name:
+      type: string
+      title: Short name of application
+      description: Like "app_django", "mcs_auth", will be used as unit (service) name.
+      remember: true
+      remember_key: name
+
+    app_description:
+      type: string
+      title: Short description of application
+      description: Will be visible in `systemctl list-units` output.
+      remember: true
+      remember_key: name
+
+    app_user:
+      type: string
+      title: Run user
+      description: which used to run app, please dont use `root` ;)
+      remember: true
+      remember_key: name
+
+    app_group:
+      type: string
+      title: Run group
+      description: which used to run app, please dont use `root` ;)
+      remember: true
+      remember_key: name
+
+    app_dir:
+      type: string
+      title: Application directory
+      description: Where app is placed, before run SystemD will do cwd to that folder.
+      default: /tmp
+      remember: true
+      remember_key: name
+
+    app_start_command:
+      type: text
+      title: Command to start application
+      description: Command which will be passed to *ExecStart*. Macros `%n` will put `app_name.service`. Start/stop post/pre commands, you can add manualy in generated file.
+      default: |
+        /usr/bin/docker run --rm --name %n app_container:version
+      remember: true
+      remember_key: name
+
+    app_stop_command:
+      type: text
+      title: Command to stop application
+      description: Command which will be passed to *ExecStop*. Macros `%n` will put `app_name.service`. Start/stop post/pre commands, you can add manualy in generated file.
+      default: |
+        /usr/bin/docker stop --time 10 %n
+      remember: true
+      remember_key: name
+
+systemd_generate_timer:
+  object_types: application
+  application_name: systemd
+  title: Generate timer
+  description: |
+    Generate SystemD timer
+  icon: fas fa-stopwatch
+  playbook: plugins/systemd/playbooks/generate_timer.yml
+  required_options:
+    folder_name:
+      type: folder
+      title: Where to put Timer file
+      remember: true
+      remember_key: name
+
+    timer_name:
+      type: string
+      title: Name of timer
+      description: Like "app_logrotate", "job_report", will be used as timer name.
+      remember: true
+      remember_key: name
+
+    timer_description:
+      type: string
+      title: Short description of timer
+      description: Will be visible in `systemctl list-timers` output.
+      remember: true
+      remember_key: name
+
+    app_service:
+      type: string
+      title: Application service
+      description: Service which have to be kicked by timer
+      remember: true
+      remember_key: name
+
+    timer_calendar:
+      type: string
+      title: Timer calendar
+      description: |
+        When timer have to kick service, be default every 10 minutes. For more details, check [docs](https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html#Calendar%20Events)
+        Some examples:
+          ```
+          hourly → *-*-* *:00:00
+          daily → *-*-* 00:00:00
+          monthly → *-*-01 00:00:00
+          weekly → Mon *-*-* 00:00:00
+          ```
+        Pass your argument to `systemd-analyze calendar ...` to see it explained.
+      default: "*:0/10"
+      remember: true
+      remember_key: name

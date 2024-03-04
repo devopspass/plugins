@@ -2247,3 +2247,19 @@
           url: https://code.visualstudio.com/Download
         - name: Getting Started
           url: https://code.visualstudio.com/docs
+
+- name: "systemd"
+  icon: "assets/icons/apps/systemd.png"
+  description: "systemd is a system and service manager for Linux, providing a range of features such as process management, service supervision, and logging. It serves as the initialization system and oversees the execution of user and system processes, ensuring efficient system management and resource utilization."
+  description_long: "systemd is a comprehensive system and service manager for Linux operating systems. It acts as the initialization system, overseeing the execution of user and system processes. systemd provides a suite of features, including process management, service supervision, and centralized logging. It plays a crucial role in modern Linux distributions, improving system boot times and offering efficient resource management. Explore the systemd documentation for in-depth information on configuring and managing units, which represent system components and services, and timers for scheduled tasks."
+  recommended: true
+  sections:
+    - name: "systemd Resources"
+      icon: "assets/icons/general/docs.png"
+      urls:
+        - name: "systemd Documentation"
+          url: "https://www.freedesktop.org/wiki/Software/systemd/"
+        - name: "systemd Units Documentation"
+          url: "https://www.freedesktop.org/software/systemd/man/systemd.unit.html"
+        - name: "systemd Timers Documentation"
+          url: "https://www.freedesktop.org/software/systemd/man/systemd.timer.html"
