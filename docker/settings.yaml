@@ -1,0 +1,8 @@
+docker.command:
+  section: Docker
+  required_app: Docker
+  description: |
+    Docker run command
+  title: Docker Run command
+  type: string
+  default_linux: gnome-terminal -e "%DOCKER_COMMAND%"

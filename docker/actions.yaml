@@ -14,24 +14,6 @@ generate_dockerfile:
       remember_key: name
     app_type:
       type: dropdown
-        # [x] Python
-        # [x] Python Django
-        # [x] Python Flask
-        # [x] Golang
-        # [x] Java Spring Boot
-        # [x] Java Quarkus
-        # [x] NodeJS
-        # [x] NodeJS ExpressJS
-        # [x] NodeJS NestJS
-        # [x] React
-        # [x] React pnpm
-        # [x] ASP.NET Core
-        # [x] ASP.NET Core Alpine
-        # [ ] Ruby RoR
-        # [ ] Rust
-        # [ ] PHP Laravel
-        # [ ] Dart
-        # [ ] R Studio
       default: |
         Python
         Python Django
@@ -56,3 +38,85 @@ generate_dockerfile:
       title: For which language you want to generate Dockerfile
       remember: true
       remember_key: name
+
+docker_start_container:
+  object_types: application
+  application_name: Docker
+  title: Start Docker container
+  description: |
+    Start Docker container from image
+  icon: fas fa-play
+  command: plugins/docker/scripts/docker_start_container.py
+  required_settings:
+    - docker.command
+  # show_settings: true
+  required_options:
+    name:
+      type: string
+      title: Name
+      remember: true
+      remember_key: name
+    image:
+      type: string
+      default: ubuntu:focal
+      title: Image
+      remember: true
+      remember_key: name
+    start_as:
+      type: dropdown
+      title: Start as
+      default: |
+        Interactive|-it
+        Daemon/Detached|-d
+      remember: true
+      remember_key: name
+    command:
+      type: string
+      title: Command
+      remember: true
+      remember_key: name
+    volumes:
+      type: string
+      title: Volumes
+      description: Command separated volumes - `/home/user/.aws/:/root/.aws/,/home/user/.kitchen:/root/.kitchen`
+      remember: true
+      remember_key: name
+    ports:
+      type: string
+      title: Expose ports
+      description: Command separated ports to expose - `80,8080`
+      remember: true
+      remember_key: name
+    network:
+      type: dropdown
+      title: Network Type
+      default: |
+        bridge
+        none
+        host
+        container:(specify below)
+        network (specify below)
+    network_container:
+      type: string
+      title: Network "container:" or "network"
+      description: If Network Type **container** or *network* used
+      remember: true
+      remember_key: name
+
+docker_stop_container:
+  title: Stop container
+  icon: fas fa-stop
+  object_types: docker_container
+  command: plugins/docker/scripts/docker_stop_container.py
+
+docker_open_image_description:
+  title: Open image description
+  icon: fas fa-search
+  object_types: docker_images
+  command: plugins/docker/scripts/docker_open_image_description.py
+
+docker_remove_image:
+  title: Remove image
+  icon: fas fa-trash
+  object_types: docker_images
+  command: plugins/docker/scripts/docker_remove_image.py

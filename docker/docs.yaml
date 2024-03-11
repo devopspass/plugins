@@ -1,0 +1,11 @@
+docker_container:
+  application: Docker
+  title: Docker containers
+  filter_field: name
+  source: plugins/docker/scripts/api_docker_containers.py
+
+docker_images:
+  application: Docker
+  title: Docker images
+  filter_field: name
+  source: plugins/docker/scripts/api_docker_images.py

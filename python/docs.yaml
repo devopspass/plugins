@@ -1,0 +1,5 @@
+conda_env:
+  application: Python
+  title: Anaconda (Conda) environments
+  filter_field: name
+  source: plugins/python/scripts/api_conda_envs.py

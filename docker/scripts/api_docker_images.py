@@ -1,0 +1,154 @@
+import docker
+from datetime import datetime, timezone
+from dateutil import parser
+
+def get_icon(image_name):
+    icon_mapping = {
+        "postgres":"apps/postgresql.png",
+        "mysql":"apps/mysql.png",
+        "ruby":"apps/ruby.png",
+        "golang":"apps/golang.png",
+        "php":"apps/php.png",
+        "aix": "os/aix.png",
+        "alpine": "os/alpine.png",
+        "centos": "os/centos.png",
+        "debian": "os/debian.png",
+        "fedora": "os/fedora.png",
+        "freebsd": "os/freebsd.png",
+        "hp-ux": "os/hp-ux.png",
+        "linux": "os/linux.png",
+        "macos": "os/macos.png",
+        "opensuse": "os/opensuse.png",
+        "oracle": "os/oracle.png",
+        "redhat": "os/redhat.png",
+        "solaris": "os/solaris.png",
+        "ubuntu": "os/ubuntu.png",
+        "windows": "windows.png",
+        "ansible": "apps/ansible.png",
+        "appdynamics": "apps/appdynamics.png",
+        "argocd": "apps/argocd.png",
+        "artifactory": "apps/artifactory.png",
+        "aws": "apps/aws.png",
+        "azure": "apps/azure.png",
+        "bamboo": "apps/bamboo.png",
+        "beyondtrust": "apps/beyondtrust.png",
+        "bitbucket": "apps/bitbucket.png",
+        "chef": "apps/chef.png",
+        "circleci": "apps/circleci.png",
+        "conda": "apps/conda.png",
+        "confluence": "apps/confluence.png",
+        "cyberark": "apps/cyberark.png",
+        "datadog": "apps/datadog.png",
+        "elasticsearch": "apps/elasticsearch.png",
+        "elk": "apps/elastic-stack.png",
+        "fluentd": "apps/fluentd.png",
+        "gatling": "apps/gatling.png",
+        "gitlab": "apps/gitlab.png",
+        "git": "apps/git.png",
+        "grafana": "apps/grafana.png",
+        "gremlin": "apps/gremlin.png",
+        "hadoop": "apps/hadoop.png",
+        "helm": "apps/helm.png",
+        "honeycomb": "apps/honeycomb.png",
+        "java": "apps/java.png",
+        "temurin": "apps/java.png",
+        "openjdk": "apps/java.png",
+        "jenkins": "apps/jenkins.png",
+        "lightstep": "apps/lightstep.png",
+        "loggly": "apps/loggly.png",
+        "logz": "apps/logz-io.png",
+        "mimir": "apps/mimir.png",
+        "nagios": "apps/nagios.png",
+        "newrelic": "apps/newrelic.png",
+        "nexus": "apps/nexus.png",
+        "node": "apps/nodejs.png",
+        "nomad": "apps/nomad.png",
+        "observe": "apps/observe.png",
+        "octopus": "apps/octopus.png",
+        "okta": "apps/okta.png",
+        "openshift": "apps/openshift.png",
+        "opentelemetry": "apps/open-telemetry.png",
+        "packer": "apps/packer.png",
+        "pagerduty": "apps/pagerduty.png",
+        "pingdom": "apps/pingdom.png",
+        "powershell": "apps/powershell.png",
+        "prometheus": "apps/prometheus.png",
+        "pulumi": "apps/pulumi.png",
+        "puppet": "apps/puppet.png",
+        "python": "apps/python.png",
+        "rancher": "apps/rancher.png",
+        "raygun": "apps/raygun.png",
+        "rkt": "apps/rkt.png",
+        "rundeck": "apps/rundeck.png",
+        "saltstack": "apps/saltstack.png",
+        "scalyr": "apps/scalyr.png",
+        "sentry": "apps/sentry.png",
+        "servicenow": "apps/servicenow.png",
+        "shiftleft": "apps/shiftleft.png",
+        "slack": "apps/slack.png",
+        "snyk": "apps/snyk.png",
+        "sonarqube": "apps/sonarqube.png",
+        "spinnaker": "apps/spinnaker.png",
+        "splunk": "apps/splunk.png",
+        "spot-io": "apps/spot-io.png",
+        "sumologic": "apps/sumologic.png",
+        "systemd": "apps/systemd.png",
+        "teamcity": "apps/teamcity.png",
+        "tehama.png": "tehama.png",
+        "tenable": "apps/tenable.png",
+        "terraform": "apps/terraform.png",
+        "thanos": "apps/thanos.png",
+        "travis": "apps/travis.png",
+        "trello": "apps/trello.png",
+        "vault": "apps/vault.png",
+        "victoria-metrics": "apps/victoria-metrics.png",
+        "wavefront": "apps/wavefront.png",
+        "workday": "apps/workday.png",
+        "wrike": "apps/wrike.png",
+        "zabbix": "apps/zabbix.png",
+        "zenoss": "apps/zenoss.png",
+        "zoom": "apps/zoom.png",
+    }
+
+    # Extract the base image name from the full image name
+    base_image_name = image_name.split("/")[-1].split(":")[0]
+
+    matching_keys = [key for key in icon_mapping.keys() if key in base_image_name]
+
+    # Use the mapping, or default to "unknown.png" if not found
+    return icon_mapping.get(matching_keys[0], None) if matching_keys else 'apps/docker.png'
+
+
+def list():
+    """
+    List information about Docker images.
+
+    Returns:
+    - list: List of dictionaries containing image information.
+    """
+    client = docker.from_env()
+
+    try:
+        # Get a list of Docker images
+        images = client.images.list()
+
+        # Process image information
+        images_info = []
+        for image in images:
+            # Format the result
+            formatted_timestamp = parser.parse(image.attrs['Created']).strftime("%d-%m-%y %H:%M")
+
+            image_info = {
+                'icon': f"assets/icons/{get_icon(image.tags[0] if image.tags else '')}",
+                'name': image.tags[0] if image.tags else '',
+                'id': image.id[7:19],
+                'created': formatted_timestamp,
+                'size': f"{round(image.attrs['Size'] / (1000 * 1000), 1)}Mb",
+            }
+            images_info.append(image_info)
+
+        return images_info
+
+    except docker.errors.APIError as e:
+        print(f"Error: {e}")
+        return None
