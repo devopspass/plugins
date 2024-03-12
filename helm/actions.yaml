@@ -13,3 +13,38 @@ helm_install:
       remember_key: name
       type: string
       default: latest
+
+helm_add_repo:
+  object_types: application
+  application_name: Helm
+  title: Add Helm repo
+  description: |
+    Add Helm repo source
+  icon: fas fa-folder-plus
+  command: plugins/helm/scripts/helm_add_repo.py
+  required_options:
+    repo_name:
+      title: Short repo name
+      remember: true
+      remember_key: name
+      type: string
+    repo_url:
+      title: Repo URL
+      remember: true
+      remember_key: name
+      type: string
+
+helm_refresh_repo:
+  title: Refresh info
+  icon: fas fa-sync-alt
+  object_types: helm_repo
+  command: plugins/helm/scripts/helm_refresh_repo.py
+  show_terminal: true
+  remember: true
+  remember_key: name
+
+helm_delete_repo:
+  title: Remove repo
+  icon: fas fa-trash
+  object_types: helm_repo
+  command: plugins/helm/scripts/helm_remove_repo.py

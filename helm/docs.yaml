@@ -1,0 +1,5 @@
+helm_repo:
+  application: Helm
+  title: Helm repos
+  filter_field: name
+  source: plugins/helm/scripts/doc_helm_repo.py
