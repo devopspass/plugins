@@ -2279,3 +2279,18 @@
           url: https://github.com/k3s-io/k3s
         - name: "k3s Documentation"
           url: https://docs.k3s.io/
+
+- name: WSL
+  icon: "assets/icons/apps/wsl.png"
+  description: Windows Subsystem for Linux
+  description_long: |
+    Windows Subsystem for Linux (WSL) is a feature of Windows that allows developers to run a Linux environment without the need for a separate virtual machine or dual booting.
+  recommended: true
+  sections:
+    - name: "WSL Resources"
+      icon: "assets/icons/general/docs.png"
+      urls:
+        - name: What is WSL
+          url: https://learn.microsoft.com/en-us/windows/wsl/about
+        - name: WSL Commands
+          url: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
