@@ -153,16 +153,23 @@ def get_icon(chart_name):
 def list():
     try:
         # Run the command and capture the output
-        output = subprocess.check_output(['helm', 'list', '-o', 'json'], text=True)
+        output = subprocess.run(['helm', 'list', '-o', 'json'], text=True, capture_output=True, check=True)
         ret = []
         # Parse the output to extract environment information
-        repos = json.loads(output)
-        for repo in repos:
-            repo['icon'] = 'assets/icons/' + get_icon(repo['name'])
-            ret.append(repo)
+        releases = json.loads(output.stdout)
+        for release in releases:
+            release['icon'] = 'assets/icons/' + get_icon(release['name'])
+            ret.append(release)
 
-        return repos
+        return releases
 
     except subprocess.CalledProcessError as e:
-        print(f"Error: {e}")
-        return None
+        return [{'name': 'ERROR', 'icon': 'assets/icons/general/error.png', 'error': f"{e}\n{e.output}\n{e.stderr}"}]
+    except FileNotFoundError as e:
+        return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': f"Can't find 'helm' in PATH, looks like its not installed, please install first"
+            }
+        ]

@@ -2265,3 +2265,17 @@
           url: "https://www.freedesktop.org/software/systemd/man/systemd.unit.html"
         - name: "systemd Timers Documentation"
           url: "https://www.freedesktop.org/software/systemd/man/systemd.timer.html"
+
+- name: K3s
+  icon: "assets/icons/k8s/k3s.png"
+  description: Lightweight Kubernetes
+  description_long: Lightweight Kubernetes. Production ready, easy to install, half the memory, all in a binary less than 100 MB.
+  recommended: true
+  sections:
+    - name: "k3s Resources"
+      icon: "assets/icons/general/docs.png"
+      urls:
+        - name: K3s GitHub
+          url: https://github.com/k3s-io/k3s
+        - name: "k3s Documentation"
+          url: https://docs.k3s.io/

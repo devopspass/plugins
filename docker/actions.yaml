@@ -109,6 +109,12 @@ docker_stop_container:
   object_types: docker_container
   command: plugins/docker/scripts/docker_stop_container.py
 
+docker_remove_container:
+  title: Remove container
+  icon: fas fa-trash
+  object_types: docker_container
+  command: plugins/docker/scripts/docker_remove_container.py
+
 docker_open_image_description:
   title: Open image description
   icon: fas fa-search
