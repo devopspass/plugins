@@ -1,0 +1,11 @@
+nodejs_version:
+  application: Node.js
+  title: Local Node.js versions
+  filter_field: name
+  source: plugins/nodejs/scripts/doc_nodejs_version.py
+
+nodejs_remote_version:
+  application: Node.js
+  title: Upstream Node.js versions
+  filter_field: name
+  source: plugins/nodejs/scripts/doc_nodejs_remote_version.py

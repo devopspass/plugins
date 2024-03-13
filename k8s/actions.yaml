@@ -20,3 +20,18 @@ kubectl_install:
       remember_key: name
       type: string
       default: latest
+
+k8s_add_context:
+  object_types: application
+  application_name: Kubernetes
+  title: Add KubeConfig
+  description: |
+    Add KubeConfig to ~/.kube/config, if context/server/user exists it will be overriden
+  icon: fas fa-folder-plus
+  command: plugins/k8s/actions/k8s_add_context.py
+  required_options:
+    kube_config:
+      title: KubeConfig
+      remember: true
+      remember_key: name
+      type: text

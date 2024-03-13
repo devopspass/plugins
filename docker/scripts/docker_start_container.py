@@ -25,10 +25,11 @@ network_container = opts.get('network_container', {}).get('value')
 start_as = opts.get('start_as', {}).get('value').split('|')[-1]
 
 cmd = settings['docker.command']
-_c = f"run "
+_c = f" run --rm "
 # Container name
 if name != '':
     _c += f"--name {name} "
+
 # Network
 _c += f"--network {network} "
 
@@ -50,4 +51,3 @@ if command != '':
 cmd = cmd.replace('%DOCKER_COMMAND%', _c)
 print(cmd)
 os.system(cmd)
-# print()

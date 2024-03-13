@@ -651,7 +651,9 @@
 
 
 - description: "Package manager for Kubernetes applications."
-  description_long: "Helm is a package manager for Kubernetes applications, making it easier to define, install, and upgrade even the most complex Kubernetes applications."
+  description_long: |
+    Helm is a package manager for Kubernetes applications, making it easier to define, install, and upgrade even the most complex Kubernetes applications.
+    If you want to install some good Helm charts, add Bitnami Helm repo - `https://charts.bitnami.com/bitnami`
   icon: "assets/icons/apps/helm.png"
   name: "Helm"
   recommended: true

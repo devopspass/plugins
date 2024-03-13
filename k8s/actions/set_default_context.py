@@ -32,6 +32,7 @@ with open(fname_doc, 'r') as file:
 
 try:
     if not os.path.isfile(get_kubeconfig_path()):
+        print(f"KubeConfig at '{get_kubeconfig_path()}' not found")
         exit(1)
 
     with open(get_kubeconfig_path(), "r") as config_file:

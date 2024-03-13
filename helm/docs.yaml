@@ -1,5 +1,17 @@
+helm_release:
+  application: Helm
+  title: Helm Releases (installed in current context)
+  filter_field: name
+  source: plugins/helm/scripts/doc_helm_release.py
+
 helm_repo:
   application: Helm
   title: Helm repos
   filter_field: name
   source: plugins/helm/scripts/doc_helm_repo.py
+
+helm_repo_chart:
+  application: Helm
+  title: Helm repo Charts
+  filter_field: name
+  source: plugins/helm/scripts/doc_helm_repo_charts.py

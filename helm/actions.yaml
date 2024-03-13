@@ -48,3 +48,29 @@ helm_delete_repo:
   icon: fas fa-trash
   object_types: helm_repo
   command: plugins/helm/scripts/helm_remove_repo.py
+
+helm_chart_install:
+  title: Install Chart
+  icon: fas fa-check
+  description: Install Helm chart in current Kubernetes context (cluster/namespace)
+  object_types: helm_repo_chart
+  command: plugins/helm/scripts/helm_install_chart.py
+  required_options:
+    chart_name:
+      title: Installed Helm chart name
+      description: How you want to call installed Chart
+      remember: true
+      remember_key: name
+      type: string
+    chart_values:
+      title: Helm chart values
+      description: Specify one per line, like `service.nodePorts.http=8080`
+      remember: true
+      remember_key: name
+      type: text
+
+helm_delete_release:
+  title: Remove Release
+  icon: fas fa-trash
+  object_types: helm_release
+  command: plugins/helm/scripts/helm_remove_release.py

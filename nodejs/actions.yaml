@@ -7,3 +7,35 @@ node_setup_npm:
   required_settings:
     - nodejs_npm_registry
   show_settings: true
+
+node_install_nvm:
+  title: Install Node Version Manager
+  icon: fab fa-node
+  object_types: application
+  application_name: Node.JS
+  playbook: plugins/nodejs/playbooks/install_nvm.yml
+  required_options:
+    req_nvm_version:
+      title: NVM version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
+
+node_activate_version:
+  title: Activate
+  icon: fas fa-check
+  object_types: nodejs_version
+  command: plugins/nodejs/scripts/nodejs_activate_version.py
+
+node_remove_version:
+  title: Remove Node.JS version
+  icon: fas fa-trash
+  object_types: nodejs_version
+  command: plugins/nodejs/scripts/nodejs_remove_version.py
+
+node_install_version:
+  title: Install
+  icon: fas fa-check
+  object_types: nodejs_remote_version
+  command: plugins/nodejs/scripts/nodejs_install_version.py

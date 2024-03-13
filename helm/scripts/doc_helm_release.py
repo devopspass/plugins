@@ -1,6 +1,8 @@
-import docker
+import subprocess
+import json
+import cdx
 
-def get_icon(image_name):
+def get_icon(chart_name):
     icon_mapping = {
         "gitea": "apps/gitea.png",
         "postgres":"apps/postgresql.png",
@@ -141,62 +143,26 @@ def get_icon(image_name):
     }
 
     # Extract the base image name from the full image name
-    base_image_name = image_name.split("/")[-1].split(":")[0]
+    chart_name = chart_name.split("/")[-1]
 
-    matching_keys = [key for key in icon_mapping.keys() if key in base_image_name]
+    matching_keys = [key for key in icon_mapping.keys() if key in chart_name]
 
     # Use the mapping, or default to "unknown.png" if not found
-    return icon_mapping.get(matching_keys[0], None) if matching_keys else 'apps/docker.png'
-
-
+    return icon_mapping.get(matching_keys[0], None) if matching_keys else 'apps/helm.png'
 
 def list():
-    """
-    List information about running Docker containers.
-
-    Returns:
-    - list: List of dictionaries containing container information.
-    """
-    client = docker.from_env()
-
     try:
-        # Get a list of running containers
-        containers = client.containers.list()
+        # Run the command and capture the output
+        output = subprocess.check_output(['helm', 'list', '-o', 'json'], text=True)
+        ret = []
+        # Parse the output to extract environment information
+        repos = json.loads(output)
+        for repo in repos:
+            repo['icon'] = 'assets/icons/' + get_icon(repo['name'])
+            ret.append(repo)
 
-        # Process container information
-        containers_info = []
-        for container in containers:
-            nets = sorted(container.attrs['NetworkSettings']['Networks'].keys())
-            m = []
-            for mount in container.attrs['Mounts']:
-                rw = 'ro'
-                if mount['RW']:
-                    rw = 'rw'
-                if mount['Type'] != 'volume':
-                    m.append(f"{mount['Source']}:{mount['Destination']} ({mount['Type']},{rw})")
+        return repos
 
-            command = container.attrs['Config']['Cmd']
-
-            if command:
-                command = ' '.join(container.attrs['Config']['Cmd'])
-            else:
-                command = ''
-            container_info = {
-                'icon': f"assets/icons/{get_icon(container.image.tags[0])}",
-                'name': str(container.name),
-                'id': str(container.short_id),
-                'image': str(container.image.tags[0]),
-                'command': command,
-                'status': str(container.status),
-                'ports': str(container.attrs['HostConfig']['PortBindings']),
-                'volumes': '\n'.join(m),
-                'network_type': ' '.join(nets),
-                # 'is_privileged': container.attrs['HostConfig']['Privileged']
-            }
-            containers_info.append(container_info)
-
-        return containers_info
-
-    except docker.errors.APIError as e:
+    except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         return None
