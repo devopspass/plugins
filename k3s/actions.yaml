@@ -1,0 +1,13 @@
+k3s_install:
+  title: Install K3s
+  icon: fas fa-check
+  object_types: application
+  application_name: K3s
+  command: plugins/k3s/scripts/k3s_start.py
+
+# k3s_open_console:
+#   title: Open K3s Auto in Browser
+#   icon: fas fa-folder
+#   object_types: application
+#   application_name: WSL
+#   command: plugins/wsl/scripts/wsl_open_in_explorer.py

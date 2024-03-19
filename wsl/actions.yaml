@@ -1,0 +1,13 @@
+wsl_install:
+  title: Install WSL
+  icon: fas fa-check
+  object_types: application
+  application_name: WSL
+  command: plugins/wsl/scripts/wsl_install.py
+
+wsl_open_in_explorer:
+  title: Open WSL in Explorer
+  icon: fas fa-folder
+  object_types: application
+  application_name: WSL
+  command: plugins/wsl/scripts/wsl_open_in_explorer.py
