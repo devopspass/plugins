@@ -4,7 +4,7 @@ helm_install:
   title: Install Helm
   description: |
     Install **Helm** on your local. Versions list can be found here - https://github.com/helm/helm/releases, **latest** version will install latest stable version of `Helm`
-  icon: fas fa-dharmachakra
+  icon: fas fa-download
   playbook: plugins/helm/playbooks/install_helm.yml
   required_options:
     req_helm_version:

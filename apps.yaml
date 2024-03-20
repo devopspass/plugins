@@ -2294,3 +2294,25 @@
           url: https://learn.microsoft.com/en-us/windows/wsl/about
         - name: WSL Commands
           url: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+
+- name: "Golang"
+  icon: "assets/icons/apps/golang.png"
+  description: "Go, also known as Golang, is a statically typed, compiled programming language designed for simplicity, efficiency, and concurrency. It offers powerful built-in features, such as goroutines and channels, making it ideal for developing high-performance, concurrent applications."
+  description_long: "Go, commonly referred to as Golang, is a statically typed, compiled programming language developed by Google. It prioritizes simplicity, efficiency, and concurrency, making it a popular choice for building scalable and efficient software systems. With its minimalist syntax and powerful built-in features like goroutines and channels, Go enables developers to write clean, maintainable code and easily handle concurrent tasks. Go's standard library provides comprehensive support for various tasks, from web development to system programming. Whether you're building web servers, microservices, or command-line tools, Go offers a versatile and performant environment for software development."
+  sections:
+    - name: "Golang Resources"
+      icon: "assets/icons/general/docs.png"
+      urls:
+        - name: "Go Documentation"
+          url: "https://golang.org/doc/"
+        - name: "Effective Go"
+          url: "https://golang.org/doc/effective_go.html"
+        - name: "Golang Tour"
+          url: "https://tour.golang.org/"
+    - name: "Golang Packages"
+      icon: "assets/icons/general/link.png"
+      urls:
+        - name: "Go Standard Library"
+          url: "https://golang.org/pkg/"
+        - name: "Awesome Go"
+          url: "https://awesome-go.com/"

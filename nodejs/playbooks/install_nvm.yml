@@ -46,28 +46,36 @@
 
     - name: Install nvm on Windows
       block:
-        - name: Download nvm installation script
-          win_get_url:
-            url: "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.ps1"
-            dest: "{{ nvm_install_dir }}/install.ps1"
+      - name: Fetch latest nvm version from Kubernetes GitHub releases
+        ansible.builtin.uri:
+          url: "https://api.github.com/repos/coreybutler/nvm-windows/releases/latest"
+          return_content: yes
+          headers:
+            Accept: "application/vnd.github.v3+json"
+        register: nvm_version_response
 
-        - name: Run nvm installation script
-          win_shell: powershell -ExecutionPolicy Bypass -File "{{ nvm_install_dir }}/install.ps1"
-          args:
-            creates: "{{ nvm_user_home }}/AppData/Roaming/nvm"
+      - name: Parse latest nvm version
+        ansible.builtin.set_fact:
+          latest_nvm_version: "{{ nvm_version_response.json.tag_name | regex_replace('^v', '') }}"
 
-        - name: Load nvm in the current shell session
-          win_shell: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-          when: nvm_set_execution_policy
+      - name: Set version
+        ansible.builtin.set_fact:
+          nvm_version: "{{ (req_nvm_version == 'latest') | ternary(latest_nvm_version, req_nvm_version)}}"
 
-        - name: Load nvm in the current shell session
-          win_shell: |
-            $env:Path += ";" + [System.IO.Path]::Combine("{{ nvm_user_home }}", "AppData\Roaming\nvm")
-          when: not nvm_set_execution_policy
+      - name: Set facts based on operating system
+        ansible.builtin.set_fact:
+          nvm_download_url: "https://github.com/coreybutler/nvm-windows/releases/download/{{ nvm_version }}/nvm-noinstall.zip"
+          bin_path: "{{ dop_home_path | regex_escape }}\\\\bin"
 
-      vars:
-        nvm_version: "v0.38.0"
-        nvm_install_dir: "{{ ansible_env.HOME }}/.nvm"
-        nvm_user_home: "{{ ansible_env.HOME }}"
-        nvm_set_execution_policy: "{{ ansible_os_family | lower == 'windows' }}"
+      - name: Create ~/.devopspass-ai/bin/ folder
+        ansible.builtin.file:
+          path: "{{ bin_path }}"
+          state: directory
+
+      - name: Download nvm zip
+        ansible.builtin.get_url:
+          url: "{{ kubectl_download_url }}"
+          dest: "{{ bin_path }}\\\\nvm-noinstall.zip"
+          validate_certs: false
+
       when: "ansible_system | lower == 'windows'"

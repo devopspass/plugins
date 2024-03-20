@@ -1,7 +1,7 @@
 import subprocess
 import sys
 import json, os, yaml
-import tempfile
+import cdx
 
 fname_doc = sys.argv[1]
 fname_settings = sys.argv[2]
@@ -25,12 +25,25 @@ os.environ['ANSIBLE_FORCE_COLOR'] = 'true'
 #os.environ['PYTHONDEBUG'] = 'true'
 #os.environ['PYTHONVERBOSE'] = 'true'
 
-ret = {}
+vars = {}
 for key, value in doc.get('metadata',{}).get('values', {}).items():
     _k = key.replace('.', '_')
-    ret[_k] = value
+    vars[_k] = value
 
-ret['ansible_python_interpreter'] = python_bin_path
+vars['ansible_python_interpreter'] = python_bin_path
+vars['dop_home_path'] = cdx.helpers.dop_home_path()
+vars['user_home_path'] = cdx.helpers.user_home_path()
+vars['codex_root_path'] = cdx.helpers.codex_root_path()
+vars['codex_env_path'] = cdx.helpers.codex_env_path()
+vars['python_bin_path'] = cdx.helpers.python_bin_path()
+vars['mamba_bin_path'] = cdx.helpers.mamba_bin_path()
+vars['git_bin_path'] = cdx.helpers.git_bin_path()
+vars['settings_file_path'] = cdx.helpers.settings_file_path()
+vars['settings_org_file_path'] = cdx.helpers.settings_org_file_path()
+vars['applications_file_path'] = cdx.helpers.applications_file_path()
+vars['applications_org_file_path'] = cdx.helpers.applications_org_file_path()
+vars['plugins_path'] = cdx.helpers.plugins_path()
+vars['all_applications_file_path'] = cdx.helpers.all_applications_file_path()
 
 pl = doc.get('metadata',{}).get('playbook')
 
@@ -52,7 +65,7 @@ result = subprocess.run(
         '-i',
         'localhost,',
         '-e',
-        json.dumps(ret),
+        json.dumps(vars),
         pl
     ],
     stdout=subprocess.PIPE,

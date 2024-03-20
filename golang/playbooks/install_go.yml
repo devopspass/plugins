@@ -1,0 +1,70 @@
+---
+- name: Install Go
+  hosts: all
+  gather_facts: true
+  vars:
+    # Define default version and download URL
+    go_version: "{{ go_version | default('latest') }}"
+    go_download_url: "https://golang.org/dl/go{{ go_version }}.{{ 'windows' if ansible_os_family == 'Windows' else 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}-amd64.tar.gz"
+    user_home: "{{ lookup('env', 'HOME') | default(lookup('env', 'USERPROFILE')) }}"
+    go_install_dir: "{{ user_home }}/go"
+
+  tasks:
+    - name: Get latest Go version
+      uri:
+        url: "https://golang.org/dl/"
+        method: GET
+      register: latest_go_version
+
+    - name: Parse latest Go version from HTML
+      set_fact:
+        go_version: "{{ latest_go_version.content | regex_findall('href=\"/dl/go([0-9.]+).src.tar.gz\"') | first }}"
+
+    # Create the Go installation directory in the user's home folder
+    - name: Create directory for Go installation
+      ansible.builtin.file:
+        path: "{{ go_install_dir }}"
+        state: directory
+      when: ansible_os_family == 'Darwin' or ansible_os_family == 'Linux'
+
+    # Download and extract the Go archive to the installation directory
+    - name: Download and extract Go archive
+      ansible.builtin.get_url:
+        url: "{{ go_download_url }}"
+        dest: "{{ go_install_dir }}/go.tar.gz"
+        mode: '0644'
+      register: download_result
+
+    - name: Extract Go archive
+      ansible.builtin.unarchive:
+        src: "{{ go_install_dir }}/go.tar.gz"
+        dest: "{{ go_install_dir }}"
+        remote_src: yes
+        creates: "{{ go_install_dir }}/go"
+      when: download_result.changed
+
+    # Add the Go binary path to the PATH environment variable
+    - name: Add Go binary path to PATH environment variable
+      ansible.builtin.lineinfile:
+        path: "{{ user_home }}/.bashrc"
+        line: 'export PATH="$PATH:{{ go_install_dir }}/go/bin"'
+        create: yes
+      when: ansible_os_family == 'Linux'
+
+    - name: Add Go binary path to PATH environment variable on macOS
+      ansible.builtin.blockinfile:
+        path: "{{ user_home }}/.bash_profile"
+        block: |
+          # Added by Ansible for Go
+          export PATH="$PATH:{{ go_install_dir }}/go/bin"
+        create: yes
+        insertbefore: EOF
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      when: ansible_os_family == 'Darwin'
+
+    - name: Add Go binary path to PATH environment variable on Windows
+      ansible.windows.win_path:
+        elements:
+          - "{{ go_install_dir }}\\go\\bin"
+        state: present
+      when: ansible_os_family == 'Windows'
