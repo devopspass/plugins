@@ -1,27 +1,27 @@
-helm_install:
+golang_install:
   object_types: application
-  application_name: Helm
-  title: Install Helm
+  application_name: Golang
+  title: Install Go
   description: |
-    Install **Helm** on your local. Versions list can be found here - https://github.com/helm/helm/releases, **latest** version will install latest stable version of `Helm`
+    Install **Go** on your local. Versions list can be found here - https://go.dev/dl/, **latest** version will install latest stable version of `Golang`
   icon: fas fa-download
-  playbook: plugins/helm/playbooks/install_helm.yml
+  playbook: plugins/golang/playbooks/install_golang.yml
   required_options:
-    req_helm_version:
-      title: Helm3 version to install
+    req_golang_version:
+      title: Go version to install
       remember: true
       remember_key: name
       type: string
       default: latest
 
-helm_add_repo:
+golang_add_repo:
   object_types: application
-  application_name: Helm
+  application_name: Golang
   title: Add Helm repo
   description: |
     Add Helm repo source
   icon: fas fa-folder-plus
-  command: plugins/helm/scripts/helm_add_repo.py
+  command: plugins/helm/scripts/golang_add_repo.py
   required_options:
     repo_name:
       title: Short repo name
@@ -34,27 +34,27 @@ helm_add_repo:
       remember_key: name
       type: string
 
-helm_refresh_repo:
+golang_refresh_repo:
   title: Refresh info
   icon: fas fa-sync-alt
-  object_types: helm_repo
-  command: plugins/helm/scripts/helm_refresh_repo.py
+  object_types: golang_repo
+  command: plugins/helm/scripts/golang_refresh_repo.py
   show_terminal: true
   remember: true
   remember_key: name
 
-helm_delete_repo:
+golang_delete_repo:
   title: Remove repo
   icon: fas fa-trash
-  object_types: helm_repo
-  command: plugins/helm/scripts/helm_remove_repo.py
+  object_types: golang_repo
+  command: plugins/helm/scripts/golang_remove_repo.py
 
-helm_chart_install:
+golang_chart_install:
   title: Install Chart
   icon: fas fa-check
   description: Install Helm chart in current Kubernetes context (cluster/namespace)
-  object_types: helm_repo_chart
-  command: plugins/helm/scripts/helm_install_chart.py
+  object_types: golang_repo_chart
+  command: plugins/helm/scripts/golang_install_chart.py
   required_options:
     chart_name:
       title: Installed Helm chart name
@@ -69,20 +69,8 @@ helm_chart_install:
       remember_key: name
       type: text
 
-helm_open_chart_sources:
-  title: Open Chart Source
-  icon: fas fa-file-code
-  object_types: helm_repo_chart
-  command: plugins/helm/scripts/helm_open_chart_sources.py
-
-helm_test_release:
-  title: Test Release
-  icon: fas fa-vial
-  object_types: helm_release
-  command: plugins/helm/scripts/helm_test_release.py
-
-helm_delete_release:
+golang_delete_release:
   title: Remove Release
   icon: fas fa-trash
-  object_types: helm_release
-  command: plugins/helm/scripts/helm_remove_release.py
+  object_types: golang_release
+  command: plugins/helm/scripts/golang_remove_release.py

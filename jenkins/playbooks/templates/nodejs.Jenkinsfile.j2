@@ -1,0 +1,63 @@
+pipeline {
+    agent {
+{% if agent_type == 'Docker' %}
+        docker {
+            image 'node:alpine'
+        }
+{% elif agent_type == 'Dockerfile' %}
+        agent {
+            dockerfile true
+        }
+{% elif agent_type == 'Kubernetes' %}
+        kubernetes {
+            defaultContainer 'node'
+            yaml """
+                kind: Pod
+                spec:
+                  containers:
+                  - name: node
+                    image: node:alpine
+                    command: ["cat"]
+                    tty: true
+            """
+        }
+{% endif %}
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        // stage('Deploy') {
+        //     steps {
+        //     }
+        // }
+    }
+    // post {
+    //     always {
+    //         // Clean up steps here
+    //     }
+    //     success {
+    //         // Success notification or steps here
+    //     }
+    //     failure {
+    //         // Failure notification or steps here
+    //     }
+    // }
+}

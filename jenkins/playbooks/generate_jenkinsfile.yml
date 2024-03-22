@@ -1,0 +1,9 @@
+---
+- name: Generate Jenkinsfile
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate Jenkinsfile
+      ansible.builtin.template:
+        src: "templates/{{ app_type | lower | replace(' ', '_') }}.Jenkinsfile.j2"
+        dest: "{{ (folder_name, 'Jenkinsfile') | path_join }}"

@@ -1,0 +1,32 @@
+generate_jenkinsfile:
+  object_types: application
+  application_name: Jenkins
+  title: Generate Jenkinsfile
+  description: |
+    Generate Jenkinsfile for your application
+  icon: fab fa-jenkins
+  playbook: plugins/jenkins/playbooks/generate_jenkinsfile.yml
+  required_options:
+    folder_name:
+      type: folder
+      title: Your project home folder
+      remember: true
+      remember_key: name
+    app_type:
+      type: dropdown
+      default: |
+        Java
+        NodeJS
+        Golang
+      title: For which language you want to generate Jenkinsfile
+      remember: true
+      remember_key: name
+    agent_type:
+      type: dropdown
+      default: |
+        Docker
+        Dockerfile
+        Kubernetes
+      title: What kind of agent you want to use
+      remember: true
+      remember_key: name

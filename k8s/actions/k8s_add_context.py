@@ -82,6 +82,11 @@ try:
             current_config = yaml.safe_load(config_file)
     else:
         print(f"KubeConfig at '{get_kubeconfig_path()}' not found, creating")
+        kube_config_dir = os.path.expanduser("~/.kube")
+
+        # Check if ~/.kube directory exists, if not, create it
+        if not os.path.exists(kube_config_dir):
+            os.makedirs(kube_config_dir)
 
     # Add/update contexts
     current_config = merge_sections('contexts', new_config, current_config)

@@ -1,0 +1,58 @@
+pipeline {
+    agent {
+{% if agent_type == 'Docker' %}
+        docker {
+            image 'golang:alpine'
+        }
+{% elif agent_type == 'Dockerfile' %}
+        agent {
+            dockerfile true
+        }
+{% elif agent_type == 'Kubernetes' %}
+        kubernetes {
+            defaultContainer 'golang'
+            yaml """
+                kind: Pod
+                spec:
+                  containers:
+                  - name: golang
+                    image: golang:alpine
+                    command: ["cat"]
+                    tty: true
+            """
+        }
+{% endif %}
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'go build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'go test ./...'
+            }
+        }
+        // stage('Deploy') {
+        //     steps {
+        //     }
+        // }
+    }
+    // post {
+    //     always {
+    //         // Clean up steps here
+    //     }
+    //     success {
+    //         // Success notification or steps here
+    //     }
+    //     failure {
+    //         // Failure notification or steps here
+    //     }
+    // }
+}

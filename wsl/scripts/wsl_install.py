@@ -93,5 +93,10 @@ if ret1 == 3010 or ret2 == 3010:
 # Set V2 as default
 os.system("wsl --set-default-version 2")
 
+runAsAdmin([
+        'wsl',
+        '--update',
+    ])
+
 # Install distro
 os.system("wsl --install -d Ubuntu")

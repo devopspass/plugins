@@ -4,7 +4,7 @@ import cdx
 def remove_helm_release(release_name):
     try:
         subprocess.run(['helm', 'uninstall', release_name], check=True)
-        print(f"Removed repo: '{release_name}'")
+        print(f"Removed release: '{release_name}'")
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         exit(1)

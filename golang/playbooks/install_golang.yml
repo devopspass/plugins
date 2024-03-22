@@ -7,13 +7,14 @@
     go_version: "{{ go_version | default('latest') }}"
     go_download_url: "https://golang.org/dl/go{{ go_version }}.{{ 'windows' if ansible_os_family == 'Windows' else 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}-amd64.tar.gz"
     user_home: "{{ lookup('env', 'HOME') | default(lookup('env', 'USERPROFILE')) }}"
-    go_install_dir: "{{ user_home }}/go"
+    go_install_dir: "{{ user_home }}/"
 
   tasks:
     - name: Get latest Go version
       uri:
         url: "https://golang.org/dl/"
         method: GET
+        return_content: yes
       register: latest_go_version
 
     - name: Parse latest Go version from HTML

@@ -24,7 +24,7 @@ cmd = settings['docker.command']
 _c = f" run -itd --restart=unless-stopped --name autok3s "
 
 # Network
-if cdx.helpers.is_macos():
+if cdx.helpers.is_macos() or cdx.helpers.is_windows():
     _c += f" -p 8080:8080 -e DOCKER_HOST=\"\" "
 else:
     _c += f" --network host "

@@ -1,0 +1,5 @@
+k3s_cluster:
+  application: K3s
+  title: K3s clusters
+  filter_field: name
+  source: plugins/k3s/scripts/doc_k3s_cluster.py

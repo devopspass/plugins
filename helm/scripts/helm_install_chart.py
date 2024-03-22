@@ -5,7 +5,7 @@ action = 'helm_chart_install'
 
 def install_helm_chart(repo_name, chart_name, vals):
     try:
-        cmd = ['helm', 'install']
+        cmd = ['helm', 'upgrade', '--install']
         for val in vals:
             cmd.append("--set-json")
             cmd.append(f'{val}')
