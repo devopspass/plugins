@@ -1,0 +1,5 @@
+wsl_system:
+  application: WSL
+  title: WSL Systems
+  filter_field: name
+  source: plugins/wsl/scripts/doc_wsl_system.py
