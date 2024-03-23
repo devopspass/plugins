@@ -11,3 +11,31 @@ wsl_open_in_explorer:
   object_types: application
   application_name: WSL
   command: plugins/wsl/scripts/wsl_open_in_explorer.py
+
+wsl_install_distro:
+  title: Install distro
+  icon: fas fa-check
+  object_types: wsl_distro
+  command: plugins/wsl/scripts/wsl_install_distro.py
+  show_terminal: true
+  remember: true
+  remember_key: name
+
+wsl_set_default:
+  title: Make default
+  icon: fas fa-star
+  object_types: wsl_system
+  command: plugins/wsl/scripts/wsl_set_default.py
+  show_terminal: true
+  remember: true
+  remember_key: name
+
+# For some reason it hangs and its 03:28 and I want to sleep...
+# wsl_start:
+#   title: Open Console
+#   icon: fas fa-terminal
+#   object_types: wsl_system
+#   command: plugins/wsl/scripts/wsl_terminal.py
+#   show_terminal: true
+#   remember: true
+#   remember_key: name
