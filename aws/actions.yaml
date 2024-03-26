@@ -48,7 +48,7 @@ eksctl_install:
   title: Install eksctl
   description: |
     Install `eksctl` on your local. Versions list can be found here - https://github.com/eksctl-io/eksctl/releases, **latest** version will install latest stable version of `eksctl`
-  icon: fas fa-check-circle
+  icon: fas fa-download
   playbook: plugins/aws/playbooks/install_eksctl.yml
   required_options:
     req_eksctl_version:
@@ -64,5 +64,5 @@ aws_cli_install:
   title: Install AWS CLI
   description: |
     Install `aws-cli` on your local
-  icon: fab fa-aws
+  icon: fas fa-download
   playbook: plugins/aws/playbooks/install_aws_cli.yml

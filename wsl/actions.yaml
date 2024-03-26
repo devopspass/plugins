@@ -1,6 +1,6 @@
 wsl_install:
   title: Install WSL
-  icon: fas fa-check
+  icon: fas fa-download
   object_types: application
   application_name: WSL
   command: plugins/wsl/scripts/wsl_install.py
@@ -14,7 +14,7 @@ wsl_open_in_explorer:
 
 wsl_install_distro:
   title: Install distro
-  icon: fas fa-check
+  icon: fas fa-download
   object_types: wsl_distro
   command: plugins/wsl/scripts/wsl_install_distro.py
   show_terminal: true

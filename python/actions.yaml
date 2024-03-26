@@ -10,7 +10,7 @@ python_setup_pip:
 
 python_install_conda:
   title: Install Python via Conda
-  icon: fab fa-python
+  icon: fas fa-download
   object_types: application
   application_name: Python
   playbook: plugins/python/playbooks/install_conda.yml

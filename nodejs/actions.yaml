@@ -10,7 +10,7 @@ node_setup_npm:
 
 node_install_nvm:
   title: Install Node Version Manager
-  icon: fab fa-node
+  icon: fas fa-download
   object_types: application
   application_name: Node.JS
   playbook: plugins/nodejs/playbooks/install_nvm.yml
@@ -36,6 +36,6 @@ node_remove_version:
 
 node_install_version:
   title: Install
-  icon: fas fa-check
+  icon: fas fa-download
   object_types: nodejs_remote_version
   command: plugins/nodejs/scripts/nodejs_install_version.py

@@ -17,7 +17,7 @@ install_git:
   title: Install Git for Windows
   description: |
     Install **Git and git-bash** on your local.
-  icon: fab fa-git-alt
+  icon: fas fa-download
   playbook: plugins/git/playbooks/install_git.yml
 
 install_vscode:
@@ -26,5 +26,5 @@ install_vscode:
   title: Install Visual Studio Code
   description: |
     Install **VSCode** on your local.
-  icon: fas fa-code
+  icon: fas fa-download
   playbook: plugins/git/playbooks/install_vscode.yml

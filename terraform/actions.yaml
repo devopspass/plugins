@@ -4,7 +4,7 @@ terraform_install:
   title: Install Terraform
   description: |
     Install Terraform on your local. Versions list can be found here - https://releases.hashicorp.com/terraform/, **latest** version will install latest stable version of Terraform
-  icon: fas fa-check-circle
+  icon: fas fa-download
   playbook: plugins/terraform/playbooks/install.yml
   required_options:
     req_terraform_version:

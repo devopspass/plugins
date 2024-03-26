@@ -51,7 +51,7 @@ helm_delete_repo:
 
 helm_chart_install:
   title: Install Chart
-  icon: fas fa-check
+  icon: fas fa-download
   description: Install Helm chart in current Kubernetes context (cluster/namespace)
   object_types: helm_repo_chart
   command: plugins/helm/scripts/helm_install_chart.py

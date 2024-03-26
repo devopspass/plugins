@@ -19,7 +19,7 @@ putty_install:
   title: Install Putty/Kitty/WinSCP
   description: |
     Install **Putty/Kitty and WinSCP** on your local. Kitty, is mostly the same as Putty but with tabs.
-  icon: fas fa-terminal
+  icon: fas fa-download
   playbook: plugins/servers/playbooks/install_putty.yml
   required_options:
     ssh_tool:

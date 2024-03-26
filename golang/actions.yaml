@@ -51,7 +51,7 @@ golang_delete_repo:
 
 golang_chart_install:
   title: Install Chart
-  icon: fas fa-check
+  icon: fas fa-download
   description: Install Helm chart in current Kubernetes context (cluster/namespace)
   object_types: golang_repo_chart
   command: plugins/helm/scripts/golang_install_chart.py
