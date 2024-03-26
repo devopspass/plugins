@@ -112,6 +112,14 @@ docker_start_container:
       remember: true
       remember_key: name
 
+docker_attach_to_container:
+  title: Attach to container
+  icon: fas fa-terminal
+  object_types: docker_container
+  command: plugins/docker/scripts/docker_attach_container.py
+  required_settings:
+    - docker.command
+
 docker_stop_container:
   title: Stop container
   icon: fas fa-stop
