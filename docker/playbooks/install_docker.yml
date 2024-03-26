@@ -2,11 +2,9 @@
 - name: Install Docker
   hosts: localhost
   connection: local
+  become_flags: ""
   tasks:
-    - name: Ensure playbook is running on Windows
-      ansible.builtin.assert:
-        that: ansible_os_family == 'Windows'
-        msg: "This playbook can only run on Windows systems."
+    - name: Docker Desktop for Windows
       block:
         - name: Check if Docker Desktop is installed
           ansible.builtin.command: Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -like "*Docker Desktop*"}
@@ -36,38 +34,46 @@
       when: ansible_os_family == 'Windows'
 
     - name: Install Docker on Ubuntu
-      ansible.builtin.block:
+      become_exe: pkexec
+      block:
         - name: Update apt cache
           ansible.builtin.apt:
-            update_cache: yes
-        - name: Install packages required for Docker
-          ansible.builtin.package:
-            name: "{{ item }}"
-            state: present
-          with_items:
-            - apt-transport-https
-            - ca-certificates
-            - curl
-            - gnupg
-            - lsb-release
+            update_cache: true
+          become: true
+
         - name: Add Docker's official GPG key
           ansible.builtin.apt_key:
             url: https://download.docker.com/linux/ubuntu/gpg
+          become: true
+
         - name: Add Docker repository
           ansible.builtin.apt_repository:
             repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
             state: present
+          become: true
+
         - name: Update apt cache
           ansible.builtin.apt:
-            update_cache: yes
+            update_cache: true
+          become: true
+
         - name: Install Docker Engine
           ansible.builtin.package:
             name: docker-ce
             state: present
-      when: ansible_os_family == 'Linux' and ansible_distribution == 'Ubuntu'
+          become: true
+
+        - name: Enable and start Docker service on Ubuntu
+          become: true
+          ansible.builtin.service:
+            name: docker
+            state: started
+            enabled: true
+      when:
+        - ansible_distribution == 'Ubuntu'
 
     - name: Install Docker on RHEL based distros
-      ansible.builtin.block:
+      block:
         - name: Install required packages for Docker
           ansible.builtin.yum:
             name: "{{ item }}"
