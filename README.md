@@ -67,3 +67,23 @@ k8s_set_default_context:
     plugins/k8s/actions/set_default_context.py
 
 ```
+
+## Ansible
+
+Ansible variables always passed to Ansible Playbook running from DOP
+
+| Ansible var | Value |
+|-------------|-------|
+| dop_home_path | `~/.devopspass-ai/` |
+| user_home_path | `~/` |
+| codex_root_path | Path where Codex is running `main.py` |
+| codex_env_path | `~/.devopspass-ai/mamba/envs/codex/` |
+| python_bin_path | Python binary path |
+| mamba_bin_path | Path to mamba binary - `~/.devopspass-ai/mamba` |
+| git_bin_path | Path to `git`/`git.exe` binary |
+| settings_file_path | `~/.devopspass-ai/settings.yaml` |
+| settings_org_file_path | `~/.devopspass-ai/settings-org.yaml` |
+| applications_file_path | `~/.devopspass-ai/applications.yaml` |
+| applications_org_file_path | `~/.devopspass-ai/applications-org.yaml` |
+| plugins_path | `~/.devopspass-ai/plugins/` |
+| all_applications_file_path | `~/.devopspass-ai/plugins/apps.yaml` |

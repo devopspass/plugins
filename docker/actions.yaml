@@ -1,3 +1,12 @@
+install_docker:
+  object_types: application
+  application_name: Docker
+  title: Install Docker
+  description: |
+    Install Docker on your local
+  icon: fas fa-download
+  playbook: plugins/docker/playbooks/install_docker.yml
+
 generate_dockerfile:
   object_types: application
   application_name: Docker

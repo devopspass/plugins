@@ -1,0 +1,85 @@
+---
+- name: Install Docker
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Ensure playbook is running on Windows
+      ansible.builtin.assert:
+        that: ansible_os_family == 'Windows'
+        msg: "This playbook can only run on Windows systems."
+      block:
+        - name: Check if Docker Desktop is installed
+          ansible.builtin.command: Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -like "*Docker Desktop*"}
+          register: docker_desktop_installed
+          ignore_errors: yes
+
+        - name: Temp dir
+          ansible.builtin.file:
+            path: "{{ dop_home_path }}/tmp/"
+            state: directory
+
+        - name: Download Docker Desktop installer
+          ansible.builtin.get_url:
+            url: "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
+            dest: "{{ dop_home_path }}/tmp/Docker Desktop Installer.exe"
+          when: docker_desktop_installed is not succeeded
+
+        - name: Install Docker Desktop
+          ansible.builtin.command: "{{ ansible_env.TEMP }}/Docker Desktop Installer.exe"
+          when: docker_desktop_installed is not succeeded
+
+        - name: Restart computer to apply changes
+          ansible.builtin.debug:
+            msg: Restart computer to apply changes
+          when: docker_desktop_installed is not succeeded
+
+      when: ansible_os_family == 'Windows'
+
+    - name: Install Docker on Ubuntu
+      ansible.builtin.block:
+        - name: Update apt cache
+          ansible.builtin.apt:
+            update_cache: yes
+        - name: Install packages required for Docker
+          ansible.builtin.package:
+            name: "{{ item }}"
+            state: present
+          with_items:
+            - apt-transport-https
+            - ca-certificates
+            - curl
+            - gnupg
+            - lsb-release
+        - name: Add Docker's official GPG key
+          ansible.builtin.apt_key:
+            url: https://download.docker.com/linux/ubuntu/gpg
+        - name: Add Docker repository
+          ansible.builtin.apt_repository:
+            repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+            state: present
+        - name: Update apt cache
+          ansible.builtin.apt:
+            update_cache: yes
+        - name: Install Docker Engine
+          ansible.builtin.package:
+            name: docker-ce
+            state: present
+      when: ansible_os_family == 'Linux' and ansible_distribution == 'Ubuntu'
+
+    - name: Install Docker on RHEL based distros
+      ansible.builtin.block:
+        - name: Install required packages for Docker
+          ansible.builtin.yum:
+            name: "{{ item }}"
+            state: present
+          with_items:
+            - yum-utils
+            - device-mapper-persistent-data
+            - lvm2
+        - name: Set up Docker repository
+          ansible.builtin.shell: yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+        - name: Install Docker Engine
+          ansible.builtin.yum:
+            name: docker-ce
+            state: present
+      when: ansible_os_family == 'Linux' and ansible_distribution in ['CentOS', 'RedHat']
