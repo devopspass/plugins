@@ -1,0 +1,16 @@
+ose_cli_install:
+  object_types: application
+  application_name: OpenShift
+  title: Install OSE cli
+  description: |
+    Install `oc` on your local.
+    Versions list can be found here - https://github.com/openshift/oc/tags, **latest** version will install latest stable version of `oc`
+  icon: fas fa-download
+  playbook: plugins/openshift/playbooks/install_oc.yml
+  required_options:
+    req_oc_version:
+      title: OSE-cli version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest

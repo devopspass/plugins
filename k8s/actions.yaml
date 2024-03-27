@@ -54,6 +54,13 @@ k8s_set_default_context:
   command: |
     plugins/k8s/actions/set_default_context.py
 
+k8s_open_web_console:
+  title: Open web-console
+  icon: fab fa-chrome
+  object_types: k8s_context
+  command: |
+    plugins/k8s/actions/oc_open_console.py
+
 k8s_open_context:
   title: Open in K9s
   icon: fas fa-terminal

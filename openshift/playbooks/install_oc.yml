@@ -1,0 +1,73 @@
+---
+- name: Install OpenShift CLI (oc)
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
+    - name: Get latest OpenShift CLI version
+      ansible.builtin.uri:
+        url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/release.txt"
+        method: GET
+        return_content: true
+      register: release_txt_response
+
+    - name: Facts *nix
+      ansible.builtin.set_fact:
+        archive_type: tar.gz
+      when: "'Windows' not in ansible_system"
+
+    - name: Facts Windows
+      ansible.builtin.set_fact:
+        archive_type: zip
+      when: "'Windows' in ansible_system"
+
+    - name: Parse release.txt content
+      ansible.builtin.set_fact:
+        release_txt_content: "{{ release_txt_response.content | split('\n') }}"
+
+    - name: Extract version from release.txt
+      ansible.builtin.set_fact:
+        latest_oc_version: "{{ release_txt_content | select('match', '^Name:') | first | regex_replace('^Name:\\s+', '') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        oc_version: "{{ (req_oc_version == 'latest') | ternary(latest_oc_version, req_oc_version) }}"
+
+    - name: Set facts based on operating system
+      ansible.builtin.set_fact:
+        oc_download_url: "https://mirror.openshift.com/pub/openshift-v4/{{ ansible_architecture }}/clients/ocp/{{ oc_version }}/openshift-client-{{ ansible_system | lower }}.{{ archive_type }}"
+
+#####################################################################
+#
+#           Install
+#
+#####################################################################
+    - name: Download oc binary
+      ansible.builtin.get_url:
+        url: "{{ oc_download_url }}"
+        dest: "{{ dop_temp }}/oc.{{ archive_type }}"
+
+    - name: Extract oc binary *nix
+      ansible.builtin.unarchive:
+        src: "{{ (dop_temp, 'oc.' + archive_type) | path_join }}"
+        dest: "{{ dop_bin }}"
+      when: ansible_system != 'Windows'
+
+
+    - name: Extract oc binary Windows # noqa: command-instead-of-module no-changed-when
+      ansible.builtin.command:
+        cmd: "tar -xf '{{ (dop_temp, 'oc.' + archive_type) | path_join }}' -C '{{ dop_bin }}'"
+      when: ansible_system == 'Windows'
+
+    - name: Remove oc archive
+      ansible.builtin.file:
+        path: "{{ (dop_temp, 'oc.' + archive_type) | path_join }}"
+        state: absent

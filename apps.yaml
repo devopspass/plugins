@@ -897,6 +897,7 @@
   description_long: "OpenShift is a container platform for automating the deployment, scaling, and operations of application containers, providing a comprehensive Kubernetes distribution."
   icon: "assets/icons/apps/openshift.png"
   name: "OpenShift"
+  recommended: true
   sections:
   - name: "Documentation"
     icon: "assets/icons/general/docs.png"
