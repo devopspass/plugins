@@ -1,0 +1,20 @@
+- name: Bin dir
+  ansible.builtin.file:
+    path: "{{ dop_bin }}"
+    state: directory
+
+- name: Temp dir
+  ansible.builtin.file:
+    path: "{{ dop_temp }}"
+    state: directory
+
+- name: Check PATH
+  ansible.builtin.command:
+    cmd: "echo %PATH%"
+  changed_when: false
+  register: path_val
+
+- name: Add bin to PATH
+  ansible.builtin.command:
+    cmd: 'setx PATH "{{ dop_bin }};%PATH%"'
+  when: dop_bin not in path_val

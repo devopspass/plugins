@@ -10,7 +10,7 @@
     - name: Fetch latest Helm version from Kubernetes GitHub releases
       ansible.builtin.uri:
         url: "https://api.github.com/repos/helm/helm/releases/latest"
-        return_content: yes
+        return_content: true
         headers:
           Accept: "application/vnd.github.v3+json"
       register: helm_version_response
@@ -79,14 +79,11 @@
 #
 #####################################################################
     - name: Install helm on Windows
+      when: "'Windows' in ansible_system"
       block:
         - name: Set facts based on operating system
           ansible.builtin.set_fact:
             helm_download_url: "https://get.helm.sh/helm-v{{ helm_version }}-{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}.zip"
-
-        - name: Set home
-          ansible.builtin.set_fact:
-            helm_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\helm"
 
         - name: Home
           ansible.builtin.file:
@@ -96,33 +93,20 @@
         - name: Download Helm binary
           ansible.builtin.get_url:
             url: "{{ helm_download_url }}"
-            dest: "{{ helm_home }}\\\\helm.zip"
+            dest: "{{ dop_temp }}\\\\helm.zip"
 
-        - name: Extract Helm binary
+        - name: Extract Helm binary # noqa: command-instead-of-module no-changed-when
           ansible.builtin.command:
             cmd: "tar -xf helm.zip"
-            chdir: "{{ helm_home }}"
+            chdir: "{{ dop_temp }}"
 
         - name: Move Helm binary
           ansible.builtin.command:
-            cmd: "move {{ helm_path }} {{ helm_home }}"
+            cmd: "move {{ dop_temp }} {{ dop_bin }}"
             removes: "{{ helm_path }}"
           vars:
-            helm_path: "{{ helm_home }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\helm.exe"
+            helm_path: "{{ dop_temp }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\helm.exe"
 
-        - name: Remove Helm temporary folder
-          ansible.builtin.file:
-            path: "{{ helm_path }}"
-            state: absent
-          vars:
-            helm_path: "{{ helm_home }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\"
-
-        - name: Add to PATH
-          ansible.builtin.command:
-            cmd: 'setx PATH "%USERPROFILE%\\\\helm;%PATH%"'
-
-      when: "'Windows' in ansible_system"
-
-    - name: version
+    - name: Helm version
       ansible.builtin.debug:
         msg: "Installed Helm version is {{ helm_version }}"

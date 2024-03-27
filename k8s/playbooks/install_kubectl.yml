@@ -7,10 +7,14 @@
       x86_64: amd64
       aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
     - name: Fetch latest kubectl version from Kubernetes GitHub releases
       ansible.builtin.uri:
         url: "https://api.github.com/repos/kubernetes/kubernetes/releases/latest"
-        return_content: yes
+        return_content: true
         headers:
           Accept: "application/vnd.github.v3+json"
       register: kubectl_version_response
@@ -21,7 +25,7 @@
 
     - name: Set version
       ansible.builtin.set_fact:
-        kubectl_version: "{{ (req_kubectl_version == 'latest') | ternary(latest_kubectl_version, req_kubectl_version)}}"
+        kubectl_version: "{{ (req_kubectl_version == 'latest') | ternary(latest_kubectl_version, req_kubectl_version) }}"
 
     - name: Set facts based on operating system
       ansible.builtin.set_fact:
@@ -60,17 +64,10 @@
 #
 #####################################################################
     - name: Install kubectl on Windows
+      when: "'Windows' in ansible_system"
       block:
         - name: Download kubectl binary
           ansible.builtin.get_url:
             url: "{{ kubectl_download_url }}.exe"
-            dest: "C:\\Program Files\\kubectl.exe"
+            dest: "{{ (user_home_path, 'bin', 'kubectl.exe') | path_join }}"
             validate_certs: false
-
-        - name: Add kubectl to the system PATH
-          ansible.builtin.win_path:
-            elements:
-              - "C:\\Program Files"
-            state: 'present'
-            recurse: yes
-      when: "'Windows' in ansible_system"
