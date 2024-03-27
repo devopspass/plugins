@@ -55,15 +55,15 @@ def merge_sections(key: str, new_config, current_config):
     res = dict(current_config)
     res[key] = []
 
-    if len(new_config.get(key, [])) == 0:
-        res[key] = current_config[key]
-    else:
-        for _section in new_config.get(key, []):
-            for section in current_config.get(key, []):
-                if section['name'] == _section['name']:
-                    res[key].append(_section)
-                else:
-                    res[key].append(section)
+    tmp = {}
+    for item in current_config.get(key, []):
+        tmp[item['name']] = item
+    for item in new_config.get(key, []):
+        tmp[item['name']] = item
+
+    for k in tmp.keys():
+        res[key].append(tmp[k])
+
     return res
 
 try:
@@ -92,6 +92,11 @@ try:
     current_config = merge_sections('contexts', new_config, current_config)
     current_config = merge_sections('clusters', new_config, current_config)
     current_config = merge_sections('users', new_config, current_config)
+
+    if len(current_config.get('contexts', [])) == 0:
+        del current_config['current-context']
+    else:
+        current_config['current-context'] = current_config['contexts'][0]['name']
 
     # Save changes
     with open(get_kubeconfig_path(), "w") as updated_config_file:
