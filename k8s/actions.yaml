@@ -1,3 +1,21 @@
+k9s_install:
+  object_types: application
+  application_name: Kubernetes
+  title: Install K9s
+  description: |
+    Install `k9s` on your local.
+    K9s provides a terminal UI to interact with your Kubernetes clusters.
+    Versions list can be found here - https://github.com/derailed/k9s, **latest** version will install latest stable version of `k9s`
+  icon: fas fa-download
+  playbook: plugins/k8s/playbooks/install_k9s.yml
+  required_options:
+    req_k9s_version:
+      title: K9s version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
+
 kubectl_install:
   object_types: application
   application_name: Kubernetes
@@ -30,11 +48,20 @@ k8s_add_context:
       type: text
 
 k8s_set_default_context:
-  title: Set Context as default
+  title: Set context as default
   icon: fas fa-star
   object_types: k8s_context
   command: |
     plugins/k8s/actions/set_default_context.py
+
+k8s_open_context:
+  title: Open in K9s
+  icon: fas fa-terminal
+  object_types: k8s_context
+  required_settings:
+    - terminal.command
+  command: |
+    plugins/k8s/actions/open_in_k9s.py
 
 k8s_set_default_ns:
   title: Set Namespace as default
@@ -42,3 +69,12 @@ k8s_set_default_ns:
   object_types: k8s_namespace
   command: |
     plugins/k8s/actions/set_default_ns.py
+
+k8s_open_namespace:
+  title: Open in K9s
+  icon: fas fa-terminal
+  object_types: k8s_namespace
+  required_settings:
+    - terminal.command
+  command: |
+    plugins/k8s/actions/open_in_k9s.py

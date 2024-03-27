@@ -9,6 +9,14 @@ user.name:
   default: ''
   type: string
 
+terminal.command:
+  title: Terminal command
+  type: string
+  description: Terminal command
+  default_windows: wsl -- %COMMAND%
+  default_linux: gnome-terminal -- %COMMAND%
+  section: DevOps Pass AI
+
 # Codex options
 codex.plugins.source:
   title: DevOps Pass AI plugins source

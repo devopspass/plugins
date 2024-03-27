@@ -40,8 +40,9 @@ def parse_clusters_response(response):
 
         # Append parsed data to the list
         parsed_clusters.append({
-            "name": cluster_name,
             "icon": provider_icon,
+            "name": cluster_name,
+            "id": cluster_data['id'],
             "type_title": cluster_provider,
             "masters": masters,
             "workers": workers,
