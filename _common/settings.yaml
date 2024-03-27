@@ -13,7 +13,7 @@ terminal.command:
   title: Terminal command
   type: string
   description: Terminal command
-  default_windows: cmd /C %COMMAND%
+  default_windows: start cmd.exe /c %COMMAND%
   default_linux: gnome-terminal -- %COMMAND%
   section: DevOps Pass AI
 
