@@ -7,6 +7,10 @@
       x86_64: amd64
       aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
     - name: Fetch latest eksctl version from GitHub releases
       ansible.builtin.uri:
         url: "https://api.github.com/repos/weaveworks/eksctl/releases/latest"
@@ -37,33 +41,28 @@
         - name: Download eksctl binary
           ansible.builtin.get_url:
             url: "{{ eksctl_download_url }}"
-            dest: "/tmp/eksctl.tar.gz"
+            dest: "{{ dop_temp }}/eksctl.tar.gz"
             mode: '0644'
-
-        - name: Create ~/bin/
-          ansible.builtin.file:
-            path: "{{ ansible_env.HOME }}/bin/"
-            state: directory
 
         - name: Extract eksctl binary
           ansible.builtin.command: # unarchive doesnt work correct on MacOS for some reason
-            cmd: "tar -xzf /tmp/eksctl.tar.gz -C '{{ ansible_env.HOME }}/bin/'"
+            cmd: "tar -xzf {{ dop_temp }}/eksctl.tar.gz -C '{{ dop_bin }}'"
 
         - name: Set execute permissions
           ansible.builtin.file:
-            path: "{{ ansible_env.HOME }}/bin/eksctl"
+            path: "{{ dop_bin }}/eksctl"
             mode: 'a+x'
 
         - name: Add user's bin directory to PATH
           ansible.builtin.lineinfile:
             dest: "{{ ansible_env.HOME }}/.bash_profile"
-            line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+            line: 'export PATH="$PATH:{{ dop_bin }}"'
             create: true
             state: present
 
         - name: Clean up temporary files
           ansible.builtin.file:
-            path: "/tmp/eksctl.tar.gz"
+            path: "{{ dop_temp }}/eksctl.tar.gz"
             state: absent
       when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
 
@@ -74,28 +73,15 @@
 #####################################################################
     - name: Install eksctl on Windows
       block:
-        - name: Set home
-          ansible.builtin.set_fact:
-            eksctl_home: "{{ ansible_env.USERPROFILE | regex_escape }}\\eksctl"
-
-        - name: Home
-          ansible.builtin.file:
-            path: "{{ eksctl_home }}"
-            state: directory
-
         - name: Download eksctl binary
           ansible.builtin.get_url:
             url: "{{ eksctl_download_url }}"
-            dest: "{{ eksctl_home }}\\\\eksctl.zip"
+            dest: "{{ dop_temp }}\\\\eksctl.zip"
 
         - name: Extract eksctl binary
           ansible.builtin.command:
-            cmd: "tar -xf eksctl.zip"
-            chdir: "{{ eksctl_home }}"
-
-        - name: Add to PATH
-          ansible.builtin.command:
-            cmd: 'setx PATH "%USERPROFILE%\\eksctl;%PATH%"'
+            cmd: "tar -xf eksctl.zip -C '{{ dop_bin }}'"
+            chdir: "{{ dop_temp }}"
 
       when: "'Windows' in ansible_system"
 

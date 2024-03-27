@@ -1,0 +1,65 @@
+---
+- name: Install VSCode
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+#####################################################################
+#
+#           MacOS
+#
+#####################################################################
+    - name: Download Visual Studio Code zip file
+      ansible.builtin.get_url:
+        url: "https://update.code.visualstudio.com/latest/darwin/stable"
+        dest: "~/Downloads/vscode.zip"
+
+    - name: Unzip Visual Studio Code
+      ansible.builtin.unarchive:
+        src: "~/Downloads/vscode.zip"
+        dest: "~/Applications"
+        remote_src: yes
+        creates: "~/Applications/Visual Studio Code.app"
+
+    - name: Set permissions for Visual Studio Code
+      ansible.builtin.file:
+        path: "~/Applications/Visual Studio Code.app"
+        state: directory
+        mode: "0755"
+
+    - name: Clean up downloaded zip file
+      ansible.builtin.file:
+        path: "~/Downloads/vscode.zip"
+        state: absent
+      when: "'Darwin' in ansible_system"
+
+#####################################################################
+#
+#           Windows
+#
+#####################################################################
+    - name: Install VSCode on Windows
+      when: "'Windows' in ansible_system"
+      block:
+        - name: Set fact with the latest WinSCP version
+          ansible.builtin.set_fact:
+            vscode_bin: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\vscode-setup.exe"
+
+        - name: Fetch latest VSCode
+          ansible.builtin.get_url:
+            url: "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user"
+            dest: "{{ vscode_bin }}"
+
+        - name: Run installation
+          ansible.builtin.command:
+            cmd: "{{ vscode_bin }} /siltent"
+            chdir: "{{ ansible_env.USERPROFILE }}"
+
+        - name: Remove binary
+          ansible.builtin.file:
+            path: "{{ vscode_bin }}"
+            state: absent
+

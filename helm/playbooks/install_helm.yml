@@ -7,6 +7,10 @@
       x86_64: amd64
       aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
     - name: Fetch latest Helm version from Kubernetes GitHub releases
       ansible.builtin.uri:
         url: "https://api.github.com/repos/helm/helm/releases/latest"
@@ -85,11 +89,6 @@
           ansible.builtin.set_fact:
             helm_download_url: "https://get.helm.sh/helm-v{{ helm_version }}-{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}.zip"
 
-        - name: Home
-          ansible.builtin.file:
-            path: "{{ helm_home }}"
-            state: directory
-
         - name: Download Helm binary
           ansible.builtin.get_url:
             url: "{{ helm_download_url }}"
@@ -102,10 +101,9 @@
 
         - name: Move Helm binary
           ansible.builtin.command:
-            cmd: "move {{ dop_temp }} {{ dop_bin }}"
-            removes: "{{ helm_path }}"
+            cmd: "move {{ helm_path }} {{ dop_bin | regex_escape }}"
           vars:
-            helm_path: "{{ dop_temp }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\helm.exe"
+            helm_path: "{{ dop_temp | regex_escape }}\\\\{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}\\\\helm.exe"
 
     - name: Helm version
       ansible.builtin.debug:

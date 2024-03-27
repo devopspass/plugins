@@ -7,3 +7,8 @@
   ansible.builtin.include_tasks:
     file: base_windows.yml
   when: "'Windows' in ansible_system"
+
+- name: Base for Windows
+  ansible.builtin.include_tasks:
+    file: base_linux.yml
+  when: "'Linux' in ansible_system"

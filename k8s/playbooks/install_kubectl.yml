@@ -37,6 +37,7 @@
 #
 #####################################################################
     - name: Install kubectl on macOS/Linux
+      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
       block:
         - name: Download kubectl binary
           ansible.builtin.get_url:
@@ -56,8 +57,6 @@
             create: true
             state: present
 
-      when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
-
 #####################################################################
 #
 #           Windows
@@ -69,5 +68,5 @@
         - name: Download kubectl binary
           ansible.builtin.get_url:
             url: "{{ kubectl_download_url }}.exe"
-            dest: "{{ (user_home_path, 'bin', 'kubectl.exe') | path_join }}"
+            dest: "{{ (dop_bin, 'kubectl.exe') | path_join }}"
             validate_certs: false

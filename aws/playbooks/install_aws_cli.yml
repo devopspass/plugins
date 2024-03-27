@@ -1,6 +1,6 @@
 ---
 # Space is a trick to be first, always ;)
-- name: " Install AWS CLI on Linux"
+- name: "Install AWS CLI"
   hosts: localhost
   connection: local
   vars:
@@ -8,12 +8,16 @@
       x86_64: amd64
       aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
 #####################################################################
 #
 #           Linux
 #
 #####################################################################
-    - name: Install kubectl on Linux
+    - name: Install AWS CLI on Linux
       block:
         - name: Set facts based on operating system
           ansible.builtin.set_fact:
@@ -121,19 +125,19 @@
 #
 #####################################################################
     - name: Install AWS CLI v2 on Windows
+      when: "'Windows' in ansible_system"
       block:
       - name: Download AWS CLI MSI installer
         ansible.builtin.get_url:
           url: "https://awscli.amazonaws.com/AWSCLIV2.msi"
-          dest: "{{ ansible_env.USERPROFILE }}/AWSCLIV2.msi"
+          dest: "{{ dop_temp }}/AWSCLIV2.msi"
 
       - name: Install AWS CLI
         ansible.builtin.command:
-          cmd: 'msiexec.exe /package "{{ ansible_env.USERPROFILE | regex_escape }}\\AWSCLIV2.msi"'
+          cmd: 'msiexec.exe /package "{{ dop_temp }}\\AWSCLIV2.msi"'
 
       - name: Add AWS CLI to PATH
         ansible.builtin.command: 'setx PATH "%ProgramFiles%\\Amazon\\AWSCLIV2;%PATH%"'
 
       - ansible.builtin.debug:
           msg: "Latest version of AWS CLI v2 is installed on your PC"
-      when: "'Windows' in ansible_system"

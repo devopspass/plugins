@@ -7,6 +7,10 @@
       x86_64: amd64
       aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
 #####################################################################
 #
 #           Windows
@@ -23,20 +27,18 @@
         - name: Set fact with the latest WinSCP version
           ansible.builtin.set_fact:
             git_url: "{{ git_url_page.content | regex_search('https://github.com/git-for-windows/git/releases/download/v.*.windows.1/Git-.*-64-bit.exe') }}"
-            git_bin: "{{ ansible_env.USERPROFILE | regex_escape }}\\\\git-setup.exe"
-            
-
+          
         - name: Download Putty binary
           ansible.builtin.get_url:
             url: "{{ git_url }}"
-            dest: "{{ git_bin }}"
+            dest: "{{ dop_temp }}\\\\git-setup.exe"
 
         - name: Run git installation
           ansible.builtin.command:
-            cmd: "{{ git_bin }} /silent"
-            chdir: "{{ ansible_env.USERPROFILE }}"
+            cmd: "{{ dop_temp | regex_escape }}\\\\git-setup.exe /silent"
+            chdir: "{{ dop_temp }}"
 
         - name: Remove binary
           ansible.builtin.file:
-            path: "{{ git_bin }}"
+            path: "{{ dop_temp | regex_escape }}\\\\git-setup.exe"
             state: absent

@@ -1,0 +1,11 @@
+- name: Create ~/bin/
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/bin/"
+    state: directory
+
+- name: Add ~/bin/ to PATH
+  ansible.builtin.lineinfile:
+    dest: "{{ ansible_env.HOME }}/.bash_profile"
+    line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+    create: true
+    state: present

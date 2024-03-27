@@ -1,0 +1,8 @@
+install_vscode:
+  object_types: application
+  application_name: VSCode
+  title: Install Visual Studio Code
+  description: |
+    Install **VSCode** on your local.
+  icon: fas fa-download
+  playbook: plugins/vscode/playbooks/install_vscode.yml

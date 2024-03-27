@@ -7,18 +7,18 @@
       x86_64: amd64
       aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
     - name: Check if the operating system is Linux or macOS
       ansible.builtin.set_fact:
-        install_path: "{{ user_home_path }}/bin"
-        tmp_path: "{{ user_home_path }}/tmp/"
         archive_type: tar.gz
       when: ansible_system in ['Linux', 'Darwin']
 
     - name: Check if the operating system is Windows
       ansible.builtin.set_fact:
-        install_path: "{{ user_home_path }}\\\\bin"
         archive_type: zip
-        tmp_path: "{{ user_home_path }}\\\\tmp"
       when: ansible_system == 'Windows'
 
     - name: Fetch latest k9s version from GitHub releases
@@ -38,23 +38,24 @@
       ansible.builtin.set_fact:
         k9s_version: "{{ (req_k9s_version == 'latest') | ternary(latest_k9s_version, req_k9s_version) }}"
 
-    - name: Temp dir
-      ansible.builtin.file:
-        path: "{{ tmp_path }}"
-        state: directory
-
     - name: Download k9s binary
       ansible.builtin.get_url:
         url: "https://github.com/derailed/k9s/releases/download/v{{ k9s_version }}/k9s_{{ ansible_system | lower }}_{{ arch_mapping[ansible_architecture] | default('amd64') }}.{{ archive_type }}"
-        dest: "{{ (tmp_path, 'k9s.' + archive_type) | path_join }}"
+        dest: "{{ (dop_temp, 'k9s.' + archive_type) | path_join }}"
 
-    - name: Extract k9s binary
+    - name: Extract k9s binary *nix
       ansible.builtin.unarchive:
-        src: "{{ (tmp_path, 'k9s.' + archive_type) | path_join }}"
-        dest: "{{ install_path }}"
+        src: "{{ (dop_temp, 'k9s.' + archive_type) | path_join }}"
+        dest: "{{ dop_bin }}"
+      when: ansible_system != 'Windows'
 
     - name: Set permissions for k9s binary
       ansible.builtin.file:
-        path: "{{ install_path }}/k9s"
+        path: "{{ dop_bin }}/k9s"
         mode: "+x"
       when: ansible_system != 'Windows'
+
+    - name: Extract k9s binary Windows # noqa: command-instead-of-module no-changed-when
+      ansible.builtin.command:
+        cmd: "tar -xf '{{ (dop_temp, 'k9s.' + archive_type) | path_join }}' -C '{{ dop_bin }}'"
+      when: ansible_system == 'Windows'

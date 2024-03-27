@@ -1,9 +1,9 @@
-- name: Bin dir
+- name: ~/bin/ dir
   ansible.builtin.file:
     path: "{{ dop_bin }}"
     state: directory
 
-- name: Temp dir
+- name: ~/.devopspass-ai/tmp/ dir
   ansible.builtin.file:
     path: "{{ dop_temp }}"
     state: directory
@@ -17,4 +17,5 @@
 - name: Add bin to PATH
   ansible.builtin.command:
     cmd: 'setx PATH "{{ dop_bin }};%PATH%"'
+  changed_when: dop_bin not in path_val
   when: dop_bin not in path_val
