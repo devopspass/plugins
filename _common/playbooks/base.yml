@@ -12,3 +12,8 @@
   ansible.builtin.include_tasks:
     file: base_linux.yml
   when: "'Linux' in ansible_system"
+
+- name: Base for MacOS
+  ansible.builtin.include_tasks:
+    file: base_macos.yml
+  when: "'MacOS' in ansible_system"

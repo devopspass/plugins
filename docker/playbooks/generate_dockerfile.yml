@@ -9,7 +9,7 @@
         dest: "{{ (folder_name, 'Dockerfile') | path_join }}"
 
     - name: Generate nginx.conf
+      when: "'React' in app_type"
       ansible.builtin.template:
         src: "templates/react.nginx.conf"
         dest: "{{ (folder_name, 'nginx.conf') | path_join }}"
-      when: "'React' in app_type"

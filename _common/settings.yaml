@@ -15,6 +15,7 @@ terminal.command:
   description: Terminal command
   default_windows: start cmd.exe /c %COMMAND%
   default_linux: gnome-terminal -- %COMMAND%
+  default_macos: dop-term %COMMAND%
   section: DevOps Pass AI
 
 # Codex options
