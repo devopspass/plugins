@@ -1,4 +1,5 @@
 from kubernetes import client, config
+from kubernetes.client.rest import ApiException
 
 def list():
     # Load Kubernetes configuration from default location
@@ -19,7 +20,18 @@ def list():
     v1 = client.CoreV1Api()
 
     # Retrieve list of namespaces
-    namespaces = v1.list_namespace()
+    try:
+        namespaces = v1.list_namespace()
+    except ApiException as e:
+        if e.status == 403:
+            from kubernetes import dynamic
+            from kubernetes.client import api_client
+            c = dynamic.DynamicClient(
+                api_client.ApiClient(configuration=config.load_kube_config())
+            )
+            namespaces = c.resources.get(api_version="project.openshift.io/v1", kind="Project").get()
+        else:
+            raise(e)
 
     # Extract namespace names and their status
     namespace_info = []
