@@ -33,6 +33,7 @@ node_remove_version:
   icon: fas fa-trash
   object_types: nodejs_version
   command: plugins/nodejs/scripts/nodejs_remove_version.py
+  danger: true
 
 node_install_version:
   title: Install

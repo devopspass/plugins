@@ -736,10 +736,7 @@
     icon: "assets/icons/general/docs.png"
     urls:
       - name: "Jira Documentation"
-        url: "https://support.atlassian.com/jira-software-cloud/docs/"
-
-      - name: "Getting Started with Jira"
-        url: "https://support.atlassian.com/jira-software-cloud/docs/getting-started/"
+        url: https://support.atlassian.com/jira-software-cloud/resources/
 
       - name: "Jira API Documentation"
         url: "https://developer.atlassian.com/cloud/jira/platform/rest/"

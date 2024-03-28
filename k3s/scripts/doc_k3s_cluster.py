@@ -1,7 +1,9 @@
 import requests
 
+port = "8080"
+
 def list():
-    url = "http://127.0.0.1:8080/v1/clusters"
+    url = f"http://127.0.0.1:{port}/v1/clusters"
     # Send GET request to fetch clusters data
     response = requests.get(url)
 
@@ -29,6 +31,7 @@ def parse_clusters_response(response):
     # Iterate over clusters data and extract required information
     for cluster_data in clusters_data:
         cluster_name = cluster_data["name"]
+        id = cluster_data['id']
         cluster_provider = cluster_data['provider']
         if cluster_provider == 'k3d':
             provider_icon = f"assets/icons/k8s/k3s.png"
@@ -37,16 +40,18 @@ def parse_clusters_response(response):
         masters = int(cluster_data["master"])
         workers = int(cluster_data["worker"])
         status = cluster_data["status"]
+        url = f"http://127.0.0.1:{port}/ui/cluster-explorer/core/clusters/detail/{id}"
 
         # Append parsed data to the list
         parsed_clusters.append({
             "icon": provider_icon,
             "name": cluster_name,
-            "id": cluster_data['id'],
+            "id": id,
             "type_title": cluster_provider,
             "masters": masters,
             "workers": workers,
-            "status": status
+            "status": status,
+            "url": url,
         })
 
     return parsed_clusters

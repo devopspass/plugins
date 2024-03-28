@@ -9,3 +9,4 @@ docker_images:
   title: Docker images
   filter_field: name
   source: plugins/docker/scripts/api_docker_images.py
+  actions_view_type: buttons

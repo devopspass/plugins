@@ -115,3 +115,4 @@ conda_delete_env:
   icon: fas fa-trash
   object_types: conda_env
   command: plugins/python/scripts/conda_remove_env.py
+  danger: true

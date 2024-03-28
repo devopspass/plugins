@@ -48,6 +48,7 @@ helm_delete_repo:
   icon: fas fa-trash
   object_types: helm_repo
   command: plugins/helm/scripts/helm_remove_repo.py
+  danger: true
 
 helm_chart_install:
   title: Install Chart
@@ -86,3 +87,4 @@ helm_delete_release:
   icon: fas fa-trash
   object_types: helm_release
   command: plugins/helm/scripts/helm_remove_release.py
+  danger: true
