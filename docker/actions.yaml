@@ -55,7 +55,7 @@ docker_start_container:
   description: |
     Start Docker container from image
   icon: fas fa-play
-  command: plugins/docker/scripts/docker_start_container.py
+  command: plugins/docker/scripts/docker/docker_start_container.py
   required_settings:
     - docker.command
   # show_settings: true
@@ -116,7 +116,7 @@ docker_attach_to_container:
   title: Attach to container
   icon: fas fa-terminal
   object_types: docker_container
-  command: plugins/docker/scripts/docker_attach_container.py
+  command: plugins/docker/scripts/docker/docker_attach_container.py
   required_settings:
     - docker.command
 
@@ -124,25 +124,46 @@ docker_stop_container:
   title: Stop container
   icon: fas fa-stop
   object_types: docker_container
-  command: plugins/docker/scripts/docker_stop_container.py
+  command: plugins/docker/scripts/docker/docker_stop_container.py
   danger: true
 
 docker_remove_container:
   title: Remove container
   icon: fas fa-trash
   object_types: docker_container
-  command: plugins/docker/scripts/docker_remove_container.py
+  command: plugins/docker/scripts/docker/docker_remove_container.py
   danger: true
 
 docker_open_image_description:
   title: Open image description
   icon: fas fa-search
   object_types: docker_images
-  command: plugins/docker/scripts/docker_open_image_description.py
+  command: plugins/docker/scripts/docker/docker_open_image_description.py
 
 docker_remove_image:
   title: Remove image
   icon: fas fa-trash
   object_types: docker_images
-  command: plugins/docker/scripts/docker_remove_image.py
+  command: plugins/docker/scripts/docker/docker_remove_image.py
   danger: true
+
+
+### Docker Compose
+
+docker_compose_stop:
+  title: Stop services
+  icon: fas fa-stop
+  object_types: docker_compose
+  command: plugins/docker/scripts/compose/docker_compose_stop.py
+  danger: true
+  required_settings:
+    - docker.command
+
+docker_compose_down:
+  title: Down
+  icon: fas fa-arrow-down
+  object_types: docker_compose
+  command: plugins/docker/scripts/compose/docker_compose_down.py
+  danger: true
+  required_settings:
+    - docker.command

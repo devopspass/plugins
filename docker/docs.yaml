@@ -2,11 +2,18 @@ docker_container:
   application: Docker
   title: Docker containers
   filter_field: name
-  source: plugins/docker/scripts/api_docker_containers.py
+  source: plugins/docker/scripts/doc_docker_containers.py
 
 docker_images:
   application: Docker
   title: Docker images
   filter_field: name
-  source: plugins/docker/scripts/api_docker_images.py
+  source: plugins/docker/scripts/doc_docker_images.py
+  actions_view_type: buttons
+
+docker_compose:
+  application: Docker
+  title: Docker compose
+  filter_field: name
+  source: plugins/docker/scripts/doc_docker_compose.py
   actions_view_type: buttons
