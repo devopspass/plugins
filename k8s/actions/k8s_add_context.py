@@ -95,7 +95,8 @@ try:
 
     if len(current_config.get('contexts', [])) == 0:
         del current_config['current-context']
-    else:
+
+    if len(current_config.get('contexts', []) == 1):
         current_config['current-context'] = current_config['contexts'][0]['name']
 
     # Save changes

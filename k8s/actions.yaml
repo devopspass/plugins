@@ -43,9 +43,7 @@ k8s_add_context:
   required_options:
     kube_config:
       title: KubeConfig
-      remember: true
-      remember_key: name
-      type: text
+      remember: false
 
 k8s_set_default_context:
   title: Set context as default
