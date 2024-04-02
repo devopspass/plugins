@@ -2,6 +2,6 @@ server {
   listen 80;
   server_name localhost;
   location / {
-    proxy_pass http://app:app_port;
+    proxy_pass http://app:{{app_port}};
   }
 }

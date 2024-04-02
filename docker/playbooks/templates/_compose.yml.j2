@@ -1,5 +1,10 @@
 version: '3'
 services:
+{% if app_enabled == 'true' %}
+  app:
+    build: ./
+{% endif %}
+
 {% if mysql_enabled == 'true' %}
   mysql:
     image: mysql:latest
@@ -20,12 +25,12 @@ services:
     ports:
       - "{{ nginx_port }}:80"
     volumes:
-      - "./nginx.conf:/etc/nginx/conf.d/default.conf"
-{% endif %}
-
-{% if app_enabled == 'true' %}
-  app:
-    build: ./
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+    depends_on:
+      - app
 {% endif %}
 
 {% if postgres_enabled == 'true' %}
