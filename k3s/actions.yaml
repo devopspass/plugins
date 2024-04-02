@@ -6,12 +6,15 @@ k3s_install:
   command: plugins/k3s/scripts/k3s_start.py
   required_settings:
     - docker.command
+    - autok3s.port
+  show_settings: true
   required_options:
     version:
       type: string
       title: AutoK3s version
       default: "0.9.2"
-      description: Please check `autok3s` oficial repo - https://github.com/cnrancher/autok3s
+      description: |
+        Please check `autok3s` oficial repo - https://github.com/cnrancher/autok3s
       remember: true
       remember_key: name
 
@@ -21,3 +24,22 @@ k3s_open_console:
   object_types: application
   application_name: K3s
   command: plugins/k3s/scripts/k3s_open_in_browser.py
+  required_settings:
+    - autok3s.port
+
+k3s_remove_cluster:
+  title: Remove
+  icon: fas fa-trash
+  object_types: k3s_cluster
+  command: plugins/k3s/scripts/k3s_remove_cluster.py
+  danger: true
+  required_settings:
+    - autok3s.port
+
+k3s_pull_kube_config:
+  title: Pull KubeConfig
+  icon: fas fa-folder-plus
+  object_types: k3s_cluster
+  command: plugins/k3s/scripts/k3s_pull_kube_config.py
+  required_settings:
+    - autok3s.port

@@ -1,4 +1,5 @@
 import json, sys, os, yaml
+import traceback
 import cdx
 
 action = 'k8s_add_context'
@@ -28,9 +29,12 @@ with open(fname_settings, 'r') as file:
 with open(fname_doc, 'r') as file:
     doc = json.load(file)
 
-opts = cdx.helpers.get_action_options(doc, action)
-new_config = yaml.safe_load(opts.get('kube_config', {}).get('value'))
-
+# TODO: DROP IT, ITS DIRTY HACK FOR k3s
+if doc['metadata']['kube_config']:
+    new_config = yaml.safe_load(doc['metadata']['kube_config'])
+else:
+    opts = cdx.helpers.get_action_options(doc, action)
+    new_config = yaml.safe_load(opts.get('kube_config', {}).get('value'))
 # apiVersion: v1
 # clusters:
 # - cluster:
@@ -96,7 +100,7 @@ try:
     if len(current_config.get('contexts', [])) == 0:
         del current_config['current-context']
 
-    if len(current_config.get('contexts', []) == 1):
+    if len(current_config.get('contexts', [])) == 1:
         current_config['current-context'] = current_config['contexts'][0]['name']
 
     # Save changes
@@ -106,4 +110,5 @@ try:
 
 except (KeyError, TypeError) as e:
     print(f'Error while processing the kubeconfig: {e}')
+    traceback.print_exc()
     exit(1)

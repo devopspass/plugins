@@ -1,6 +1,6 @@
-import requests
+import requests, cdx
 
-port = "8080"
+port = cdx.settings.all().get('autok3s.port', {}).get('value', '8080')
 
 def list():
     url = f"http://127.0.0.1:{port}/v1/clusters"

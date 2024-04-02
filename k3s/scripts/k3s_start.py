@@ -21,14 +21,15 @@ opts = cdx.helpers.get_action_options(doc, action)
 version = opts.get('version', {}).get('value')
 
 cmd = settings['docker.command']
-_c = f" run -itd --restart=unless-stopped --name autok3s "
+port = settings['autok3s.port']
+
+_c = f" run -itd --restart=unless-stopped --name autok3s -p {port}:8080 "
 
 # Network
 if cdx.helpers.is_macos() or cdx.helpers.is_windows():
-    _c += f" -p 8080:8080 -e DOCKER_HOST=\"\" "
+    _c += f" -e DOCKER_HOST=\"\" "
 else:
-    _c += f" --network host "
-
+    _c += f' --network host '
 _c += " --volume /var/run/docker.sock:/var/run/docker.sock "
 
 # Image
@@ -44,7 +45,7 @@ if output.returncode == 0:
     print(output.stderr)
     print("Opening K3s endpoint...")
     time.sleep(3)
-    webbrowser.open_new_tab('http://127.0.0.1:8080/')
+    webbrowser.open_new_tab(f'http://127.0.0.1:{port}/')
 else:
     print("Something went wrong...")
     print(output.stdout)

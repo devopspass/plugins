@@ -1,0 +1,9 @@
+---
+autok3s.port:
+  section: K3s
+  required_app: K3s
+  description: |
+    Port exposed by K3s
+  title: AutoK3s UI port
+  type: string
+  default: "8080"
