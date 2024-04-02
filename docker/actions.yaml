@@ -167,3 +167,109 @@ docker_compose_down:
   danger: true
   required_settings:
     - docker.command
+
+docker_compose_rebuild:
+  title: Rebuild images
+  icon: fas fa-hammer
+  object_types: docker_compose
+  command: plugins/docker/scripts/compose/docker_compose_build.py
+  danger: true
+  required_settings:
+    - docker.command
+
+docker_compose_pause:
+  title: Pause
+  icon: fas fa-pause-circle
+  object_types: docker_compose
+  command: plugins/docker/scripts/compose/docker_compose_pause.py
+  danger: true
+  required_settings:
+    - docker.command
+
+docker_compose_unpause:
+  title: Unpause
+  icon: fas fa-play-circle
+  object_types: docker_compose
+  command: plugins/docker/scripts/compose/docker_compose_unpause.py
+  required_settings:
+    - docker.command
+
+generate_docker_compose:
+  object_types: application
+  application_name: Docker
+  title: Generate compose.yml
+  description: |
+    Generate `compose.yml` for your application.
+  icon: fab fa-docker
+  playbook: plugins/docker/playbooks/generate_compose.yml
+  required_options:
+    folder_name:
+      type: folder
+      title: Your project home folder
+      remember: true
+      remember_key: name
+    app_enabled:
+      type: dropdown
+      title: Need application service?
+      remember: true
+      remember_key: name
+      default: |
+        true
+        false
+    app_port:
+      type: string
+      title: Application port
+      description: |
+        Port which is use by you application container
+      remember: true
+      remember_key: name
+      default: 8080
+    nginx_enabled:
+      type: dropdown
+      title: Need nginx?
+      remember: true
+      remember_key: name
+      default: |
+        true
+        false
+    nginx_port:
+      type: string
+      title: nginx port
+      description: "Port which will be used by developer to reach service http://localhost:8080/"
+      remember: true
+      remember_key: name
+      default: 8080
+
+    mysql_enabled:
+      type: dropdown
+      title: Need MySQL?
+      remember: true
+      remember_key: name
+      default: |
+        false
+        true
+    postgres_enabled:
+      type: dropdown
+      title: Need PostgreSQL?
+      remember: true
+      remember_key: name
+      default: |
+        false
+        true
+    mongodb_enabled:
+      type: dropdown
+      title: Need MongoDB?
+      remember: true
+      remember_key: name
+      default: |
+        false
+        true
+    redis_enabled:
+      type: dropdown
+      title: Need Redis?
+      remember: true
+      remember_key: name
+      default: |
+        false
+        true
+

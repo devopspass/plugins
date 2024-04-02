@@ -1,0 +1,15 @@
+---
+- name: Generate Dockerfile
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate docker-compose.yml
+      ansible.builtin.template:
+        src: "templates/_compose.yml.j2"
+        dest: "{{ (folder_name, 'compose.yml') | path_join }}"
+
+    - name: Generate nginx.conf
+      when: nginx_enabled
+      ansible.builtin.template:
+        src: "templates/react.nginx.conf"
+        dest: "{{ (folder_name, 'nginx.conf') | path_join }}"
