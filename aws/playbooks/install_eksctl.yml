@@ -45,20 +45,14 @@
             mode: '0644'
 
         - name: Extract eksctl binary
-          ansible.builtin.command: # unarchive doesnt work correct on MacOS for some reason
-            cmd: "tar -xzf {{ dop_temp }}/eksctl.tar.gz -C '{{ dop_bin }}'"
+          dop_unarchive:
+            src: "{{ dop_temp }}/eksctl.tar.gz"
+            dest: "{{ dop_bin }}"
 
         - name: Set execute permissions
           ansible.builtin.file:
             path: "{{ dop_bin }}/eksctl"
             mode: 'a+x'
-
-        - name: Add user's bin directory to PATH
-          ansible.builtin.lineinfile:
-            dest: "{{ ansible_env.HOME }}/.bash_profile"
-            line: 'export PATH="$PATH:{{ dop_bin }}"'
-            create: true
-            state: present
 
         - name: Clean up temporary files
           ansible.builtin.file:

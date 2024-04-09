@@ -2,8 +2,15 @@
 - name: Install Docker
   hosts: localhost
   connection: local
-  become_flags: ""
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
   tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
     - name: Docker Desktop for Windows
       block:
         - name: Check if Docker Desktop is installed
@@ -89,3 +96,28 @@
             name: docker-ce
             state: present
       when: ansible_os_family == 'Linux' and ansible_distribution in ['CentOS', 'RedHat']
+
+    - name: Install Docker on Mac
+      block:
+        # - name: Download Docker for Mac
+        #   ansible.builtin.get_url: 
+        #     url: https://desktop.docker.com/mac/main/{{ arch_mapping[ansible_architecture] }}/Docker.dmg
+        #     dest: "{{ dop_temp }}"
+
+        - name: Mount DMG
+          ansible.builtin.command:
+            cmd: "hdiutil attach {{ (dop_temp, 'Docker.dmg') | path_join }}"
+
+        - name: Copy
+          ansible.builtin.copy:
+            src: "/Volumes/Docker/Docker.app"
+            dest: "/Applications/"
+
+        - name: Detach
+          ansible.builtin.command:
+            cmd: hdiutil detach /Volumes/Docker
+
+        # - name: Remove DMG
+        #   ansible.builtin.file:
+        #     path: "{{ (dop_temp, 'Docker.dmg') | path_join }}"
+        #     state: absent

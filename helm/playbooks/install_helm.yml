@@ -41,25 +41,19 @@
         - name: Download Helm binary
           ansible.builtin.get_url:
             url: "{{ helm_download_url }}"
-            dest: "/tmp/helm.tar.gz"
-
-        - name: Create ~/bin/
-          ansible.builtin.file:
-            path: "{{ ansible_env.HOME }}/bin/"
-            state: directory
+            dest: "{{ dop_temp }}/helm.tar.gz"
 
         - name: Unzip Helm binary
-          ansible.builtin.unarchive:
-            src: "/tmp/helm.tar.gz"
-            dest: "{{ ansible_env.HOME }}/bin/"
-            remote_src: true
+          dop_unarchive:
+            src: "{{ dop_temp }}/helm.tar.gz"
+            dest: "{{ dop_temp }}/"
 
         - name: Move Helm binary
           ansible.builtin.command:
             cmd: "mv {{ helm_path }} {{ ansible_env.HOME }}/bin/"
             removes: "{{ helm_path }}"
           vars:
-            helm_path: "{{ ansible_env.HOME }}/bin/{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}/helm"
+            helm_path: "{{ dop_temp }}/{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}/helm"
 
         - name: Remove Helm temporary folder
           ansible.builtin.file:
@@ -67,14 +61,7 @@
             state: absent
           vars:
             helm_path: "{{ ansible_env.HOME }}/bin/{{ ansible_system | lower }}-{{ arch_mapping[ansible_architecture] }}/"
-
-        - name: Add user's bin directory to PATH
-          ansible.builtin.lineinfile:
-            dest: "{{ ansible_env.HOME }}/.bash_profile"
-            line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
-            create: true
-            state: present
-
+            
       when: "'Darwin' in ansible_system or 'Linux' in ansible_system"
 
 #####################################################################

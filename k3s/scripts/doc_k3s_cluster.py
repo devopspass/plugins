@@ -5,8 +5,16 @@ port = cdx.settings.all().get('autok3s.port', {}).get('value', '8080')
 def list():
     url = f"http://127.0.0.1:{port}/v1/clusters"
     # Send GET request to fetch clusters data
-    response = requests.get(url)
-
+    try:
+        response = requests.get(url)
+    except:
+        return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': f"Can't get clusters list at '{url}', have you installed autoK3s?"
+            }
+        ]
     # Check if request was successful
     if response.status_code == 200:
         # Parse response and get required information

@@ -3,6 +3,11 @@
     dop_bin: "{{ (user_home_path, 'bin') | path_join }}"
     dop_temp: "{{ (dop_home_path, 'tmp') | path_join }}"
 
+- name: Temp
+  ansible.builtin.file:
+     path: "{{ dop_temp }}"
+     state: directory
+
 - name: Base for Windows
   ansible.builtin.include_tasks:
     file: base_windows.yml
@@ -16,4 +21,4 @@
 - name: Base for MacOS
   ansible.builtin.include_tasks:
     file: base_macos.yml
-  when: "'MacOS' in ansible_system"
+  when: "'Darwin' in ansible_system"

@@ -10,6 +10,13 @@
     create: true
     state: present
 
+- name: Add ~/bin/ to PATH
+  ansible.builtin.lineinfile:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    line: 'export PATH="$PATH:{{ ansible_env.HOME }}/bin"'
+    create: true
+    state: present
+
 - name: DOP terminal command
   ansible.builtin.template:
     src: "templates/dop-term.sh.j2"

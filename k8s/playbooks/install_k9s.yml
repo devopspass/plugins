@@ -44,7 +44,7 @@
         dest: "{{ (dop_temp, 'k9s.' + archive_type) | path_join }}"
 
     - name: Extract k9s binary *nix
-      ansible.builtin.unarchive:
+      dop_unarchive:
         src: "{{ (dop_temp, 'k9s.' + archive_type) | path_join }}"
         dest: "{{ dop_bin }}"
       when: ansible_system != 'Windows'

@@ -6,6 +6,10 @@
     arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
       x86_64: amd64
       aarch64: arm64
+    system_mapping:
+      Windows: windows
+      Linux: linux
+      Darwin: mac
 
   tasks:
     - name: Base tasks
@@ -43,7 +47,7 @@
 
     - name: Set facts based on operating system
       ansible.builtin.set_fact:
-        oc_download_url: "https://mirror.openshift.com/pub/openshift-v4/{{ ansible_architecture }}/clients/ocp/{{ oc_version }}/openshift-client-{{ ansible_system | lower }}.{{ archive_type }}"
+        oc_download_url: "https://mirror.openshift.com/pub/openshift-v4/{{ ansible_architecture }}/clients/ocp/{{ oc_version }}/openshift-client-{{ system_mapping[ansible_system] }}.{{ archive_type }}"
 
 #####################################################################
 #
@@ -56,16 +60,9 @@
         dest: "{{ dop_temp }}/oc.{{ archive_type }}"
 
     - name: Extract oc binary *nix
-      ansible.builtin.unarchive:
+      dop_unarchive:
         src: "{{ (dop_temp, 'oc.' + archive_type) | path_join }}"
         dest: "{{ dop_bin }}"
-      when: ansible_system != 'Windows'
-
-
-    - name: Extract oc binary Windows # noqa: command-instead-of-module no-changed-when
-      ansible.builtin.command:
-        cmd: "tar -xf '{{ (dop_temp, 'oc.' + archive_type) | path_join }}' -C '{{ dop_bin }}'"
-      when: ansible_system == 'Windows'
 
     - name: Remove oc archive
       ansible.builtin.file:

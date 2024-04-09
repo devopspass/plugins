@@ -22,6 +22,8 @@ else:
 os.environ['ANSIBLE_STDOUT_CALLBACK'] = 'yaml'
 os.environ['ANSIBLE_DIFF_ALWAYS'] = 'true'
 os.environ['ANSIBLE_FORCE_COLOR'] = 'true'
+os.environ['ANSIBLE_LIBRARY'] = os.path.join(cdx.helpers.plugins_path(), '_common', 'library/')
+
 #os.environ['PYTHONDEBUG'] = 'true'
 #os.environ['PYTHONVERBOSE'] = 'true'
 
