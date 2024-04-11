@@ -3,7 +3,7 @@ dop_add_app:
   application_name: DevOps Pass AI
   title: Add new app
   description: |
-    Install `aws-cli` on your local
+    Add new application to `apps.yaml` and install action to `~/.devopspass-ai/plugins/APP_NAME/`
   icon: fas fa-id-card
   playbook: plugins/devopspass-ai/playbooks/add_app.yml
   required_options:
@@ -15,6 +15,12 @@ dop_add_app:
     app_icon_url:
       type: string
       title: Icon URL
+      remember: true
+      remember_key: name
+    github_repo:
+      type: string
+      title: GitHub repo
+      description: In format `username/repo_name`, i.e. for https://github.com/devopspass/devopspass/ it will be `devopspass/devopspass`.
       remember: true
       remember_key: name
     app_description:
@@ -41,7 +47,47 @@ dop_add_app_action:
     Install `aws-cli` on your local
   icon: fas fa-directions
   playbook: plugins/devopspass-ai/playbooks/add_app_action.yml
-
+  required_options:
+    action_name:
+      title: "Action id, like `action_name`"
+      type: string
+      remember: true
+      remember_key: name
+    application_name:
+      title: "Application name, from `apps.yaml`"
+      type: string
+      remember: true
+      remember_key: name
+    title:
+      title: "Title"
+      type: string
+      remember: true
+      remember_key: name
+    description:
+      title: "Description"
+      type: text
+      remember: true
+      remember_key: name
+    icon:
+      title: "FontAwesome 5 icon name, please check https://fontawesome.com/v5/search?q=&o=r&m=free"
+      type: string
+      remember: true
+      remember_key: name
+    playbook_name:
+      title: "Playbook to run on command"
+      type: string
+      remember: true
+      remember_key: name
+    command:
+      title: "Command (script) to run on command"
+      type: string
+      remember: true
+      remember_key: name
+    required_options:
+      title: "Required options"
+      type: text
+      remember: true
+      remember_key: name
 dop_add_doc_type:
   object_types: application
   application_name: DevOps Pass AI

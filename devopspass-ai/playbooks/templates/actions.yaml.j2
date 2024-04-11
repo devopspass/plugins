@@ -1,0 +1,15 @@
+{{ action_name }}:
+  object_types: application
+  application_name: {{ app_name }}
+  title: Install {{ app_name }}
+  description: |
+    Install {{ app_name }}
+  icon: fas fa-download
+  playbook: plugins/{{ fname }}/playbooks/{{ action_name }}.yml
+  required_options:
+    req_version:
+      title: Version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest

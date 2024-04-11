@@ -1,5 +1,5 @@
 ---
-- name: Install k9s
+- name: Install
   hosts: localhost
   connection: local
   vars:

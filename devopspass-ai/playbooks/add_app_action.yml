@@ -1,0 +1,67 @@
+---
+- name: DevOps Pass AI
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+    
+    - name: Folder name
+      ansible.builtin.set_fact:
+        fname: "{{ application_name | lower | replace(' ', '_') }}"
+
+    - name: Folder path
+      ansible.builtin.set_fact:
+        fpath: "{{ (plugins_path, fname) | path_join }}"
+
+    - name: Split text
+      ansible.builtin.set_fact:
+        sec: "{{ required_options.split('\n') }}"
+
+    - name: Get sections names
+      set_fact:
+        req_opt: "{{ req_opt | default({}) | combine({item: {'title': '', 'type': 'string', 'remember': 'true', 'remember_key': 'name'}}) }}"
+      with_items: "{{ sec }}"
+
+    - ansible.builtin.debug:
+        msg: "{{req_opt}}"
+
+    - name: App section
+      yedit:
+        src: "{{ ( fpath, 'actions.yaml' ) | path_join }}"
+        update: true
+        edits:
+          - key: "{{ action_name }}.object_types"
+            value: application
+          - key: "{{ action_name }}.application_name"
+            value: "{{ application_name }}"
+          - key: "{{ action_name }}.title"
+            value: "{{ title }}"
+          - key: "{{ action_name }}.description"
+            value: "{{ description }}"
+          - key: "{{ action_name }}.icon"
+            value: "{{ icon }}"
+
+    - name: App section command
+      yedit:
+        src: "{{ ( fpath, 'actions.yaml' ) | path_join }}"
+        update: true
+        key: "{{ action_name }}.command"
+        value: "{{ command }}"
+      when: "command != ''"
+
+    - name: App section playbook
+      yedit:
+        src: "{{ ( fpath, 'actions.yaml' ) | path_join }}"
+        update: true
+        key: "{{ action_name }}.playbook"
+        value: "{{ playbook_name }}"
+      when: "playbook_name != ''"
+
+    - name: App section req_options
+      yedit:
+        src: "{{ ( fpath, 'actions.yaml' ) | path_join }}"
+        update: true
+        key: "{{ action_name }}.required_options"
+        value: "{{ req_opt }}"
