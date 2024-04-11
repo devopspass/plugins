@@ -1,0 +1,61 @@
+dop_add_app:
+  object_types: application
+  application_name: DevOps Pass AI
+  title: Add new app
+  description: |
+    Install `aws-cli` on your local
+  icon: fas fa-id-card
+  playbook: plugins/devopspass-ai/playbooks/add_app.yml
+  required_options:
+    app_name:
+      type: string
+      title: Application name
+      remember: true
+      remember_key: name
+    app_icon_url:
+      type: string
+      title: Icon URL
+      remember: true
+      remember_key: name
+    app_description:
+      type: string
+      title: Description
+      remember: true
+      remember_key: name
+    app_description_long:
+      type: text
+      title: Description long
+      remember: true
+      remember_key: name
+    app_sections:
+      type: text
+      title: Sections
+      remember: true
+      remember_key: name
+
+dop_add_app_action:
+  object_types: application
+  application_name: DevOps Pass AI
+  title: Add app action
+  description: |
+    Install `aws-cli` on your local
+  icon: fas fa-directions
+  playbook: plugins/devopspass-ai/playbooks/add_app_action.yml
+
+dop_add_doc_type:
+  object_types: application
+  application_name: DevOps Pass AI
+  title: Add Document Type
+  description: |
+    Install `aws-cli` on your local
+  icon: fas fa-book-medical
+  playbook: plugins/devopspass-ai/playbooks/add_doc_type.yml
+
+dop_add_doc_action:
+  object_types: application
+  application_name: DevOps Pass AI
+  title: Add Document Action
+  description: |
+    Install `aws-cli` on your local
+  icon: fas fa-bolt
+  playbook: plugins/devopspass-ai/playbooks/add_doc_action.yml

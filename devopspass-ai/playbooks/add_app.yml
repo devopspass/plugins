@@ -1,0 +1,20 @@
+---
+- name: DevOps Pass AI
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
+    - name: App section
+      yedit:
+        src: "{{ ( plugins_path, 'apps.yaml' ) | path_join }}"
+        append: true
+        value: |
+          name: "{{ app_name }}"
+          icon: "{{ app_icon_url }}"
+          description: "{{ app_description }}"
+          description_long: |
+            {{ app_description_long }}
+          sections: []
