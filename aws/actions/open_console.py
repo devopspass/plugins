@@ -1,4 +1,5 @@
 import urllib, json, sys
+import webbrowser
 import requests # 'pip install requests'
 import boto3 # AWS SDK for Python (Boto3) 'pip install boto3'
 import os
@@ -76,5 +77,4 @@ else:
 
 logout_url = f"https://{region}.signin.aws.amazon.com/oauth?Action=logout&redirect_uri={quote_plus_function(request_url)}"
 
-# Send final URL to stdout
-os.system(f"python plugins/_common/actions/open_url.py '{request_url}'")
+webbrowser.open_new_tab(request_url)

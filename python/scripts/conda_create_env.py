@@ -43,7 +43,8 @@ def create_conda_environment(name, packages, channels, env_raw, pip):
         env_data['dependencies'].append({'pip': pip})
 
     if env_raw.strip() != '':
-        env_data = yaml.loads(env_raw)
+        env_data = yaml.safe_load(env_raw)
+        env_data['name'] = name
 
     with tempfile.NamedTemporaryFile('w', suffix='.yml') as yaml_file:
         yaml.dump(env_data, yaml_file, default_flow_style=False)

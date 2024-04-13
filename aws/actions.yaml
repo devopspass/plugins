@@ -1,3 +1,14 @@
+aws_refresh_creds:
+  title: Refresh AWS creds
+  icon: fas fa-sync-alt
+  object_types: aws_profile
+  command: |
+    plugins/aws/actions/refresh_app_creds.py
+  required_ds: aws_apps
+  required_settings:
+    - action.aws_refresh_creds.ds.start_url
+  show_settings: true
+
 aws_open_console:
   title: Open AWS Console
   icon: fab fa-solid fa-brands fa-aws

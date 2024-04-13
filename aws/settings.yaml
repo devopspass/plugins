@@ -42,3 +42,12 @@ aws.profiles.regions:
   title: AWS Profiles default regions
   type: dict
   hidden: true
+
+action.aws_refresh_creds.ds.start_url:
+  section: AWS
+  required_app: AWS
+  description: |
+    AWS SSO Portal URL, usually https://d-XXXXXXX.awsapps.com/start/#/
+  title: AWS SSO Portal URL
+  type: string
+  hidden: true

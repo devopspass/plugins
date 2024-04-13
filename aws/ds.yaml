@@ -1,0 +1,37 @@
+id: aws_apps
+description: AWS Apps creds SSO
+icon: https://avatars.githubusercontent.com/u/2232217?v=4
+title: AWS Apps SSO
+check_script: plugins/aws/actions/check_aws_token.py
+actions:
+  - url_match: https://.*.awsapps.com/start/.*
+    cookies:
+      - name: aws_sso_token
+        domain: start_url
+        key: x-amz-sso_authn
+    name: aws_bearer_token
+  - url_match: https://.*.awsapps.com/start/.*
+    extract_js:
+      - name: check
+        js: |
+          var btns = document.getElementsByTagName('button')
+          var aws_accounts = []
+          setTimeout(function(){
+              var i = 0
+              for(btn of btns){
+                if(i > 9){
+                  var x = btn.getElementsByTagName('strong')
+                  if(x && x[0]){
+                    aws_accounts.push(x[0].textContent)
+                  }
+                }
+                i++
+              }
+              console.log(aws_accounts)
+              return aws_accounts
+          }, 4000);
+  - url_match: https://.*.awsapps.com/start/.*
+    finish_if: aws_accounts
+    finish: true
+    finish_sleep: 6000
+    results_js: aws_accounts

@@ -1,0 +1,5 @@
+aws_profile:
+  application: AWS
+  title: AWS Profiles
+  filter_field: name
+  source: plugins/aws/docs/aws_profiles.py
