@@ -4,10 +4,11 @@ import sys
 import requests
 
 fname_doc = sys.argv[1]
-fname_settings = sys.argv[2]
 
 with open(fname_doc, 'r') as file:
     doc = json.load(file)
+
+print(doc)
 
 token = doc['aws_sso_token']
 url = f'https://portal.sso.us-east-1.amazonaws.com/token/whoAmI'
@@ -21,7 +22,6 @@ headers = {
 response = requests.get(url, headers=headers)
 
 if response.status_code == 200:
-    print(response.content)
     print("AWS SSO: token works")
     exit(0)
 else:
