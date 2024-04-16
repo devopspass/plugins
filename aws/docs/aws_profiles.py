@@ -1,3 +1,5 @@
+import configparser
+from pathlib import Path
 import subprocess
 import re, json, os
 import cdx
@@ -9,10 +11,22 @@ def list():
     session = botocore.session.get_session()
     profiles = session.available_profiles
 
+    config = configparser.RawConfigParser()
+    path = os.path.expanduser('~/.aws/credentials')
+    if not os.path.exists(path):
+        Path(path).touch()
+
+    config.read(path)
+
+    key_id = ''
+    if config.has_section('default'):
+      key_id = config.get('default', 'aws_access_key_id')
+
     for p in profiles:
         aws.append(
             {
                 'name': p,
+                'active': key_id == config.get(p, 'aws_access_key_id')
             }
         )
 

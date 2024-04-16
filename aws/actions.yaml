@@ -68,6 +68,13 @@ aws_refresh_creds:
   - action.aws_refresh_creds.ds.start_url
   # show_settings: true
 
+aws_profile_make_default:
+  title: Make default
+  icon: fas fa-check
+  object_types: aws_profile
+  command: |
+    plugins/aws/actions/make_default.py
+
 eksctl_install:
   object_types: application
   application_name: AWS
