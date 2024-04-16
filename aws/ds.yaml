@@ -9,6 +9,8 @@ actions:
       - name: aws_sso_token
         domain: start_url
         key: x-amz-sso_authn
+    if: aws_accounts
+    sleep: 2500
     name: aws_bearer_token
   - url_match: https://.*.awsapps.com/start/.*
     extract_js:
@@ -29,9 +31,9 @@ actions:
               }
               console.log(aws_accounts)
               return aws_accounts
-          }, 4000);
+          }, 2000);
   - url_match: https://.*.awsapps.com/start/.*
-    finish_if: aws_accounts
+    if: aws_accounts
     finish: true
-    finish_sleep: 6000
+    sleep: 4000
     results_js: aws_accounts

@@ -1,0 +1,5 @@
+action.okta_import_apps.ds.start_url:
+  section: Okta
+  required_app: Okta
+  title: Okta URL
+  type: string

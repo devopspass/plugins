@@ -1,3 +1,4 @@
+import time
 import urllib, json, sys
 import webbrowser
 import requests # 'pip install requests'
@@ -76,5 +77,6 @@ else:
     request_url = "https://signin.aws.amazon.com/federation" + request_parameters
 
 logout_url = f"https://{region}.signin.aws.amazon.com/oauth?Action=logout&redirect_uri={quote_plus_function(request_url)}"
-
+webbrowser.open_new_tab(logout_url)
+time.sleep(1)
 webbrowser.open_new_tab(request_url)

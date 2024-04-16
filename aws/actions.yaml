@@ -5,7 +5,7 @@ aws_open_console:
   command: |
     plugins/aws/actions/open_console.py
   required_settings:
-    - actions.aws_open_console
+  - actions.aws_open_console
   required_options:
     aws_region:
       type: dropdown
@@ -41,7 +41,6 @@ aws_open_console:
       title: AWS Region
       remember: true
       remember_key: name
-
 aws_refresh_creds:
   title: Refresh AWS creds
   icon: fas fa-sync-alt
@@ -50,7 +49,7 @@ aws_refresh_creds:
     plugins/aws/actions/refresh_app_creds.py
   required_ds: aws_apps
   required_settings:
-    - action.aws_refresh_creds.ds.start_url
+  - action.aws_refresh_creds.ds.start_url
   # show_settings: true
 
 eksctl_install:
@@ -77,3 +76,22 @@ aws_cli_install:
     Install `aws-cli` on your local
   icon: fas fa-download
   playbook: plugins/aws/playbooks/install_aws_cli.yml
+
+aws_refresh_sso_tokens:
+  object_types: application
+  application_name: AWS
+  title: Load AWS profiles from SSO
+  description: This action will load your AWS Profiles from AWS Landing Zone SSO app
+  icon: fas fa-sync-alt
+  command: plugins/aws/actions/refresh_app_creds.py
+  required_options:
+    refresh_creds:
+      title: Shall we refresh AWS credentials for all profiles?
+      type: dropdown
+      default: |
+        false
+        true
+  required_ds: aws_apps
+  show_settings: true
+  required_settings:
+  - action.aws_refresh_sso_tokens.ds.start_url

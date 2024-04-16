@@ -1,0 +1,16 @@
+id: okta
+description: Okta
+icon: https://avatars.githubusercontent.com/u/2232217?v=4
+title: OKTA
+check_script: plugins/okta/actions/check_okta.py
+actions:
+  - url_match: https://.*.okta.com/app/UserHome?iss=.*&session_hint=AUTHENTICATED
+    extract_js:
+      - name: check
+        js: |
+          var okta_token = localStorage.getItem("okta-token-storage")
+  - url_match: https://.*.okta.com/app/UserHome?iss=.*&session_hint=AUTHENTICATED
+    if: okta_token
+    finish: true
+    sleep: 3000
+    results_js: okta_token

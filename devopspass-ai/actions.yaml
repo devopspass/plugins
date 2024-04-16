@@ -48,13 +48,13 @@ dop_add_app_action:
   icon: fas fa-directions
   playbook: plugins/devopspass-ai/playbooks/add_app_action.yml
   required_options:
-    action_name:
-      title: "Action id, like `action_name`"
+    application_name:
+      title: "Application name, from `apps.yaml`"
       type: string
       remember: true
       remember_key: name
-    application_name:
-      title: "Application name, from `apps.yaml`"
+    action_name:
+      title: "Action id, like `action_name`"
       type: string
       remember: true
       remember_key: name

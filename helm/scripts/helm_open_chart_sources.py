@@ -18,7 +18,13 @@ def helm_cache_path():
         cache_path = os.path.join(cache_home, "repository")
     else:
         # Otherwise, use the default cache folder in the user's home directory
-        cache_path = os.path.join(home_dir, ".cache", "helm", "repository")
+        if cdx.helpers.is_linux():
+            cache_path = os.path.join(home_dir, ".cache", "helm", "repository")
+
+        if cdx.helpers.is_macos():
+            cache_path = os.path.join(home_dir, "Library", "Caches", "helm", "repository")
+        if cdx.helpers.is_windows():
+            cache_path = os.path.join(os.environ['TEMP'], "helm", "repository")
 
     return cache_path
 

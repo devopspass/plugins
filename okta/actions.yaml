@@ -1,0 +1,11 @@
+okta_import_apps:
+  title: Import apps
+  icon: fas fa-sync-alt
+  object_types: application
+  application_name: Okta
+  command: |
+    plugins/okta/actions/import_apps.py
+  required_ds: okta
+  required_settings:
+    - action.okta_import_apps.ds.start_url
+  show_settings: true
