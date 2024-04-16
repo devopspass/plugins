@@ -41,6 +41,22 @@ aws_open_console:
       title: AWS Region
       remember: true
       remember_key: name
+
+    aws_resource:
+      type: dropdown
+      default: |
+        ec2
+        s3
+        iam
+        dynamodbv2
+        eks
+        lambda
+        cloudformation
+        ecr
+      title: AWS Resource
+      remember: true
+      remember_key: name
+
 aws_refresh_creds:
   title: Refresh AWS creds
   icon: fas fa-sync-alt

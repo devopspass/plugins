@@ -3,11 +3,8 @@ import urllib, json, sys
 import webbrowser
 import requests # 'pip install requests'
 import boto3 # AWS SDK for Python (Boto3) 'pip install boto3'
-import os
+import cdx
 import sys
-
-profile = ''
-region = None
 
 fname_doc = sys.argv[1]
 fname_settings = sys.argv[2]
@@ -18,11 +15,24 @@ with open(fname_settings, 'r') as file:
     settings = json.load(file)
 
 with open(fname_doc, 'r') as file:
-    ret = json.load(file)
-    profile = ret['metadata']['name']
-    region = settings.get('actions.aws_open_console', {}).get(f"{profile}_aws_region", 'eu-central-1')
+    doc = json.load(file)
 
-print(f"Trying to open console for '{profile}/{region}'...\n")
+opts = cdx.helpers.get_action_options(doc, 'aws_open_console')
+
+profile = doc['metadata']['name']
+aws_region =  opts.get('aws_region', {}).get('value')
+aws_resource =  opts.get('aws_resource', {}).get('value')
+aws_tab = ''
+
+if aws_resource == 'ec2':
+    aws_tab = '#Instances:'
+if aws_resource == 'dynamodbv2':
+    aws_tab = '#tables'
+if aws_resource == 'dynamodbv2':
+    aws_tab = '#/clusters'
+if aws_resource == 'lambda':
+    aws_tab = '#/functions'
+print(f"Trying to open console for '{profile}/{aws_region}'...\n")
 
 # Step 1: Authenticate user in your own identity system.
 
@@ -69,14 +79,14 @@ signin_token = json.loads(r.text)
 # sign-in token was issued.
 request_parameters = "?Action=login"
 request_parameters += "&Issuer=Example.org"
-request_parameters += "&Destination=" + quote_plus_function(f"https://{region}.console.aws.amazon.com/ec2/home")
+request_parameters += "&Destination=" + quote_plus_function(f"https://{aws_region}.console.aws.amazon.com/{aws_resource}/home{aws_tab}")
 request_parameters += "&SigninToken=" + signin_token["SigninToken"]
-if region:
-    request_url = f"https://{region}.signin.aws.amazon.com/federation" + request_parameters
+if aws_region:
+    request_url = f"https://{aws_region}.signin.aws.amazon.com/federation" + request_parameters
 else:
     request_url = "https://signin.aws.amazon.com/federation" + request_parameters
 
-logout_url = f"https://{region}.signin.aws.amazon.com/oauth?Action=logout&redirect_uri={quote_plus_function(request_url)}"
+logout_url = f"https://{aws_region}.signin.aws.amazon.com/oauth?Action=logout&redirect_uri={quote_plus_function(request_url)}"
 webbrowser.open_new_tab(logout_url)
-time.sleep(1)
+time.sleep(3)
 webbrowser.open_new_tab(request_url)
