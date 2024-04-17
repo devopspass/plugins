@@ -1,0 +1,36 @@
+import subprocess
+import json
+import yaml
+import requests
+import cdx
+
+def error(msg: str):
+    return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': '```' + msg + '```'
+            }
+        ]
+
+def list():
+    # Run the command and capture the output
+    #
+    # output = subprocess.run(['docker', 'compose', 'ls', '--format', 'json'], text=True, check=True, capture_output=True)
+    # # Parse the output to extract environment information
+    # repos = json.loads(output.stdout)
+
+    # Kick API and return result
+    #
+    # url = f'https://some.url.com/'
+    # token = cdx.settings.get('github.token')
+    # headers = {
+    #     'Authorization': f"Bearer {token}",
+    # }
+    # resp = requests.get(url, headers=headers)
+    # if resp.status_code == 200:
+    #     return resp.json()
+    # else:
+    #     return error(f"Something went wrong: {resp.content}")
+
+    return error("Not implemented!")

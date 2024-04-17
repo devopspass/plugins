@@ -88,6 +88,7 @@ dop_add_app_action:
       type: text
       remember: true
       remember_key: name
+
 dop_add_doc_type:
   object_types: application
   application_name: DevOps Pass AI
@@ -96,6 +97,28 @@ dop_add_doc_type:
     Install `aws-cli` on your local
   icon: fas fa-book-medical
   playbook: plugins/devopspass-ai/playbooks/add_doc_type.yml
+  required_options:
+    doc_type_id:
+      title: Doc type id, like `my_docs`
+      type: string
+      remember: true
+      remember_key: name
+    application_name:
+      title: Application name
+      type: string
+      remember: true
+      remember_key: name
+    title:
+      title: Doc's title, tab name in docs view
+      type: string
+      remember: true
+      remember_key: name
+    view_type:
+      title: View type
+      type: dropdown
+      default: |
+        table
+        buttons
 
 dop_add_doc_action:
   object_types: application

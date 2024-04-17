@@ -1,0 +1,38 @@
+---
+- name: DevOps Pass AI
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
+    - name: Folder name
+      ansible.builtin.set_fact:
+        fname: "{{ application_name | lower | replace(' ', '_') }}"
+
+    - name: Folder path
+      ansible.builtin.set_fact:
+        fpath: "{{ (plugins_path, fname) | path_join }}"
+
+    - name: Docs script folder
+      ansible.builtin.file:
+        path: "{{ (fpath, 'docs') | path_join }}"
+        recurse: true
+
+    - name: Docs section
+      yedit:
+        src: "{{ ( fpath, 'docs.yaml' ) | path_join }}"
+        key: "{{ doc_type_id }}"
+        value: |
+          application: "{{ application_name }}"
+          title: "{{ title }}"
+          filter_field: name
+          source: "plugins/{{ fname }}/docs/{{ doc_type_id }}.py"
+          view_type: "{{ view_type }}"
+        state: present
+
+    - name: Docs script
+      ansible.builtin.template:
+        dest: "{{ (fpath, 'docs', doc_type_id + '.py') | path_join }}"
+        src: 'docs_list.py.j2'
