@@ -4,9 +4,6 @@ action = "k3s_install"
 import os
 from random import randrange
 import json, sys, time
-import webbrowser
-import subprocess
-import asyncio
 import requests
 import cdx
 import concurrent.futures

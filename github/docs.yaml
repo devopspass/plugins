@@ -1,0 +1,15 @@
+github_repos:
+  application: GitHub
+  title: GitHub repos
+  filter_field: name
+  source: plugins/github/scripts/doc_github_repos.py
+  actions_view_type: buttons
+  cache_ok: true
+
+github_orgs:
+  application: GitHub
+  title: GitHub Org's
+  filter_field: name
+  source: plugins/github/scripts/doc_github_orgs.py
+  actions_view_type: buttons
+  cache_ok: true

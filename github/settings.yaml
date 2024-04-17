@@ -1,0 +1,17 @@
+
+github.domain:
+  section: GitHub
+  required_app: GitHub
+  description: |
+    GitHub domain, change if you're using GitHub enterprice
+  title: GitHub Domain
+  type: string
+  default: github.com
+
+github.token:
+  section: GitHub
+  required_app: GitHub
+  description: |
+    GitHub personal token
+  title: GitHub Token
+  type: string

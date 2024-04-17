@@ -2,6 +2,15 @@ import docker
 from datetime import datetime, timezone
 from dateutil import parser
 
+def error(msg: str):
+    return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': msg
+            }
+        ]
+
 def get_icon(image_name):
     icon_mapping = {
         "gitea": "apps/gitea.png",
@@ -159,7 +168,10 @@ def list():
     Returns:
     - list: List of dictionaries containing image information.
     """
-    client = docker.from_env()
+    try:
+        client = docker.from_env()
+    except:
+        return error("Failed to connect to Docker, if its running?!")
 
     try:
         # Get a list of Docker images

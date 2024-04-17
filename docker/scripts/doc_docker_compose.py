@@ -2,6 +2,15 @@ import subprocess
 import re, json
 import cdx
 
+def error(msg: str):
+    return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': msg
+            }
+        ]
+
 def list():
     try:
         # Run the command and capture the output
@@ -20,12 +29,6 @@ def list():
         return ret
 
     except subprocess.CalledProcessError as e:
-        return [{'name': 'ERROR', 'icon': 'assets/icons/general/error.png', 'error': f"{e}\n{e.output}\n{e.stderr}"}]
+        return error(f"{e}\n{e.output}\n{e.stderr}")
     except FileNotFoundError as e:
-        return [
-            {
-                'name': 'ERROR',
-                'icon': 'assets/icons/general/error.png',
-                'error': f"Can't find 'docker' in PATH, looks like its not installed, please install first"
-            }
-        ]
+        return error(f"Can't find 'docker' in PATH, looks like its not installed, please install first")

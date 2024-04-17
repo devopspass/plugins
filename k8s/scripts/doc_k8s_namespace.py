@@ -1,5 +1,15 @@
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
+import urllib3
+
+def error(msg: str):
+    return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': msg
+            }
+        ]
 
 def list():
     # Load Kubernetes configuration from default location
@@ -32,6 +42,8 @@ def list():
             namespaces = c.resources.get(api_version="project.openshift.io/v1", kind="Project").get()
         else:
             raise(e)
+    except urllib3.exceptions.MaxRetryError:
+        return error(f"Failed to connect Kubernetes cluster '{d_name}'")
 
     # Extract namespace names and their status
     namespace_info = []

@@ -1,5 +1,14 @@
 import docker
 
+def error(msg: str):
+    return [
+            {
+                'name': 'ERROR',
+                'icon': 'assets/icons/general/error.png',
+                'error': msg
+            }
+        ]
+
 def get_icon(image_name):
     icon_mapping = {
         "gitea": "apps/gitea.png",
@@ -148,8 +157,6 @@ def get_icon(image_name):
     # Use the mapping, or default to "unknown.png" if not found
     return icon_mapping.get(matching_keys[0], None) if matching_keys else 'apps/docker.png'
 
-
-
 def list():
     """
     List information about running Docker containers.
@@ -157,7 +164,10 @@ def list():
     Returns:
     - list: List of dictionaries containing container information.
     """
-    client = docker.from_env()
+    try:
+        client = docker.from_env()
+    except:
+        return error("Failed to connect to Docker, if its running?!")
 
     try:
         # Get a list of running containers
