@@ -7,7 +7,7 @@ k9s_install:
     K9s provides a terminal UI to interact with your Kubernetes clusters.
     Versions list can be found here - https://github.com/derailed/k9s, **latest** version will install latest stable version of `k9s`
   icon: fas fa-download
-  playbook: plugins/k8s/playbooks/install_k9s.yml
+  playbook: plugins/kubernetes/playbooks/install_k9s.yml
   required_options:
     req_k9s_version:
       title: K9s version to install
@@ -23,7 +23,7 @@ kubectl_install:
   description: |
     Install `kubectl` on your local. Versions list can be found here - https://github.com/kubernetes/kubernetes/releases/, **latest** version will install latest stable version of `kubectl`
   icon: fas fa-download
-  playbook: plugins/k8s/playbooks/install_kubectl.yml
+  playbook: plugins/kubernetes/playbooks/install_kubectl.yml
   required_options:
     req_kubectl_version:
       title: kubectl version to install
@@ -39,7 +39,7 @@ k8s_add_context:
   description: |
     Add KubeConfig to ~/.kube/config, if context/server/user exists it will be overriden
   icon: fas fa-folder-plus
-  command: plugins/k8s/actions/k8s_add_context.py
+  command: plugins/kubernetes/actions/k8s_add_context.py
   required_options:
     kube_config:
       title: KubeConfig
@@ -50,14 +50,14 @@ k8s_set_default_context:
   icon: fas fa-star
   object_types: k8s_context
   command: |
-    plugins/k8s/actions/set_default_context.py
+    plugins/kubernetes/actions/set_default_context.py
 
 k8s_open_web_console:
   title: Open web-console
   icon: fab fa-chrome
   object_types: k8s_context
   command: |
-    plugins/k8s/actions/oc_open_console.py
+    plugins/kubernetes/actions/oc_open_console.py
 
 k8s_open_context:
   title: Open in K9s
@@ -66,14 +66,14 @@ k8s_open_context:
   required_settings:
     - terminal.command
   command: |
-    plugins/k8s/actions/open_in_k9s.py
+    plugins/kubernetes/actions/open_in_k9s.py
 
 k8s_set_default_ns:
   title: Set Namespace as default
   icon: fas fa-star
   object_types: k8s_namespace
   command: |
-    plugins/k8s/actions/set_default_ns.py
+    plugins/kubernetes/actions/set_default_ns.py
 
 k8s_open_namespace:
   title: Open in K9s
@@ -82,4 +82,4 @@ k8s_open_namespace:
   required_settings:
     - terminal.command
   command: |
-    plugins/k8s/actions/open_in_k9s.py
+    plugins/kubernetes/actions/open_in_k9s.py

@@ -64,7 +64,7 @@ k8s_set_default_context:
   icon: fas fa-star
   object_types: k8s_context
   command: |
-    plugins/k8s/actions/set_default_context.py
+    plugins/kubernetes/actions/set_default_context.py
 
 ```
 

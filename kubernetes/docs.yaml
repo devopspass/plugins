@@ -2,9 +2,9 @@ k8s_context:
   application: Kubernetes
   title: Kube Contexts
   filter_field: name
-  source: plugins/k8s/docs/doc_k8s_context.py
+  source: plugins/kubernetes/docs/doc_k8s_context.py
 k8s_namespace:
   application: Kubernetes
   title: Namespaces (current context)
   filter_field: name
-  source: plugins/k8s/docs/doc_k8s_namespace.py
+  source: plugins/kubernetes/docs/doc_k8s_namespace.py
