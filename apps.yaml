@@ -2526,8 +2526,9 @@
     We're trying to make as simple as possible:
 
     * **Tools inventory** - keep links to all DevOps tools by hand
-    * **Tools onboarding** - install all necessary tools from UI in a few clicks, keep onboarding instructions links together with apps 
+    * **Tools onboarding** - install all necessary tools from UI in a few clicks, keep onboarding instructions links together with apps
     * **Tools adoption** - "One-click-getting-started" principle, dont bother engineers with reading "Getting started ..." documentation, allow them click a few buttons and proceed with business necessary tasks
+  recommended: true
   sections:
   - name: Links
     icon: assets/icons/general/docs.png

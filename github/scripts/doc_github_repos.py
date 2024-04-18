@@ -31,7 +31,10 @@ def org_list():
                 org = r.copy()
                 org['name'] = org['login']
                 org['url'] = f"https://{domain}/orgs/{org['name']}/repositories"
-                org['icon'] = org['avatar_url']
+                if domain == 'github.com':
+                    org['icon'] = org['avatar_url']
+                else:
+                    org['icon'] = 'assets/icons/apps/github.png'
                 for key in r.keys():
                     if key not in ['name', 'url', 'description']:
                         del org[key]
@@ -72,8 +75,6 @@ def list():
     if not token or token == '':
         return error("GitHub personal token doesnt set in Settings, please set it in GitHub -> Profile -> Developer settings -> Personal tokens")
 
-    print(domain)
-    print(token)
     try:
         res = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
@@ -87,8 +88,13 @@ def list():
             ___r = r.copy()
             ___r['name'] = ___r['full_name']
             ___r['url'] = f"https://{domain}/{r['full_name']}"
+            if domain == 'github.com':
+                ___r['icon'] = ___r['avatar_url']
+            else:
+                ___r['icon'] = 'assets/icons/apps/github.png'
+
             for key in r.keys():
-                if key not in ['name', 'url', 'description']:
+                if key not in ['name', 'url', 'description', 'icon']:
                     del ___r[key]
             res.append(___r)
     except Exception as e:

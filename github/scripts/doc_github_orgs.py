@@ -36,7 +36,10 @@ def list():
                 org = r.copy()
                 org['name'] = org['login']
                 org['url'] = f"https://{domain}/orgs/{org['name']}/repositories"
-                # org['icon'] = org['avatar_url']
+                if domain == 'github.com':
+                    org['icon'] = org['avatar_url']
+                else:
+                    org['icon'] = 'assets/icons/apps/github.png'
                 for key in r.keys():
                     if key not in ['name', 'url', 'description']:
                         del org[key]

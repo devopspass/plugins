@@ -128,3 +128,12 @@ dop_add_doc_action:
     Install `aws-cli` on your local
   icon: fas fa-bolt
   playbook: plugins/devopspass-ai/playbooks/add_doc_action.yml
+
+dop_add_setting:
+  object_types: application
+  application_name: DevOps Pass AI
+  title: Add Setting
+  description: |
+    Add setting to DevOps Pass AI
+  icon: fas fa-bolt
+  playbook: plugins/devopspass-ai/playbooks/add_setting.yml

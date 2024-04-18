@@ -171,7 +171,7 @@ def list():
 
     try:
         # Get a list of running containers
-        containers = client.containers.list()
+        containers = client.containers.list(all=True)
 
         # Process container information
         containers_info = []
