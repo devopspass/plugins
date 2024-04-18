@@ -2,4 +2,5 @@ aws_profile:
   application: AWS
   title: AWS Profiles
   filter_field: name
+  icon: assets/icons/apps/aws.png
   source: plugins/aws/docs/aws_profiles.py

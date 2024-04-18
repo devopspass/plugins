@@ -3,3 +3,4 @@ k3s_cluster:
   title: K3s clusters
   filter_field: name
   source: plugins/k3s/scripts/doc_k3s_cluster.py
+  icon: assets/icons/apps/k3s.png

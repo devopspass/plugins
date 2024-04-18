@@ -3,6 +3,7 @@ docker_container:
   title: Docker containers
   filter_field: name
   source: plugins/docker/scripts/doc_docker_containers.py
+  icon: assets/icons/apps/docker.png
 
 docker_images:
   application: Docker
@@ -10,6 +11,7 @@ docker_images:
   filter_field: name
   source: plugins/docker/scripts/doc_docker_images.py
   actions_view_type: buttons
+  icon: assets/icons/apps/docker.png
 
 docker_compose:
   application: Docker
@@ -17,3 +19,4 @@ docker_compose:
   filter_field: name
   source: plugins/docker/scripts/doc_docker_compose.py
   actions_view_type: buttons
+  icon: assets/icons/apps/docker.png

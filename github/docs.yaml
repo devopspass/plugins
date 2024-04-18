@@ -3,6 +3,7 @@ github_repos:
   title: GitHub repos
   filter_field: name
   source: plugins/github/scripts/doc_github_repos.py
+  icon: assets/icons/apps/github.png
   actions_view_type: buttons
   cache_ok: true
 
@@ -12,4 +13,5 @@ github_orgs:
   filter_field: name
   source: plugins/github/scripts/doc_github_orgs.py
   actions_view_type: buttons
+  icon: assets/icons/apps/github.png
   cache_ok: true

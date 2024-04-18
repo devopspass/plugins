@@ -3,9 +3,11 @@ wsl_system:
   title: WSL Systems
   filter_field: name
   source: plugins/wsl/scripts/doc_wsl_system.py
+  icon: assets/icons/apps/wsl.png
 
 wsl_distro:
   application: WSL
   title: WSL Distros
   filter_field: name
   source: plugins/wsl/scripts/doc_wsl_distro.py
+  icon: assets/icons/apps/wsl.png

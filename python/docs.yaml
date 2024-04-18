@@ -3,3 +3,4 @@ conda_env:
   title: Anaconda (Conda) environments
   filter_field: name
   source: plugins/python/scripts/api_conda_envs.py
+  icon: assets/icons/apps/python.png
