@@ -1,0 +1,50 @@
+---
+- name: Install
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+    req_version: latest
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
+    - name: Check if the operating system is Linux or macOS
+      ansible.builtin.set_fact:
+        archive_type: "{{ (ansible_system == 'Windows') | ternary('zip', 'tar.gz') }}"
+        binary_name: "tenv"
+
+    - name: Fetch latest version from GitHub releases
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/tofuutils/tenv/releases/latest"
+        return_content: true
+        headers:
+          Accept: "application/vnd.github.v3+json"
+      register: version_response
+
+    - name: Parse latest version
+      ansible.builtin.set_fact:
+        latest_version: "{{ version_response.json.tag_name | regex_replace('^v', '') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        install_version: "{{ (req_version == 'latest') | ternary(latest_version, req_version) }}"
+
+    - name: Download binary archive
+      ansible.builtin.get_url:
+        url: "https://github.com/tofuutils/tenv/releases/download/v{{ install_version }}/{{ binary_name }}_v{{ install_version }}_{{ ansible_system }}_{{ ansible_architecture | default('x86_64') }}.{{ archive_type }}"
+        dest: "{{ (dop_temp, 'tmp.' + archive_type) | path_join }}"
+
+    - name: Extract binary
+      dop_unarchive:
+        src: "{{ (dop_temp, 'tmp.' + archive_type) | path_join }}"
+        dest: "{{ dop_bin }}"
+
+    - name: Set permissions for binary
+      ansible.builtin.file:
+        path: "{{ dop_bin }}/{{ binary_name }}"
+        mode: "+x"
+      when: ansible_system != 'Windows'

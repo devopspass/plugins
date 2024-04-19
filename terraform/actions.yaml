@@ -1,15 +1,77 @@
 terraform_install:
   object_types: application
   application_name: Terraform
-  title: Install Terraform
+  title: Install tenv version manager
   description: |
-    Install Terraform on your local. Versions list can be found here - https://releases.hashicorp.com/terraform/, **latest** version will install latest stable version of Terraform
+    Install tenv, a versatile version manager for OpenTofu, Terraform and Terragrunt, written in Go.
   icon: fas fa-download
-  playbook: plugins/terraform/playbooks/install.yml
-  required_options:
-    req_terraform_version:
-      title: Terraform version to Install
-      remember: true
-      remember_key: name
-      type: string
-      default: latest
+  playbook: plugins/terraform/playbooks/install_tenv.yml
+
+####### Terraform
+terraform_install_version:
+  object_types: terraform_available
+  title: Install
+  description: ''
+  icon: fas fa-download
+  command: plugins/terraform/actions/terraform/install_version.py
+
+terraform_use_version:
+  object_types: terraform_installed
+  title: Set as default
+  description: ''
+  icon: fas fa-check
+  command: plugins/terraform/actions/terraform/use_version.py
+
+terraform_uninstall_version:
+  object_types: terraform_installed
+  title: Uninstall
+  description: ''
+  icon: fas fa-trash
+  danger: true
+  command: plugins/terraform/actions/terraform/uninstall_version.py
+
+##### Terragrunt
+terragrunt_install_version:
+  object_types: terragrunt_available
+  title: Install
+  description: ''
+  icon: fas fa-download
+  command: plugins/terraform/actions/terragrunt/install_version.py
+
+terragrunt_use_version:
+  object_types: terragrunt_installed
+  title: Set as default
+  description: ''
+  icon: fas fa-check
+  command: plugins/terraform/actions/terragrunt/use_version.py
+
+terragrunt_uninstall_version:
+  object_types: terragrunt_installed
+  title: Uninstall
+  description: ''
+  icon: fas fa-trash
+  danger: true
+  command: plugins/terraform/actions/terragrunt/install_version.py
+
+##### OpenTofu
+tofu_install_version:
+  object_types: tofu_available
+  title: Install
+  description: ''
+  icon: fas fa-download
+  command: plugins/terraform/actions/tofu/install_version.py
+
+tofu_use_version:
+  object_types: tofu_installed
+  title: Set as default
+  description: ''
+  icon: fas fa-check
+  command: plugins/terraform/actions/tofu/use_version.py
+
+tofu_uninstall_version:
+  object_types: tofu_installed
+  title: Uninstall
+  description: ''
+  icon: fas fa-trash
+  danger: true
+  command: plugins/terraform/actions/tofu/install_version.py

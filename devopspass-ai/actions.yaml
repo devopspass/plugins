@@ -128,6 +128,52 @@ dop_add_doc_action:
     Install `aws-cli` on your local
   icon: fas fa-bolt
   playbook: plugins/devopspass-ai/playbooks/add_doc_action.yml
+  required_options:
+    application_name:
+      title: "Application name, from `apps.yaml`"
+      type: string
+      remember: true
+      remember_key: name
+    doc_type:
+      title: Document type, doc_type
+      type: string
+      remember: true
+      remember_key: name
+    action_name:
+      title: "Action id, like `action_name`"
+      type: string
+      remember: true
+      remember_key: name
+    title:
+      title: "Title"
+      type: string
+      remember: true
+      remember_key: name
+    description:
+      title: "Description"
+      type: text
+      remember: true
+      remember_key: name
+    icon:
+      title: "FontAwesome 5 icon name, please check https://fontawesome.com/v5/search?q=&o=r&m=free"
+      type: string
+      remember: true
+      remember_key: name
+    playbook_name:
+      title: "Playbook to run on command"
+      type: string
+      remember: true
+      remember_key: name
+    command:
+      title: "Command (script) to run on command"
+      type: string
+      remember: true
+      remember_key: name
+    required_options:
+      title: "Required options"
+      type: text
+      remember: true
+      remember_key: name
 
 dop_add_setting:
   object_types: application

@@ -1,0 +1,49 @@
+terraform_installed:
+  application: Terraform
+  title: Installed Terraform's
+  filter_field: name
+  source: plugins/terraform/docs/terraform/installed.py
+  icon: assets/icons/apps/terraform.png
+  view_type: table
+
+terraform_available:
+  application: Terraform
+  title: Terraform versions
+  filter_field: name
+  source: plugins/terraform/docs/terraform/available.py
+  icon: assets/icons/apps/terraform.png
+  view_type: table
+
+# Terragrunt
+terragrunt_installed:
+  application: Terraform
+  title: Installed Terragrunt's
+  filter_field: name
+  source: plugins/terraform/docs/terragrunt/installed.py
+  icon: https://avatars.githubusercontent.com/u/17118990?v=4
+  view_type: table
+
+terragrunt_available:
+  application: Terraform
+  title: Terragrunt versions
+  filter_field: name
+  source: plugins/terraform/docs/terragrunt/available.py
+  icon: https://avatars.githubusercontent.com/u/17118990?v=4
+  view_type: table
+
+# OpenTofu
+tofu_installed:
+  application: Terraform
+  title: Installed Tofu's
+  filter_field: name
+  source: plugins/terraform/docs/tofu/installed.py
+  icon: https://avatars.githubusercontent.com/u/154381570?v=4
+  view_type: table
+
+tofu_available:
+  application: Terraform
+  title: Tofu versions
+  filter_field: name
+  source: plugins/terraform/docs/tofu/available.py
+  icon: https://avatars.githubusercontent.com/u/154381570?v=4
+  view_type: table
