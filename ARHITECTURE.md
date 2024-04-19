@@ -16,7 +16,7 @@ On the picture below you can see how all this elements reflects in UI:
 * **Applications**, high level entity for DOP, by adding applications you adding new actions, document types and settings.
 * **Applications Links**, set of links divided by sections, which contains links to necessary resources: documentation, tools, etc.
 * **Application Actions**, actions which can be run agains application, usually its tools installation, retreiving configuration, etc. Application actions could be Python script or Ansible playbook.
-* **Application doc_stype's**, types of documents which can be retreived for application. Each application can has many doc_type's.
+* **Application doc_type's**, types of documents which can be retreived for application. Each application can has many doc_type's.
 * **Documents**, basic entities, which are retrieved from applications, i.e. repositories, packages, namespaces, application versions, etc. Agains documents, you can run actions.
 * **Document's actions**, actions you can run against documents, like install, remove, make default, etc.
 * **Settings**, settings for specific application, like URL to entry URL, terminal command, default region, etc.
@@ -122,7 +122,8 @@ terraform_install:
       default: latest
 ```
 
-You can see how it reflects in UI:
+Please note, that comparing to other icon's in DOP, actions icons are FontAwesome 5 icon id - https://fontawesome.com/v5/search?q=&o=r&m=free
+You can see how it reflects in UI.
 
 ![Application action](https://raw.githubusercontent.com/devopspass/plugins/main/images/application-action.png)
 
@@ -161,6 +162,25 @@ Example of playbook:
 ```
 
 Settings will pass in the same way, but dots in names will be replaces with underscores.
+
+There is some Ansible variables always passed to Ansible Playbook running from DOP:
+
+| Ansible var | Value |
+|-------------|-------|
+| dop_home_path | `~/.devopspass-ai/` |
+| user_home_path | `~/` |
+| codex_root_path | Path where Codex is running `main.py` |
+| codex_env_path | `~/.devopspass-ai/mamba/envs/codex/` |
+| python_bin_path | Python binary path |
+| mamba_bin_path | Path to mamba binary - `~/.devopspass-ai/mamba` |
+| git_bin_path | Path to `git` or `git.exe` binary |
+| settings_file_path | `~/.devopspass-ai/settings.yaml` |
+| settings_org_file_path | `~/.devopspass-ai/settings-org.yaml` |
+| applications_file_path | `~/.devopspass-ai/applications.yaml` |
+| applications_org_file_path | `~/.devopspass-ai/applications-org.yaml` |
+| plugins_path | `~/.devopspass-ai/plugins/` |
+| all_applications_file_path | `~/.devopspass-ai/plugins/apps.yaml` |
+
 
 Please note that it's mandatory to add `base` tasks at the begginning of playbook and use `local` connection in all playbooks.
 
@@ -213,3 +233,101 @@ aws_resource =  opts.get('aws_resource', {}).get('value')
 
 # ... main code
 ```
+
+## Application doc_type's and doc's
+
+Doc types, are some docs you're pulling from application, for example list of contexts for Kubernetes or AWS profiles.
+
+Doc types defined in `plugins/*/docs.yaml` file:
+
+```yaml
+aws_profile:
+  application: AWS
+  title: AWS Profiles
+  filter_field: name
+  icon: assets/icons/apps/aws.png
+  source: plugins/aws/docs/aws_profiles.py
+```
+
+* `application`, name of application doc type relates to. Please note `application` field is case sensetive and have to be the same value as application `name` in `apps.yaml`.
+* `title`, tab title in UI.
+* `filter_field`, filter field for documents, used on search in right pane.
+* `icon`, URL to doc type icon
+* `source`, Python file with `list()` method implementation
+
+Source file should have `list()` method implemented and return list of dictionaries (documents), each document should have at least `name` field.
+
+Field `icon` will be used to set icon URL, if not specified `doc_type` icon will be used.
+
+Boolean field `active` can be used to add `active` label on document view:
+
+![doc view](https://raw.githubusercontent.com/devopspass/plugins/main/images/doc-view.png)
+
+## Documents actions
+
+Documents actions is a key functionality item in DOP.
+They are the same implementation as application actions and add in the same `actions.yaml` with the difference that `doc_type` should not be `application`, but your doc_type key:
+
+```yaml
+aws_profile_make_default:
+  title: Make default
+  icon: fas fa-check
+  object_types: aws_profile
+  command: |
+    plugins/aws/actions/make_default.py
+```
+
+## Data sources
+
+Data sources are very important part of DOP which helping to introduce automation for applications where you have no API or have no access to it.
+
+Key idea here, pull some data from user's web browser session, like cookies, some data, application settings, etc.
+
+Data sources describe in `plugins/*/ds.yaml` files, here is an example of Data Source for AWS Landing Zone SSO page.
+
+```yaml
+id: aws_apps
+# start_url: provided from settings
+description: AWS Apps creds SSO
+icon: https://avatars.githubusercontent.com/u/2232217?v=4
+title: AWS Apps SSO
+check_script: plugins/aws/actions/check_aws_token.py
+actions:
+  - url_match: https://.*.awsapps.com/start/.*
+    cookies:
+      - name: aws_sso_token
+        domain: start_url
+        key: x-amz-sso_authn
+    if: aws_accounts
+    sleep: 2500
+    name: aws_bearer_token
+  - url_match: https://.*.awsapps.com/start/.*
+    extract_js:
+      - name: check
+        js: |
+          var btns = document.getElementsByTagName('button')
+          var aws_accounts = []
+          setTimeout(function(){
+              var i = 0
+              for(btn of btns){
+                if(i > 9){
+                  var x = btn.getElementsByTagName('strong')
+                  if(x && x[0]){
+                    aws_accounts.push(x[0].textContent)
+                  }
+                }
+                i++
+              }
+              console.log(aws_accounts)
+              return aws_accounts
+          }, 2000);
+  - url_match: https://.*.awsapps.com/start/.*
+    if: aws_accounts
+    finish: true
+    sleep: 4000
+    results_js: aws_accounts
+```
+
+By default, there is no way to retrieve `x-amz-sso_authn` to pull list of accounts and profiles you have access to, but you can ask user to start webbrowser session, login to this page and DOP will automatically extract necessary data and store it in user profile keychain.
+
+Check script receives result of previous run and checks, if data from DS have to be retreived again (i.e. if token/cookie expired), if exit code is 0 then no need to start browser session again and action can use previous results. If exit code not 0, DS sequence will be started to retreive necessary data.
