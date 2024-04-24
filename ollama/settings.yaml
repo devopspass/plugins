@@ -1,0 +1,8 @@
+ollama.server:
+  section: Ollama
+  required_app: Ollama
+  description: |
+    Ollama API server
+  title: Ollama server
+  type: string
+  default: http://localhost:11434

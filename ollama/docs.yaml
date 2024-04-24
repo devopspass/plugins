@@ -1,0 +1,14 @@
+ollama_model:
+  application: Ollama
+  title: Ollama local models
+  filter_field: name
+  source: plugins/ollama/docs/ollama_model.py
+  view_type: table
+  icon: https://avatars.githubusercontent.com/u/151674099?s=%C2%A718&v=4
+ollama_remote_model:
+  application: Ollama
+  title: Ollama remote models
+  filter_field: name
+  source: plugins/ollama/docs/ollama_remote_model.py
+  icon: https://avatars.githubusercontent.com/u/151674099?s=%C2%A718&v=4
+  view_type: table

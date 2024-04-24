@@ -2543,3 +2543,12 @@
       url: https://www.youtube.com/@DevOpsPassAI
     - name: Twitter
       url: https://twitter.com/devops_pass_ai
+- name: Ollama
+  icon: 'https://avatars.githubusercontent.com/u/151674099?s=%C2%A718&v=4'
+  description: Get up and running with large language models locally.
+  description_long: "Get up and running with large language models locally.\n"
+  sections:
+  - name: 'GitHub'
+    urls:
+    - name: GitHub
+      url: https://github.com/ollama/ollama

@@ -1,0 +1,6 @@
+jenkins_jobs:
+  application: Jenkins
+  title: Jenkins Jobs
+  filter_field: name
+  source: plugins/jenkins/docs/jenkins_jobs.py
+  view_type: table

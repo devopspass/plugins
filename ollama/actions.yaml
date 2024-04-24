@@ -1,0 +1,25 @@
+install:
+  object_types: application
+  application_name: Ollama
+  title: Install Ollama
+  description: |
+    Install Ollama
+  icon: fas fa-download
+  playbook: plugins/ollama/playbooks/install.yml
+  required_options:
+    req_version:
+      title: Version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
+ollama_pull_model:
+  object_types: ollama_remote_model
+  title: Pull
+  icon: fas fa-download
+  command: plugins/ollama/actions/pull_model.py
+ollama_model_open_description:
+  object_types: ollama_remote_model
+  title: Open description
+  command: plugins/ollama/actions/open_description.py
+  icon: fab fa-chrome

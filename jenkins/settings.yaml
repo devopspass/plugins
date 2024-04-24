@@ -1,0 +1,6 @@
+jenkins.server:
+  section: Jenkins
+  required_app: Jenkins
+  description: Jenkins server info in format `URL|user|password/token`, like `https://localhost:8080/|user|mypass`
+  title: Jenkins Server
+  type: string
