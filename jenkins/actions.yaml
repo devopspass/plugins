@@ -30,3 +30,14 @@ generate_jenkinsfile:
       title: What kind of agent you want to use
       remember: true
       remember_key: name
+
+jenkins_setup_plugins:
+  object_types: application
+  application_name: Jenkins
+  title: Install Jenkins plugins
+  description: Install common Jenkins plugins
+  icon: fas fa-download
+  playbook: plugins/jenkins/playbooks/install_plugins.yml
+  required_settings:
+    - jenkins.server
+  show_settings: true

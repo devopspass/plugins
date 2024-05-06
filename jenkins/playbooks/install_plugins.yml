@@ -1,0 +1,24 @@
+---
+- name: Install Plugins
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Set url, user, password
+      ansible.builtin.set_fact:
+        jenkins_url: "{{ jenkins_server.split('|')[0] }}"
+        jenkins_user: "{{ jenkins_server.split('|')[1] }}"
+        jenkins_password: "{{ jenkins_server.split('|')[2] }}"
+
+    - name: Install plugin
+      dop_jenkins_plugin:
+        url: "{{ jenkins_url }}"
+        username: "{{ jenkins_user }}"
+        password: "{{ jenkins_password }}"
+        plugins:
+          - workflow-aggregator
+          - pipeline-stage-view
+          - git
+          - ansicolor
+          - kubernetes
+          - maven-plugin
+          - sonar

@@ -1,0 +1,55 @@
+---
+- name: Install
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
+    - name: Check if the operating system is Linux or macOS
+      ansible.builtin.set_fact:
+        archive_type: "tar.gz"
+        binary_name: "dop-avm"
+
+    - name: Fetch latest version from GitHub releases
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/devopspass/dop-avm/releases/latest"
+        return_content: true
+        headers:
+          Accept: "application/vnd.github.v3+json"
+      register: version_response
+
+    - name: Parse latest version
+      ansible.builtin.set_fact:
+        latest_version: "{{ version_response.json.tag_name | regex_replace('^v', '') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        install_version: "{{ (req_version == 'latest') | ternary(latest_version, req_version) }}"
+
+    - name: Download binary archive
+      ansible.builtin.get_url:
+        url: "https://github.com/devopspass/dop-avm/releases/download/v{{ install_version }}/{{ binary_name }}_{{ install_version }}_{{ ansible_system | lower }}_{{ arch_mapping[ansible_architecture] | default('amd64') }}.{{ archive_type }}"
+        dest: "{{ (dop_temp, 'tmp.' + archive_type) | path_join }}"
+
+    - name: Extract binary
+      dop_unarchive:
+        src: "{{ (dop_temp, 'tmp.' + archive_type) | path_join }}"
+        dest: "{{ dop_bin }}"
+        files: "{{ binary_name }}*"
+
+    - name: Setup DOP AVM
+      ansible.builtin.command:
+        cmd: "{{ dop_bin }}/{{ binary_name }} setup"
+        chdir: "{{ dop_bin }}"
+
+    - name: Set permissions for binary
+      ansible.builtin.file:
+        path: "{{ dop_bin }}/{{ binary_name }}"
+        mode: "+x"
+      when: ansible_system != 'Windows'

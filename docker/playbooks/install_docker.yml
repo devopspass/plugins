@@ -18,24 +18,14 @@
           register: docker_desktop_installed
           ignore_errors: yes
 
-        - name: Temp dir
-          ansible.builtin.file:
-            path: "{{ dop_home_path }}/tmp/"
-            state: directory
-
         - name: Download Docker Desktop installer
           ansible.builtin.get_url:
             url: "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
-            dest: "{{ dop_home_path }}/tmp/Docker Desktop Installer.exe"
+            dest: "{{ dop_temp }}/Docker-Desktop-Installer.exe"
           when: docker_desktop_installed is not succeeded
 
         - name: Install Docker Desktop
-          ansible.builtin.command: "{{ ansible_env.TEMP }}/Docker Desktop Installer.exe"
-          when: docker_desktop_installed is not succeeded
-
-        - name: Restart computer to apply changes
-          ansible.builtin.debug:
-            msg: Restart computer to apply changes
+          ansible.builtin.command: "{{ dop_temp | regex_escape }}/Docker-Desktop-Installer.exe"
           when: docker_desktop_installed is not succeeded
 
       when: ansible_os_family == 'Windows'
@@ -100,7 +90,7 @@
     - name: Install Docker on Mac
       block:
         # - name: Download Docker for Mac
-        #   ansible.builtin.get_url: 
+        #   ansible.builtin.get_url:
         #     url: https://desktop.docker.com/mac/main/{{ arch_mapping[ansible_architecture] }}/Docker.dmg
         #     dest: "{{ dop_temp }}"
 

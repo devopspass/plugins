@@ -1,0 +1,15 @@
+homebrew_install:
+  object_types: application
+  application_name: Homebrew
+  title: Install Homebrew
+  description: |
+    Install Homebrew
+  icon: fas fa-download
+  playbook: plugins/homebrew/playbooks/install.yml
+  required_options:
+    req_version:
+      title: Version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest

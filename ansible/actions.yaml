@@ -1,0 +1,15 @@
+dop_avm_install:
+  object_types: application
+  application_name: Ansible
+  title: Install Ansible Version Manager
+  description: |
+    Install DevOps Pass AI Ansible Version Manager
+  icon: fas fa-download
+  playbook: plugins/ansible/playbooks/install.yml
+  required_options:
+    req_version:
+      title: Version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest

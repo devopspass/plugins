@@ -191,11 +191,16 @@ def list():
                 command = ' '.join(container.attrs['Config']['Cmd'])
             else:
                 command = ''
+
+            tag = ''
+            if len(container.image.tags) > 0:
+              tag = container.image.tags[0]
+
             container_info = {
-                'icon': f"assets/icons/{get_icon(container.image.tags[0])}",
+                'icon': f"assets/icons/{get_icon(tag)}",
                 'name': str(container.name),
                 'id': str(container.short_id),
-                'image': str(container.image.tags[0]),
+                'image': str(tag),
                 'command': command,
                 'status': str(container.status),
                 'ports': str(container.attrs['HostConfig']['PortBindings']),

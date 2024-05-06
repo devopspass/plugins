@@ -78,6 +78,7 @@ def run_module():
     module_args = dict(
         src=dict(type='str', required=True),
         dest=dict(type='str', required=True),
+        files=dict(type='str', required=False),
     )
 
     # seed the result dict in the object
@@ -106,6 +107,7 @@ def run_module():
 
     dest = module.params['dest']
     src = module.params['src']
+    files = module.params['files']
 
     if not os.path.exists(src):
         module.fail_json(
@@ -124,9 +126,9 @@ def run_module():
             msg=f"Failed to check 'tar --version': {stderr}\n{stdout}"
         )
     if 'bsdtar' in stdout:
-        cmd = f"tar -xzvf {src} -C '{dest}'"
+        cmd = f"tar -xzvf {src} -C '{dest}' {files}"
     else:
-        cmd = f"tar -xzvf {src} -C '{dest}"
+        cmd = f"tar -xzvf {src} -C '{dest} {files}"
     rc, stdout, stderr = module.run_command(cmd, cwd=dest)
     result['changed'] = True
 

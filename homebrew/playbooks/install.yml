@@ -1,0 +1,36 @@
+---
+- name: Install
+  hosts: localhost
+  connection: local
+  vars:
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+  tasks:
+    - name: Base tasks
+      ansible.builtin.include_tasks:
+        file: "../../_common/playbooks/base.yml"
+
+    - name: Check if the operating system is Linux or macOS
+      ansible.builtin.set_fact:
+        binary_name: "brew"
+
+    - name: Fetch latest version from GitHub releases
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/Homebrew/brew/releases/latest"
+        return_content: true
+        headers:
+          Accept: "application/vnd.github.v3+json"
+      register: version_response
+
+    - name: Parse latest version
+      ansible.builtin.set_fact:
+        latest_version: "{{ version_response.json.tag_name | regex_replace('^v', '') }}"
+
+    - name: Set version
+      ansible.builtin.set_fact:
+        install_version: "{{ (req_version == 'latest') | ternary(latest_version, req_version) }}"
+
+
+    - name: Get Brew version
+      ansible.builtin.command:
