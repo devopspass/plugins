@@ -24,6 +24,21 @@ def install_plugins(url, username, password, crumb, plugins):
     response = requests.post(url, auth=(username, password), headers=headers, data=data, verify=False)
     return response.text
 
+def requestSafeRestart(url, username, password, crumb):
+    data = {
+        'dynamicLoad': '',
+        'Jenkins-Crumb': crumb,
+        'scheduleRestart': 'on',
+        'json': 'init'
+    }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Jenkins-Crumb': crumb
+    }
+    response = requests.post(url, auth=(username, password), headers=headers, data=data, verify=False)
+    return response.text
+
+
 def main():
     module_args = dict(
         username=dict(type='str', required=True),
@@ -46,6 +61,9 @@ def main():
         crumb_url = f"{url}/crumbIssuer/api/json"
         crumb = get_jenkins_crumb(crumb_url, username, password)
         response = install_plugins(f"{url}/manage/pluginManager/install", username, password, crumb, plugins)
+
+        # Request safe restart of Jenkins
+        requestSafeRestart(f"{url}/manage/pluginManager/updates/safeRestart", username, password, crumb)
 
         i = 300
         while True:
