@@ -62,6 +62,12 @@ def set_aws_credentials(profile_name: str, access_key: str, secret_key: str, ses
     config.read(path)
     if not config.has_section(profile_name):
         config.add_section(profile_name)
+    if config.has_section('default'):
+        if config.get(profile_name, 'aws_access_key_id') == config.get('default', 'aws_access_key_id'):
+            config.set('default', 'aws_access_key_id', access_key)
+            config.set('default', 'aws_secret_access_key', secret_key)
+            config.set('default', 'aws_session_token', session_token)
+
     config.set(profile_name, 'aws_access_key_id', access_key)
     config.set(profile_name, 'aws_secret_access_key', secret_key)
     config.set(profile_name, 'aws_session_token', session_token)
@@ -190,7 +196,7 @@ if response.status_code == 200:
         accounts_to_check = accounts
     else:
         for ac in accounts:
-            if ac['searchMetadata']['AccountName'] in name:
+            if ac['searchMetadata'] and ac['searchMetadata']['AccountName'] in name:
                 accounts_to_check.append(ac)
 
     #### Get Profiles in parralell
