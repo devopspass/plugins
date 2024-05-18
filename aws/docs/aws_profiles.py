@@ -23,15 +23,16 @@ def list():
       key_id = config.get('default', 'aws_access_key_id')
 
     for p in profiles:
-        active = key_id == config.get(p, 'aws_access_key_id')
-        if p == 'default':
-            continue
-        aws.append(
-            {
-                'name': p,
-                'active': active
-            }
-        )
+        if config.has_section(p):
+            active = key_id == config.get(p, 'aws_access_key_id')
+            if p == 'default':
+                continue
+            aws.append(
+                {
+                    'name': p,
+                    'active': active
+                }
+            )
 
     aws = sorted(aws, key=lambda p: p['name'])
     return aws
