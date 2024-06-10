@@ -41,7 +41,6 @@ aws_open_console:
       title: AWS Region
       remember: true
       remember_key: name
-
     aws_resource:
       type: dropdown
       default: |
@@ -53,10 +52,10 @@ aws_open_console:
         lambda
         cloudformation
         ecr
+        vpc
       title: AWS Resource
       remember: true
       remember_key: name
-
 aws_refresh_creds:
   title: Refresh AWS creds
   icon: fas fa-sync-alt
@@ -74,7 +73,6 @@ aws_profile_make_default:
   object_types: aws_profile
   command: |
     plugins/aws/actions/make_default.py
-
 eksctl_install:
   object_types: application
   application_name: AWS
@@ -90,7 +88,6 @@ eksctl_install:
       remember_key: name
       type: string
       default: latest
-
 aws_cli_install:
   object_types: application
   application_name: AWS
@@ -99,7 +96,6 @@ aws_cli_install:
     Install `aws-cli` on your local
   icon: fas fa-download
   playbook: plugins/aws/playbooks/install_aws_cli.yml
-
 aws_refresh_sso_tokens:
   object_types: application
   application_name: AWS
@@ -118,3 +114,41 @@ aws_refresh_sso_tokens:
   show_settings: true
   required_settings:
   - action.aws_refresh_sso_tokens.ds.start_url
+epic_aws_create_account:
+  object_types: application
+  application_name: AWS
+  title: Create AWS account
+  description: Create AWS account in EPIC AWS
+  icon: fas fa-folder-plus
+  required_settings:
+  - epic.aws.new_account.okta_token
+  show_settings: true
+  required_options:
+    tier:
+      title: Account Tier, either 'dev' for dev accounts, or 'live' for live accounts
+      type: dropdown
+      default: |
+        dev
+        live
+    regions:
+      title: AWS Regions
+      type: text
+      default: |
+        us-east-1
+    team:
+      title: Team
+      type: string
+    ticket:
+      title: Jira ticket id that instructs to create the new AWS account
+      type: string
+    stewards:
+      title: Stewards
+      description: A list of people who will be Stewards of the new account, in the form of @epicgames.com emails
+      type: text
+    reqester:
+      title: Requester
+      type: string
+      description: "@epicgames.com email of the person who requested the new account"
+    description:
+      title: Description
+      type: text

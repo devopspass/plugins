@@ -34,7 +34,7 @@ def list():
         print(match)
         if match:
             for m in match:
-                name = m[0]
+                name = re.sub(r'<span.*?>', '', m[0].replace('<span>', '').replace('</span>', ''))
                 desc = m[1]
                 res.append({"name": name.strip(), "description": desc})
     return res

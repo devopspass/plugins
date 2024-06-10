@@ -62,15 +62,20 @@ def set_aws_credentials(profile_name: str, access_key: str, secret_key: str, ses
     config.read(path)
     if not config.has_section(profile_name):
         config.add_section(profile_name)
-    if config.has_section('default'):
-        if config.get(profile_name, 'aws_access_key_id') == config.get('default', 'aws_access_key_id'):
-            config.set('default', 'aws_access_key_id', access_key)
-            config.set('default', 'aws_secret_access_key', secret_key)
-            config.set('default', 'aws_session_token', session_token)
+    else:
+        if config.has_section('default'):
+            if config.get(profile_name, 'aws_session_token') == config.get('default', 'aws_session_token') and config.get('default', 'aws_session_token') != '':
+                print(profile_name)
+                print(config.get(profile_name, 'aws_session_token') + '---')
+                print(config.get('default', 'aws_session_token') + '---')
+                config.set('default', 'aws_access_key_id', access_key)
+                config.set('default', 'aws_secret_access_key', secret_key)
+                config.set('default', 'aws_session_token', session_token)
 
     config.set(profile_name, 'aws_access_key_id', access_key)
     config.set(profile_name, 'aws_secret_access_key', secret_key)
     config.set(profile_name, 'aws_session_token', session_token)
+
     with open(path, 'w') as configfile:
       config.write(configfile)
     delete_sso_config(profile_name)
@@ -84,9 +89,9 @@ def add_profile(name: str):
     config.read(path)
     if not config.has_section(profile_name):
         config.add_section(profile_name)
-
-    with open(path, 'w') as configfile:
-      config.write(configfile)
+        with open(path, 'w') as configfile:
+            config.write(configfile)
+        set_aws_credentials(name, '', '', '')
 
 def get_profiles(ac):
     retries = 20
@@ -108,10 +113,11 @@ def get_profiles(ac):
         #     ]
         # }
         resp = requests.get(url, headers=headers)
-        if resp.status_code == 200:
+        if resp.status_code == 200 and ac.get('searchMetadata'):
           return {
-              'account': ac['searchMetadata']['AccountName'],
-              'account_id': ac['searchMetadata']['AccountId'],
+              'account': ac.get('searchMetadata', {}).get('AccountName'),
+              'account_id': ac.get('searchMetadata', {}).get('AccountId'),
+              'email': ac.get('searchMetadata', {}).get('AccountEmail'),
               'profiles': resp.json()['result']
             }
         else:
@@ -174,6 +180,8 @@ headers = {
 
 response = requests.get(url, headers=headers)
 
+aws_info = {}
+
 if response.status_code == 200:
     # {
     #     'id': 'ins-XXXXX',
@@ -216,13 +224,29 @@ if response.status_code == 200:
             creds_list.append(role)
             for profile in role['profiles']:
                 nm = role['account'] + "-" + profile['name']
+                if not aws_info.get(nm):
+                    aws_info[nm] = {}
+                # Profile
+                #         {
+                #             "id": "p-XXXXXX",
+                #             "name": "PROFILE_NAME",
+                #             "description": "",
+                #             "url": "https://portal.sso.us-east-1.amazonaws.com/saml/assertion/idp/XXXXXXXX==",
+                #             "protocol": "SAML",
+                #             "relayState": null
+                #         },
+                aws_info[nm]['account_id'] = role.get('account_id')
+                aws_info[nm]['profile_id'] = profile.get('id')
+                aws_info[nm]['description'] = profile.get('description', '')
+                aws_info[nm]['email'] = profile.get('email', '')
                 print(f"Adding profile '{nm}'")
                 add_profile(nm)
 
         #### Get Credentials in parralell
-        print(f"Total profiles found: {len(creds_list)}. Pulling credentials")
+        print(f"Total profiles found: {len(creds_list)}.")
 
         if pull_credentials:
+            print("Pulling credentials...")
             # Process each batch in parallel
             with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
                 results = executor.map(get_credentials, creds_list)
@@ -235,6 +259,11 @@ if response.status_code == 200:
                         creds = res['creds']
                         set_aws_credentials(profile_name, creds['accessKeyId'], creds['secretAccessKey'], creds['sessionToken'])
                         print( f"Credentials for AWS profile '{profile_name}' were successfully updated.")
+
+        # Save AWS profiles info
+        aws_info_file = os.path.join(cdx.helpers.dop_home_path(), 'tmp', 'aws_accounts.json')
+        with open(aws_info_file, 'w') as file:
+            json.dump(aws_info, file, indent=4)
 
 else:
     print("Error: ", response.text)

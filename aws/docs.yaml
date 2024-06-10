@@ -4,3 +4,10 @@ aws_profile:
   filter_field: name
   icon: assets/icons/apps/aws.png
   source: plugins/aws/docs/aws_profiles.py
+
+epic_aws_create_account:
+  application: AWS
+  title: Create AWS Account Request
+  filter_field: name
+  icon: assets/icons/apps/aws.png
+  source: plugins/aws/docs/epic_aws_create_account.py
