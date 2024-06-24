@@ -1,0 +1,19 @@
+confluence.server:
+  section: Confluence
+  required_app: Confluence
+  title: Confluence Server URL
+  type: string
+
+confluence.token:
+  section: Confluence
+  required_app: Confluence
+  title: Confluence Token
+  description: Users Personal Token for Confluence
+  type: string
+
+confluence.spaces:
+  section: Confluence
+  required_app: Confluence
+  title: Confluence Spaces
+  description: Comma separated list of Confluence space keys, like `CE,DEVX,SRE`
+  type: string

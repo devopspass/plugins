@@ -1,0 +1,8 @@
+jira_story:
+  application: JIRA
+  title: JIRA Stories
+  filter_field: name
+  source: plugins/jira/docs/jira_story.py
+  view_type: table
+  icon: assets/icons/apps/jira.png
+  cache_ok: true

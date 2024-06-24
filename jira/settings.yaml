@@ -1,0 +1,19 @@
+jira.server:
+  section: JIRA
+  required_app: JIRA
+  title: Jira Server URL
+  type: string
+
+jira.token:
+  section: JIRA
+  required_app: JIRA
+  title: Jira Token
+  description: Users Personal Token for Jira
+  type: string
+
+jira.jql_query:
+  section: JIRA
+  required_app: JIRA
+  title: Jira Search Query (JQL) for stories
+  type: string
+  default: assignee = currentUser() and statusCategory != Done

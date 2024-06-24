@@ -1,0 +1,17 @@
+confluence_space:
+  application: Confluence
+  title: Confluence Space
+  filter_field: name
+  source: plugins/confluence/docs/confluence_space.py
+  view_type: table
+  icon: assets/icons/apps/confluence.png
+  cache_ok: true
+
+confluence_pages:
+  application: Confluence
+  title: Confluence Pages
+  filter_field: name
+  source: plugins/confluence/docs/confluence_page.py
+  view_type: table
+  icon: assets/icons/apps/confluence.png
+  cache_ok: true
