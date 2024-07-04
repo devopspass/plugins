@@ -6,7 +6,7 @@
     - name: Base tasks
       ansible.builtin.include_tasks:
         file: "../../_common/playbooks/base.yml"
-    
+
     - name: Folder name
       ansible.builtin.set_fact:
         fname: "{{ application_name | lower | replace(' ', '_') }}"
@@ -27,10 +27,16 @@
     - ansible.builtin.debug:
         msg: "{{req_opt}}"
 
+    - name: Folder
+      ansible.builtin.file:
+        path: "{{ fpath }}"
+        state: directory
+
     - name: App section
       yedit:
         src: "{{ ( fpath, 'actions.yaml' ) | path_join }}"
         update: true
+        state: present
         edits:
           - key: "{{ action_name }}.object_types"
             value: application

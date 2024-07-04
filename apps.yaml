@@ -1274,7 +1274,7 @@
     - name: Slack API Documentation
       url: https://api.slack.com/
 - name: Sumo Logic
-  icon: assets/icons/apps/sumologic.png
+  icon: https://avatars.githubusercontent.com/u/963817?s=200&v=4
   description: Sumo Logic is a cloud-native, machine data analytics platform that
     provides real-time insights for monitoring, troubleshooting, and securing applications.
   description_long: Sumo Logic is a cloud-native machine data analytics platform designed
@@ -2561,3 +2561,14 @@
     urls:
     - name: name
       url: https://devopspass-ai.com/
+- name: Backstage
+  icon: https://avatars.githubusercontent.com/u/72526453?s=48&v=4
+  description: Backstage is an open source framework for building developer portals.
+  description_long: |
+    Backstage is an open source framework for building developer portals. Powered by a centralized software catalog, Backstage restores order to your microservices and infrastructure and enables your product teams to ship high-quality code quickly without compromising autonomy.
+    Backstage unifies all your infrastructure tooling, services, and documentation to create a streamlined development environment from end to end.
+  sections:
+  - name: Backstage
+    urls:
+    - name: GitHub
+      url: https://github.com/backstage/backstage

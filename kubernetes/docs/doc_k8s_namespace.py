@@ -40,6 +40,8 @@ def list():
                 api_client.ApiClient(configuration=config.load_kube_config())
             )
             namespaces = c.resources.get(api_version="project.openshift.io/v1", kind="Project").get()
+        if e.status == 401:
+            return error("401: " + e.reason)
         else:
             raise(e)
     except urllib3.exceptions.MaxRetryError:
@@ -50,6 +52,6 @@ def list():
     for namespace in namespaces.items:
         namespace_name = namespace.metadata.name
         namespace_active = namespace_name == current_namespace
-        namespace_info.append({"name": namespace_name, "active": namespace_active})
+        namespace_info.append({"name": namespace_name, "context": current_context.get("name"), "active": namespace_active})
 
     return namespace_info

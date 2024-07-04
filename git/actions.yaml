@@ -6,7 +6,6 @@ install_git:
     Install **Git and git-bash** on your local.
   icon: fas fa-download
   playbook: plugins/git/playbooks/install_git.yml
-
 git_generate_config:
   title: Configure git
   description: |
@@ -16,6 +15,12 @@ git_generate_config:
   application_name: Git
   playbook: plugins/git/playbooks/setup_git.yml
   required_settings:
-    - user.name
-    - user.email
+  - user.name
+  - user.email
   show_settings: true
+git_clone_repo:
+  object_types: git_repo
+  title: Clone
+  description: ''
+  icon: fas fa-folder-plus
+  command: plugins/git/actions/clone_git.py

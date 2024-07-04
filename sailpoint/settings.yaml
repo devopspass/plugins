@@ -1,0 +1,20 @@
+sailpoint.tenant:
+  section: SailPoint
+  required_app: SailPoint
+  title: SailPoint Tenant name
+  description: First part of your SailPoint domain - `https://TENANT.identitynow.com/`
+  type: string
+
+sailpoint.client_id:
+  section: SailPoint
+  required_app: SailPoint
+  title: SailPoint client id
+  description: SailtPont client id from Profile -> Personal Token page
+  type: string
+
+sailpoint.client_secret:
+  section: SailPoint
+  required_app: SailPoint
+  title: SailPoint Client Secret
+  description: SailtPont client id from Profile -> Personal Token page
+  type: string

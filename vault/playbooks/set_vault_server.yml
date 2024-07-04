@@ -1,0 +1,38 @@
+---
+- name: Set VAULT_ADDR environment variable permanently
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Set VAULT_ADDR on Linux/MacOS
+      when: ansible_os_family != 'Windows'
+      block:
+        - name: Check if .bashrc exists
+          ansible.builtin.stat:
+            path: "{{ ansible_env.HOME }}/.bashrc"
+          register: bashrc_file
+
+        - name: Add VAULT_ADDR to .bashrc
+          ansible.builtin.lineinfile:
+            path: "{{ ansible_env.HOME }}/.bashrc"
+            line: "export VAULT_ADDR='{{ vault_address }}'"
+            state: present
+          when: bashrc_file.stat.exists
+
+        - name: Check if .zshrc exists
+          ansible.builtin.stat:
+            path: "{{ ansible_env.HOME }}/.zshrc"
+          register: zshrc_file
+
+        - name: Add VAULT_ADDR to .zshrc
+          ansible.builtin.lineinfile:
+            path: "{{ ansible_env.HOME }}/.zshrc"
+            line: "export VAULT_ADDR='{{ vault_address }}'"
+            state: present
+          when: zshrc_file.stat.exists
+
+    - name: Set VAULT_ADDR on Windows
+      when: ansible_os_family == 'Windows'
+      block:
+        - name: Set VAULT_ADDR
+          ansible.builtin.command:
+            cmd: 'setx VAULT_ADDR "{{ vault_address }}"'

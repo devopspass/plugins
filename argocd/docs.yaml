@@ -1,0 +1,7 @@
+argocd_app:
+  application: ArgoCD
+  title: ArgoCD App
+  filter_field: name
+  source: plugins/argocd/docs/argocd_app.py
+  view_type: table
+  cache_ok: true

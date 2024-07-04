@@ -9,6 +9,12 @@ user.name:
   default: ''
   type: string
 
+user.workspace_folder:
+  title: User workspace folder
+  type: string
+  description: Folder where user keeping its git repos, working files, etc.
+  section: DevOps Pass AI
+
 terminal.command:
   title: Terminal command
   type: string

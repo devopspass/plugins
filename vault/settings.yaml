@@ -1,0 +1,6 @@
+vault.address:
+  section: Hashicorp Vault
+  required_app: Hashicorp Vault
+  title: HashiCorp Vault Address
+  type: string
+  default: https://127.0.0.1:8200

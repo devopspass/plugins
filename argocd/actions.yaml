@@ -1,0 +1,15 @@
+install_argocd_cli:
+  object_types: application
+  application_name: ArgoCD
+  title: Install ArgoCD CLI
+  description: |
+    Install ArgoCD CLI
+  icon: fas fa-download
+  playbook: plugins/argocd/playbooks/install.yml
+  required_options:
+    req_version:
+      title: Version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest

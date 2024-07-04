@@ -1,0 +1,16 @@
+sailpoint_my_requests:
+  application: SailPoint
+  title: My Requests
+  filter_field: name
+  source: plugins/sailpoint/docs/sailpoint_my_requests.py
+  view_type: table
+  icon: https://avatars.githubusercontent.com/u/63106368?s=200&v=4
+
+sailpoint_applications:
+  application: SailPoint
+  title: Applications
+  filter_field: name
+  source: plugins/sailpoint/docs/sailpoint_apps.py
+  view_type: table
+  icon: https://avatars.githubusercontent.com/u/63106368?s=200&v=4
+  cache_ok: true

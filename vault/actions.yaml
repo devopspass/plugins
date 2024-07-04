@@ -1,0 +1,24 @@
+vault_install_cli_client:
+  object_types: application
+  application_name: Hashicorp Vault
+  title: Install Vault CLI
+  description: Install Vault CLI client
+  icon: fas fa-folder-plus
+  playbook: plugins/vault/playbooks/install_vault_cli.yml
+  required_options:
+    req_vault_version:
+      title: Version to install
+      remember: true
+      remember_key: name
+      type: string
+      default: latest
+
+vault_set_default_server:
+  object_types: application
+  application_name: Hashicorp Vault
+  title: Set default Vault Server
+  icon: fas fa-star
+  playbook: plugins/vault/playbooks/set_vault_server.yml
+  required_settings:
+    - vault.address
+  show_settings: true

@@ -1,0 +1,17 @@
+vault_secret_engine:
+  application: HashiCorp Vault
+  title: Secret Engine
+  filter_field: name
+  source: plugins/vault/docs/vault_secret_engine.py
+  icon: assets/icons/apps/vault.png
+  view_type: table
+  cache_ok: true
+
+vault_auth_engine:
+  application: HashiCorp Vault
+  title: Auth Methods
+  filter_field: name
+  source: plugins/vault/docs/vault_auth_engine.py
+  icon: assets/icons/apps/vault.png
+  view_type: table
+  cache_ok: true

@@ -58,11 +58,3 @@ action.aws_refresh_sso_tokens.ds.start_url:
     AWS SSO Portal URL, usually https://d-XXXXXXX.awsapps.com/start/#/
   title: AWS SSO Portal URL
   type: string
-
-epic.aws.new_account.okta_token:
-  section: AWS
-  required_app: AWS
-  description: |
-    Okta token for AWS create account API - https://epic-aws-account-api.beef.live.use1a.on.epicgames.com/oauth2/token
-  title: AWS Create Account API access token
-  type: string

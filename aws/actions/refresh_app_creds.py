@@ -65,9 +65,6 @@ def set_aws_credentials(profile_name: str, access_key: str, secret_key: str, ses
     else:
         if config.has_section('default'):
             if config.get(profile_name, 'aws_session_token') == config.get('default', 'aws_session_token') and config.get('default', 'aws_session_token') != '':
-                print(profile_name)
-                print(config.get(profile_name, 'aws_session_token') + '---')
-                print(config.get('default', 'aws_session_token') + '---')
                 config.set('default', 'aws_access_key_id', access_key)
                 config.set('default', 'aws_secret_access_key', secret_key)
                 config.set('default', 'aws_session_token', session_token)
@@ -91,7 +88,9 @@ def add_profile(name: str):
         config.add_section(profile_name)
         with open(path, 'w') as configfile:
             config.write(configfile)
-        set_aws_credentials(name, '', '', '')
+        # We need something uniq across other profiles, to keep empy values
+        # So using profile name
+        set_aws_credentials(name, name, name, name)
 
 def get_profiles(ac):
     retries = 20
@@ -180,7 +179,13 @@ headers = {
 
 response = requests.get(url, headers=headers)
 
+# AWS accounts info file, where stored account id, description, mails, etc.
 aws_info = {}
+aws_info_file = os.path.join(cdx.helpers.dop_home_path(), 'tmp', 'aws_accounts.json')
+if os.path.exists(aws_info_file):
+    with open(aws_info_file, 'r') as file:
+        aws_info = json.load(file)
+
 
 if response.status_code == 200:
     # {
