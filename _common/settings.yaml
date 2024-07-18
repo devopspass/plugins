@@ -24,6 +24,13 @@ terminal.command:
   default_macos: dop-term %COMMAND%
   section: DevOps Pass AI
 
+editor.command:
+  title: Editor command
+  type: string
+  description: Command which will be used to open some folder locally for editing
+  default: code %PATH%
+  section: DevOps Pass AI
+
 # Codex options
 codex.plugins.source:
   title: DevOps Pass AI plugins source

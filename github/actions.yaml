@@ -1,5 +1,17 @@
-git_clone_repo:
+gitgub_clone_repo:
   object_types: github_repos
   title: Clone
   icon: fas fa-folder-plus
   command: plugins/git/actions/clone_git.py
+
+github_open_in_editor:
+  object_types: github_repos
+  title: Open in IDE
+  icon: fas fa-pen
+  command: plugins/git/actions/open_in_editor.py
+
+github_copy_path_to_clipboard:
+  object_types: github_repos
+  title: Copy path
+  icon: fas fa-copy
+  command: plugins/git/actions/copy_path_to_clipboard.py

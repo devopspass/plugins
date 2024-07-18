@@ -85,7 +85,7 @@ def list():
             'assignee': issue.get('fields', {}).get('assignee', {}).get('displayName'),
             'reporter': issue.get('fields', {}).get('reporter', {}).get('displayName'),
             # 'priority': issue.fields.priority.name if issue.fields.priority else None,
-            'description': convert_jira_to_markdown(issue.get('fields', {}).get('description')),
+            'description': convert_jira_to_markdown(str(issue.get('fields', {}).get('description', ''))),
             # 'created': issue.fields.created,
             # 'updated': issue.fields.updated,
             # 'labels': issue.fields.labels,

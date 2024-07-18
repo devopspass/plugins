@@ -59,7 +59,7 @@ def get_sailpoint_user_requests(tenant, client_id, client_secret):
 
     try:
         response = requests.get(endpoint, headers=headers)
-        print(response.content)
+        # print(response.content)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -77,12 +77,14 @@ def list():
         icon = 'assets/icons/general/ok.png'
         if req.get('state') == 'REJECTED':
             icon = 'assets/icons/general/error.png'
+        if req.get('state') == 'EXECUTING':
+            icon = 'assets/icons/general/link.png'
         ret.append({
             'name': req.get('name'),
             'icon': icon,
             'url': f'https://{tenant}.identitynow.com/ui/d/request-center/my-requests#{req.get("accessRequestId")}',
             'description': req.get('description'),
-            # 'state': req.get('state'),
+            'state': req.get('state'),
             'id': req.get('accessRequestId'),
             'error': req.get('errorMessages')
         })

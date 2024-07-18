@@ -8,20 +8,15 @@ from urllib.parse import urlparse
 import cdx
 import sys
 
-fname_doc = sys.argv[1]
-fname_settings = sys.argv[2]
+if len(sys.argv) == 2:
+    url = sys.argv[1]
+else:
+    fname_doc = sys.argv[1]
+    fname_settings = sys.argv[2]
+    with open(fname_doc, 'r') as file:
+        doc = json.load(file)
+    url = doc['metadata']['url']
 
-settings = {}
-
-with open(fname_settings, 'r') as file:
-    settings = json.load(file)
-
-with open(fname_doc, 'r') as file:
-    doc = json.load(file)
-
-opts = cdx.helpers.get_action_options(doc, 'git_clone_repo')
-
-url = doc['metadata']['url']
 workspace_folder = cdx.settings.get('user.workspace_folder')
 
 parsed_url = urlparse(url)
