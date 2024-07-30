@@ -7,4 +7,4 @@ docker.command:
   type: string
   default_linux: gnome-terminal -- docker %DOCKER_COMMAND%
   default_windows: wsl -- docker %DOCKER_COMMAND%
-  default_macos: osascript -e 'tell app "Terminal" to do script "docker %DOCKER_COMMAND%"'
+  default_macos: docker %DOCKER_COMMAND%

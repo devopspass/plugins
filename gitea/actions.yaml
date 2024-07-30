@@ -1,0 +1,17 @@
+gitea_clone_repo:
+  object_types: gitea_repos
+  title: Clone
+  icon: fas fa-folder-plus
+  command: plugins/git/actions/clone_git.py
+
+gitea_open_in_editor:
+  object_types: gitea_repos
+  title: Open in IDE
+  icon: fas fa-pen
+  command: plugins/git/actions/open_in_editor.py
+
+gitea_copy_path_to_clipboard:
+  object_types: gitea_repos
+  title: Copy path
+  icon: fas fa-copy
+  command: plugins/git/actions/copy_path_to_clipboard.py

@@ -1,0 +1,17 @@
+
+gitea.domain:
+  section: Gitea
+  required_app: Gitea
+  description: |
+    Gitea domain, change if you're using GitHub enterprice
+  title: Gitea Domain
+  type: string
+
+gitea.token:
+  section: Gitea
+  required_app: Gitea
+  default: b8036376f01d4549cfbb7ca1164da4f194f962bf
+  description: |
+    Gitea personal token
+  title: Gitea Token
+  type: string

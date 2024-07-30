@@ -1,0 +1,8 @@
+gitea_repos:
+  application: Gitea
+  title: Gitea repos
+  filter_field: name
+  source: plugins/gitea/scripts/doc_gitea_repos.py
+  icon: https://avatars.githubusercontent.com/u/12724356?s=48&v=4
+  actions_view_type: buttons
+  cache_ok: true

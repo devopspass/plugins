@@ -1,3 +1,4 @@
+import json
 import subprocess
 import re
 import cdx
@@ -5,18 +6,8 @@ import cdx
 def list():
     try:
         # Run the command and capture the output
-        output = subprocess.run(['helm', 'repo', 'list'], text=True, check=True, capture_output=True)
-
-        # Parse the output to extract environment information
-        repos = []
-        for line in output.stdout.splitlines():
-            match = re.match(r'^\s*(.+?)\s+(.+)\s*$', line)
-            if match:
-                name, url = match.groups()
-                if name != "NAME" and name.strip() != "":
-                    repos.append({'icon': 'assets/icons/apps/helm.png', 'name': name, 'url': url})
-
-        return repos
+        output = subprocess.run(['helm', 'repo', 'list', '-o', 'json'], text=True, check=True, capture_output=True)
+        return json.loads(output.stdout)
 
     except subprocess.CalledProcessError as e:
         return [{'name': 'ERROR', 'icon': 'assets/icons/general/error.png', 'error': f"{e}\n{e.output}\n{e.stderr}"}]

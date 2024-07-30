@@ -89,25 +89,12 @@
 
     - name: Install Docker on Mac
       block:
-        # - name: Download Docker for Mac
-        #   ansible.builtin.get_url:
-        #     url: https://desktop.docker.com/mac/main/{{ arch_mapping[ansible_architecture] }}/Docker.dmg
-        #     dest: "{{ dop_temp }}"
-
-        - name: Mount DMG
+        - name: Install Docker
           ansible.builtin.command:
-            cmd: "hdiutil attach {{ (dop_temp, 'Docker.dmg') | path_join }}"
-
-        - name: Copy
-          ansible.builtin.copy:
-            src: "/Volumes/Docker/Docker.app"
-            dest: "/Applications/"
-
-        - name: Detach
+            cmd: brew install docker
+        - name: Install Docker net connect
           ansible.builtin.command:
-            cmd: hdiutil detach /Volumes/Docker
-
-        # - name: Remove DMG
-        #   ansible.builtin.file:
-        #     path: "{{ (dop_temp, 'Docker.dmg') | path_join }}"
-        #     state: absent
+            cmd: brew install chipmk/tap/docker-mac-net-connect
+        - name: Install Docker
+          ansible.builtin.command:
+            cmd: sudo brew services start chipmk/tap/docker-mac-net-connect

@@ -3,18 +3,16 @@ helm_release:
   title: Helm Releases (installed in current context)
   filter_field: name
   icon: assets/icons/apps/helm.png
-  source: plugins/helm/scripts/doc_helm_release.py
-
+  source: plugins/helm/docs/doc_helm_release.py
 helm_repo:
   application: Helm
   title: Helm repos
   filter_field: name
   icon: assets/icons/apps/helm.png
-  source: plugins/helm/scripts/doc_helm_repo.py
-
+  source: plugins/helm/docs/doc_helm_repo.py
 helm_repo_chart:
   application: Helm
   title: Helm repo Charts
   filter_field: name
   icon: assets/icons/apps/helm.png
-  source: plugins/helm/scripts/doc_helm_repo_charts.py
+  source: plugins/helm/docs/doc_helm_repo_charts.py
