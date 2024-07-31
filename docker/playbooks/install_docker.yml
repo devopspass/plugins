@@ -92,9 +92,13 @@
         - name: Install Docker
           ansible.builtin.command:
             cmd: brew install docker
-        - name: Install Docker net connect
+          environment:
+             HOMEBREW_NO_AUTO_UPDATE: true
+        - name: Install Docker net connect - https://github.com/chipmk/docker-mac-net-connect
           ansible.builtin.command:
             cmd: brew install chipmk/tap/docker-mac-net-connect
+          environment:
+             HOMEBREW_NO_AUTO_UPDATE: true
         - name: Install Docker
           ansible.builtin.command:
-            cmd: sudo brew services start chipmk/tap/docker-mac-net-connect
+            cmd: osascript -e "do shell script \"brew services start chipmk/tap/docker-mac-net-connect\" with administrator privileges"
