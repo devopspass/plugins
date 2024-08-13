@@ -24,6 +24,7 @@
   description_long: Ansible is an open-source automation tool that automates software
     provisioning, configuration management, and application deployment.
   icon: assets/icons/apps/ansible.png
+  recommended: true
   name: Ansible
   sections:
   - name: Documentation
@@ -527,6 +528,7 @@
     that provides a secure and automated way to manage sensitive information in your
     infrastructure.
   icon: assets/icons/apps/vault.png
+  recommended: true
   name: HashiCorp Vault
   sections:
   - name: Documentation
@@ -1394,6 +1396,7 @@
     - name: Spinnaker CLI Reference
       url: https://spinnaker.io/reference/halyard/commands/
 - name: ArgoCD
+  recommended: true
   icon: assets/icons/apps/argocd.png
   description: ArgoCD is a declarative, GitOps continuous delivery tool for Kubernetes
     that automates the deployment and management of applications.
@@ -2487,6 +2490,7 @@
     - name: WSL Commands
       url: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
 - name: Golang
+  recommended: true
   icon: assets/icons/apps/golang.png
   description: Go, also known as Golang, is a statically typed, compiled programming
     language designed for simplicity, efficiency, and concurrency. It offers powerful
@@ -2544,6 +2548,7 @@
     - name: Twitter
       url: https://twitter.com/devops_pass_ai
 - name: Ollama
+  recommended: true
   icon: https://avatars.githubusercontent.com/u/151674099?s=%C2%A718&v=4
   description: Get up and running with large language models locally.
   description_long: "Get up and running with large language models locally.\n"
@@ -2553,14 +2558,15 @@
     - name: GitHub
       url: https://github.com/ollama/ollama
 - name: Homebrew
+  recommended: true
   icon: https://brew.sh/assets/img/homebrew.svg
   description: The Missing Package Manager for macOS (or Linux)
   description_long: "The Missing Package Manager for macOS (or Linux)\n"
   sections:
   - name: HomeBrew
     urls:
-    - name: name
-      url: https://devopspass-ai.com/
+    - name: HomeBrew
+      url: https://brew.sh/
 - name: Backstage
   icon: https://avatars.githubusercontent.com/u/72526453?s=48&v=4
   description: Backstage is an open source framework for building developer portals.
@@ -2572,3 +2578,18 @@
     urls:
     - name: GitHub
       url: https://github.com/backstage/backstage
+- description_long: The SailPoint identity security platform
+  icon: https://avatars.githubusercontent.com/u/63106368?s=200&v=4
+  name: SailPoint
+  sections: []
+  recommended: true
+- description: Gitea - the easiest, fastest, and most painless way of setting up a
+    self-hosted Git service.
+  description_long: 'As Gitea is written in Go, it works across all the platforms
+    and architectures that are supported by Go, including Linux, macOS, and Windows
+    on x86, amd64, ARM and PowerPC architectures. This project has been forked from
+    Gogs since November of 2016, but a lot has changed.'
+  icon: https://avatars.githubusercontent.com/u/12724356?s=48&v=4
+  recommended: true
+  name: Gitea
+  sections: []
