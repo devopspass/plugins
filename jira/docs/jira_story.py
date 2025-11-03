@@ -181,15 +181,21 @@ def list_docs():
         desc = convert_jira_to_markdown(desc)
         # desc = str(desc_field)
         # "{'type': 'doc', 'version': 1, 'content': [{'type': 'paragraph', 'content': [{'type': 'text', 'text': 'Once steps in '}, {'type': 'inlineCard', 'attrs': {'url': 'https://luminorgroupcloud.atlassian.net/browse/CB-4817'}}, {'type': 'text', 'text': ' '}, {'type': 'hardBreak'}, {'type': 'text', 'text': 'are done, we have to connect to Data Mesh Kafka'}, {'type': 'hardBreak'}, {'type': 'hardBreak'}, {'type': 'text', 'text': 'Tasks'}]}, {'type': 'bulletList', 'content': [{'type': 'listItem', 'content': [{'type': 'paragraph', 'content': [{'type': 'text', 'text': 'Create topics in Data mesh Kafka'}]}]}, {'type': 'listItem', 'content': [{'type': 'paragraph', 'content': [{'type': 'text', 'text': 'Create access to Data Mesh Kafka'}]}]}, {'type': 'listItem', 'content': [{'type': 'paragraph', 'content': [{'type': 'text', 'text': 'Add Kafka connection to Oracle conector'}]}]}]}]}"
+        if issue.get('fields', {}).get('assignee', {}):
+            desc = str(issue.get('fields', {}).get('assignee', {}).keys())
 
-
+        if issue.get('fields', {}).get('assignee', {}):
+            assignee = issue.get('fields', {}).get('assignee', {}).get('displayName'),
+        else:
+            assignee = ''
+        
         stories.append({
             'name': issue.get('key'),
             'url': jira_server + '/browse/' + issue.get('key'),
             'summary': issue.get('fields', {}).get('summary'),
             'status': "`" + issue.get('fields', {}).get('status', {}).get('name') + "` ",
-            # 'assignee': issue.get('fields', {}).get('assignee', {}).get('displayName'),
-            # 'reporter': issue.get('fields', {}).get('reporter', {}).get('displayName'),
+            'reporter': issue.get('fields', {}).get('reporter', {}).get('displayName'),
+            'assignee': assignee,
             # 'priority': issue.fields.priority.name if issue.fields.priority else None,
             'description': desc,
             # 'created': issue.fields.created,

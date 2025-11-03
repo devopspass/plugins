@@ -4,6 +4,13 @@ confluence.server:
   title: Confluence Server URL
   type: string
 
+confluence.user:
+  section: Confluence
+  required_app: Confluence
+  title: Confluence User
+  description: Users name (email) for Atlassian Cloud
+  type: string
+
 confluence.token:
   section: Confluence
   required_app: Confluence

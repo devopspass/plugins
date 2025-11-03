@@ -7,7 +7,7 @@ jira.server:
 jira.user:
   section: JIRA
   required_app: JIRA
-  title: Jira Token
+  title: Jira User
   description: JIRA User (Atlassian Cloud)
   type: string
 
