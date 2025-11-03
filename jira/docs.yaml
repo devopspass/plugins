@@ -6,3 +6,5 @@ jira_story:
   view_type: table
   icon: assets/icons/apps/jira.png
   cache_ok: true
+  hidden_fields:
+    - description

@@ -4,6 +4,13 @@ jira.server:
   title: Jira Server URL
   type: string
 
+jira.user:
+  section: JIRA
+  required_app: JIRA
+  title: Jira Token
+  description: JIRA User (Atlassian Cloud)
+  type: string
+
 jira.token:
   section: JIRA
   required_app: JIRA
