@@ -22,7 +22,8 @@ result = subprocess.run(
         cdx.helpers.python_bin_path(),
         '-u',
         plugin_path,
-        url
+        fname_doc,
+        fname_settings
     ],
     stdout=subprocess.PIPE,
     stderr=subprocess.PIPE,

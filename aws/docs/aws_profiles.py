@@ -5,7 +5,7 @@ import re, json, os
 import cdx
 import botocore.session
 
-def list():
+def list_docs():
     aws = []
 
     session = botocore.session.get_session()

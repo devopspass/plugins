@@ -1,0 +1,12 @@
+gitlab_repos:
+  application: GitLab
+  title: GitLab repos
+  filter_field: name
+  source: plugins/gitlab/docs/gitlab_repos.py
+  icon: assets/icons/apps/gitlab.png
+  actions_view_type: buttons
+  cache_ok: true
+  hidden_fields:
+    - ssh_url_to_repo
+    - links
+    - name_with_namespace

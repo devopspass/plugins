@@ -8,6 +8,8 @@ from urllib.parse import urlparse
 import cdx
 import sys
 
+doc = {}
+
 if len(sys.argv) == 2:
     url = sys.argv[1]
 else:
@@ -30,7 +32,17 @@ domain = parsed_url.netloc
 path = parsed_url.path.strip('/')
 
 # Construct the SSH URL
-ssh_url = f"git@{domain}:{path}.git"
+git_repo_doc_type = doc.get('metadata', {}).get('doc_type')
+if git_repo_doc_type in ['gitlab_repos']:
+    clone_source = cdx.settings.get('gitlab.clone_source')
+
+clone_url = None
+if clone_source == 'https':
+    clone_url = url
+elif clone_source == 'ssh':
+    clone_url = f"git@{domain}:{path}.git"
+else:
+    raise ValueError(f'Invalid clone source setting, must be "ssh" or "https", got: {clone_source}')
 
 repo_path = f"{workspace_folder}/{domain}/{path}"
 
@@ -38,7 +50,7 @@ if not os.path.exists(repo_path):
     # Directory does not exist, perform git clone
     try:
         os.makedirs(repo_path, exist_ok=True)
-        subprocess.run(['git', 'clone', ssh_url, repo_path], check=True)
-        print(f"Cloned repository '{url}' ({ssh_url}) into '{repo_path}'")
+        subprocess.run(['git', 'clone', clone_url, repo_path], check=True)
+        print(f"Cloned repository '{url}' ({clone_url}) into '{repo_path}'")
     except subprocess.CalledProcessError as e:
         print(f"Failed to clone repository: {e}")

@@ -1,0 +1,20 @@
+gitlab.server:
+  section: GitLab
+  required_app: GitLab
+  title: GitLab Server URL
+  type: string
+
+gitlab.token:
+  section: GitLab
+  required_app: GitLab
+  title: GitLab Token
+  description: Users Personal Token for GitLab
+  type: string
+
+gitlab.clone_source:
+  section: GitLab
+  required_app: GitLab
+  title: Clone Source
+  description: Choose between SSH or HTTPS for cloning repositories, set to `ssh` or `https`
+  type: string
+  default: ssh

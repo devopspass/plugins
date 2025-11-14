@@ -14,7 +14,7 @@ def error(msg: str):
             }
         ]
 
-def list():
+def list_docs():
     try:
         # Run the command and capture the output
         output = subprocess.run(['argocd', 'app', 'list', '-o', 'json'], text=True, check=True, capture_output=True)

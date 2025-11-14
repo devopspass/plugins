@@ -148,22 +148,41 @@ def list_docs():
         'Authorization': f'Basic {basic_token}',
         'Content-Type': 'application/json'
     }
-    params = {
-        'jql': jql_query,
-        'maxResults': 50,  # Adjust as needed
-        'fields': 'key,summary,status,assignee,priority,description,created,updated,labels,reporter',
-        "fieldsByKeys": True
-    }
+    start_at = 0
+    max_results = 100  # Number of results per page
+    all_issues = []
+    
+    next_page = None
 
-    # Perform the request
-    response = requests.get(search_url, headers=headers, params=params)
+    while True:
+        params = {
+            'jql': jql_query,
+            'maxResults': max_results,
+            'startAt': start_at,
+            'fields': 'key,summary,status,assignee,priority,description,created,updated,labels,reporter',
+            "fieldsByKeys": True,
+            'next_page': next_page
+        }
 
-    if response.status_code != 200:
-        raise Exception(f"Failed to retrieve JIRA issues: {response.status_code} - {response.text}")
+        # Perform the request
+        response = requests.get(search_url, headers=headers, params=params)
 
-    print(response.content)
+        if response.status_code != 200:
+            raise Exception(f"Failed to retrieve JIRA issues: {response.status_code} - {response.text}")
+        # return error(str(response.json()))
+        response_data = response.json()
+        current_issues = response_data.get('issues', [])
+        all_issues.extend(current_issues)
 
-    issues = response.json().get('issues', [])
+        # Check if we've retrieved all issues
+        if response_data.get('isLast', True) or not 'nextPageToken' in response_data:
+            break
+        else:
+            next_page = response_data.get('nextPageToken')
+            
+        start_at += max_results
+
+    issues = all_issues
 
     stories = []
     for issue in issues:
